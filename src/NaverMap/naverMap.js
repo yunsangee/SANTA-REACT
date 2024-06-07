@@ -3,6 +3,12 @@ import io from 'socket.io-client';
 
 const NaverMap = () => {
   const [socket, setSocket] = useState(null);
+  const [randomCoordinates, setRandomCoordinates] = useState([]);
+  const [distance, setDistance] = useState(null);
+  const [almostThere, setAlmostThere] = useState(false);
+  const [map, setMap] = useState(null);
+  const [currentMarker, setCurrentMarker] = useState(null);
+  const [polyline, setPolyline] = useState(null);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -19,14 +25,12 @@ const NaverMap = () => {
             style: window.naver.maps.MapTypeControlStyle.DROPDOWN
           }
         };
-        const map = new window.naver.maps.Map('map', mapOptions);
-        const infowindow = new window.naver.maps.InfoWindow();
-        const streetLayer = new window.naver.maps.StreetLayer();
-        let marker = null;
+        const mapInstance = new window.naver.maps.Map('map', mapOptions);
+        setMap(mapInstance);
 
-        // Handle street layer toggle
+        const streetLayer = new window.naver.maps.StreetLayer();
         const btn = document.getElementById('street');
-        window.naver.maps.Event.addListener(map, 'streetLayer_changed', function(streetLayer) {
+        window.naver.maps.Event.addListener(mapInstance, 'streetLayer_changed', function (streetLayer) {
           if (streetLayer) {
             btn.classList.add('control-on');
           } else {
@@ -34,68 +38,80 @@ const NaverMap = () => {
           }
         });
 
-        btn.addEventListener("click", function(e) {
+        btn.addEventListener("click", function (e) {
           e.preventDefault();
           if (streetLayer.getMap()) {
             streetLayer.setMap(null);
           } else {
-            streetLayer.setMap(map);
+            streetLayer.setMap(mapInstance);
           }
         });
 
-        window.naver.maps.Event.once(map, 'init', function() {
-          streetLayer.setMap(map);
+        window.naver.maps.Event.once(mapInstance, 'init', function () {
+          streetLayer.setMap(mapInstance);
         });
 
         // Connect to the socket.io server with reconnection options
-        const socket = io('http://localhost:4000', {
+        const socketInstance = io('http://localhost:4000', {
           reconnection: true,
           reconnectionAttempts: 5,
           reconnectionDelay: 1000,
           reconnectionDelayMax: 5000,
           timeout: 20000,
         });
-        setSocket(socket);
+        setSocket(socketInstance);
 
-        socket.on('connect', () => {
+        socketInstance.on('connect', () => {
           console.log('Connected to server');
-          
         });
 
-        socket.on('locationUpdate', (locations) => {
+        socketInstance.on('locationUpdate', (locations) => {
           console.log('Location update received:', locations);
+        });
 
+        socketInstance.on('randomCoordinate', ({ randomCoordinates, distance, almostThere }) => {
+          console.log('Random coordinate received:', randomCoordinates);
+          console.log('Distance:', distance);
+          console.log('Almost there:', almostThere);
+          setDistance(distance);
+          setAlmostThere(almostThere);
 
-          const userLocation = locations[socket.id];
-          if (userLocation) {
-            const newLocation = new window.naver.maps.LatLng(userLocation.latitude, userLocation.longitude);
-            map.setCenter(newLocation);
+          const newRandomLocation = new window.naver.maps.LatLng(randomCoordinates.latitude, randomCoordinates.longitude);
 
-            if (marker) {
-              marker.setPosition(newLocation);
+          // Add new random coordinates to the list
+          setRandomCoordinates(prevCoordinates => {
+            const updatedCoordinates = [...prevCoordinates, newRandomLocation];
+
+            // Update polyline
+            if (polyline) {
+              polyline.setPath(updatedCoordinates);
             } else {
-              marker = new window.naver.maps.Marker({
-                position: newLocation,
-                map: map
+              const newPolyline = new window.naver.maps.Polyline({
+                map: mapInstance,
+                path: updatedCoordinates,
+                strokeColor: '#FF0000', // Red color for the line
+                strokeWeight: 5
               });
+              setPolyline(newPolyline);
             }
 
-            infowindow.setContent('<div style="padding:20px;">실시간 위치</div>');
-            infowindow.open(map, marker);
-          }
+            // Add new random marker
+            const newMarker = new window.naver.maps.Marker({
+              position: newRandomLocation,
+              map: mapInstance,
+              title: 'Random Location',
+              icon: {
+                url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+              }
+            });
+
+            return updatedCoordinates;
+          });
         });
 
-        socket.on('disconnect', () => {
+        socketInstance.on('disconnect', () => {
           console.log('Disconnected from server');
-      
         });
-
-        const addLog = (message) => {
-          const logContainer = document.getElementById('log');
-          const logEntry = document.createElement('div');
-          logEntry.textContent = message;
-          logContainer.appendChild(logEntry);
-        }
 
         // Function to get the current geolocation and send it to the server
         const logGeolocation = () => {
@@ -107,19 +123,33 @@ const NaverMap = () => {
               };
 
               console.log('Coordinates: ' + location.latitude + ', ' + location.longitude);
-         
 
               // Send location to the server
-              socket.emit('location', location);
+              socketInstance.emit('location', location);
               console.log('Location sent to server:', location);
-            
+
+              // Update current location marker
+              const newLocation = new window.naver.maps.LatLng(location.latitude, location.longitude);
+              mapInstance.setCenter(newLocation);
+
+              if (currentMarker) {
+                currentMarker.setPosition(newLocation);
+              } else {
+                const marker = new window.naver.maps.Marker({
+                  position: newLocation,
+                  map: mapInstance,
+                  title: 'Your Location',
+                  icon: {
+                    url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                  }
+                });
+                setCurrentMarker(marker);
+              }
             }, () => {
               console.error('Geolocation failed!');
-            
             });
           } else {
             console.error('Geolocation not supported');
-        
           }
         };
 
@@ -129,12 +159,12 @@ const NaverMap = () => {
         // Cleanup interval and socket connection on component unmount
         return () => {
           clearInterval(geolocationInterval);
-          if (socket) {
-            socket.disconnect();
+          if (socketInstance) {
+            socketInstance.disconnect();
           }
         };
       } else {
-        console.error("네이버 지도 API를 로드하는 데 실패했습니다.");
+        console.error("Failed to load Naver Maps API.");
       }
     };
     document.head.appendChild(script);
@@ -145,6 +175,16 @@ const NaverMap = () => {
       <div id="map" style={{ width: '100%', height: '400px' }}></div>
       <button id="street" style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 1000 }}>Toggle Street View</button>
       <div id="log" style={{ position: 'absolute', bottom: '10px', left: '10px', width: '100%', maxHeight: '200px', overflowY: 'auto', backgroundColor: 'rgba(255, 255, 255, 0.7)', padding: '10px', zIndex: 1000 }}></div>
+      {distance !== null && 
+        <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }}>
+          Distance: {distance.toFixed(2)} km
+        </div>
+      }
+      {almostThere && 
+        <div style={{ position: 'absolute', top: '50px', right: '10px', zIndex: 1000, backgroundColor: 'yellow', padding: '10px' }}>
+          Almost there!
+        </div>
+      }
     </>
   );
 };
