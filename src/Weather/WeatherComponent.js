@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const WeatherComponent = ({ latitude, longitude, setSkyCondition }) => {
+const WeatherComponent = ({ latitude, longitude, setSkyCondition, setSunsetTime }) => {
   const [weather, setWeather] = useState(null);
 
   useEffect(() => {
@@ -18,9 +18,12 @@ const WeatherComponent = ({ latitude, longitude, setSkyCondition }) => {
           const data = await response.json();
           setWeather(data);
           if (data.skyCondition) {
-            setSkyCondition(data.skyCondition); // Ensure skyCondition is set
+            setSkyCondition(data.skyCondition); 
           } else {
-            setSkyCondition('Unknown'); // Provide a default value if not set
+            setSkyCondition('Unknown');
+          }
+          if (data.sunsetTime) {
+            setSunsetTime(data.sunsetTime);
           }
         } else {
           console.error('Failed to fetch weather information');
@@ -33,7 +36,7 @@ const WeatherComponent = ({ latitude, longitude, setSkyCondition }) => {
     if (latitude && longitude) {
       fetchWeather();
     }
-  }, [latitude, longitude, setSkyCondition]);
+  }, [latitude, longitude, setSkyCondition, setSunsetTime]);
 
   const getSkyCondition = (code) => {
     const skyConditionCode = parseInt(code, 10);

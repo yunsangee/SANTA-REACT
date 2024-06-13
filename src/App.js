@@ -3,15 +3,19 @@ import './App.css';
 import NaverMap from './NaverMap/NaverMap'; 
 import HikingRecord from './HikingRecord/HikingRecord';
 import HikingAlert from './HikingRecord/HikingAlert';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Import Router, Route, Routes
 
 function App() {
-  const userNo=1;
+  const userNo = 21;
   return (
-    <div className="App">
-      <NaverMap />
-      {/* <HikingRecord/>
-      <HikingAlert userNo={userNo}/> */}
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<NaverMap />} />
+          <Route path="/hiking-alert" element={<HikingAlert userNo={userNo} />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

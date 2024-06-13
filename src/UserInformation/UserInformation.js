@@ -1,7 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import { calculateDistance } from '../Utils/calculateDistance'; 
 
-const UserInformation = ({ isHiking, ascentTime, totalTime, descentTime, resetHiking, mountainName, trailDifficulty, distance, setDistance }) => {
+const UserInformation = ({ 
+  isHiking, 
+  ascentTime, 
+  totalTime, 
+  descentTime, 
+  resetHiking, 
+  mountainName, 
+  trailDifficulty, 
+  distance, 
+  setDistance,
+  trailLength,
+  trailAscent,
+  trailDescent 
+}) => {
   const [prevLocation, setPrevLocation] = useState(null);
   const [socket, setSocket] = useState(null);
   const [path, setPath] = useState([]);
@@ -58,32 +72,18 @@ const UserInformation = ({ isHiking, ascentTime, totalTime, descentTime, resetHi
     }
   }, [path]);
 
-  const calculateDistance = (loc1, loc2) => {
-    const R = 6371e3; 
-    const φ1 = loc1.latitude * Math.PI / 180;
-    const φ2 = loc2.latitude * Math.PI / 180;
-    const Δφ = (loc2.latitude - loc1.latitude) * Math.PI / 180;
-    const Δλ = (loc2.longitude - loc1.longitude) * Math.PI / 180;
-
-    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    const d = R * c; 
-    return d;
-  };
-  
-
   return (
-    <div style={{ position: 'absolute', bottom: '55px', left: '10px', zIndex: 1000, backgroundColor: 'white', padding: '10px', fontSize: '12px' }}>
-      <h3>Hiking Info</h3>
-      <p>Time: {Math.floor(totalTime / 60)}:{('0' + (totalTime % 60)).slice(-2)}</p>
-      <p>Distance: {distance.toFixed(2)} m</p>
-      {ascentTime > 0 && <p>Ascent Time: {Math.floor(ascentTime / 60)}:{('0' + (ascentTime % 60)).slice(-2)}</p>}
-      {descentTime > 0 && <p>Descent Time: {Math.floor(descentTime / 60)}:{('0' + (descentTime % 60)).slice(-2)}</p>}
-      <p>Mountain Name: {mountainName}</p>
-      <p>Trail Difficulty: {trailDifficulty}</p>
+    <div style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 1000, backgroundColor: 'white', padding: '10px', fontSize: '12px' }}>
+      <h3>등산 정보</h3>
+      <p>총 소요시간: {Math.floor(totalTime / 60)}:{('0' + (totalTime % 60)).slice(-2)}</p>
+      <p>이동 거리: {distance.toFixed(2)} m</p>
+      {ascentTime > 0 && <p>등산 시간: {Math.floor(ascentTime / 60)}:{('0' + (ascentTime % 60)).slice(-2)}</p>}
+      {descentTime > 0 && <p>하산 시간: {Math.floor(descentTime / 60)}:{('0' + (descentTime % 60)).slice(-2)}</p>}
+      <p>산 이름: {mountainName}</p>
+      <p>등산로 난이도: {trailDifficulty}</p>
+      <p>등산로 길이: {trailLength} m</p>
+      <p>등산예상시간: {trailAscent} 분</p>
+      <p>하산예상시간: {trailDescent} 분</p>
     </div>
   );
 };

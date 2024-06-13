@@ -5,7 +5,7 @@ const HikingAlert = ({ userNo }) => {
     const [alertSettings, setAlertSettings] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [meetingTime,setMeetingTime] = useState(null);
+    const [meetingTime, setMeetingTime] = useState(null);
 
     useEffect(() => {
         const fetchAlertSettings = async () => {
@@ -21,7 +21,8 @@ const HikingAlert = ({ userNo }) => {
         fetchAlertSettings();
     }, [userNo]);
 
-    console.log(alertSettings)
+    console.log(alertSettings);
+
     const handleToggle = (setting) => {
         setAlertSettings({
             ...alertSettings,
@@ -31,10 +32,18 @@ const HikingAlert = ({ userNo }) => {
 
     const saveSettings = async () => {
         try {
-            await axios.post('/react/updateAlertSetting', {
+            // Update alert settings
+            await axios.post(`http://localhost:8001/hikingGuide/react/updateAlertSetting/${userNo}`, {
                 userNo,
                 ...alertSettings,
             });
+
+            // Update meeting time
+            await axios.post(`http://localhost:8001/hikingGuide/react/updateMeetingTime/${userNo}`, {
+                meetingTimeAlert: alertSettings.time_alert_setting,
+                meetingTime: alertSettings.meetingTime,
+            });
+
             alert('Settings updated successfully');
         } catch (error) {
             alert('Failed to update settings');
