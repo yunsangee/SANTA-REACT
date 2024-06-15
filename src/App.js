@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import NaverMap from './NaverMap/NaverMap'; 
+import NaverMap from './NaverMap/naverMap';
 import HikingRecord from './HikingRecord/HikingRecord';
 import HikingAlert from './HikingRecord/HikingAlert';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Import Router, Route, Routes

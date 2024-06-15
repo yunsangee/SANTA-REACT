@@ -38,7 +38,7 @@ const NaverMap = () => {
 
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = "https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId="+process.env.REACT_APP_CLIENT_ID;
+    script.src = "https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ch1xa6ojlq";
     script.async = true;
     script.onload = () => {
       if (window.naver && window.naver.maps) {
