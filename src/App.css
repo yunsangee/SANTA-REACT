@@ -1,3 +1,12 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Raleway', sans-serif;
+}
+
+/* 기존 CSS 규칙 유지 */
 .App {
   text-align: center;
 }
@@ -13,6 +22,11 @@
   }
 }
 
+.fruite-item:hover {
+  box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
+  transition: 0.5s;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -26,6 +40,12 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.card-hover:hover {
+  border: 2px solid #007bff;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+  transition: 0.3s;
 }
 
 @keyframes App-logo-spin {

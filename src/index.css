@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+@font-face {
+  font-family: "KCC-Hanbit";
+  font-weight: normal;
+  src: url("./fonts/KCC-Hanbit.eot") format("truetype");
+}
+
+body {
+  font-family: "KCC-Hanbit";
+}
