@@ -4,15 +4,20 @@ import NaverMap from './NaverMap/NaverMap';
 import HikingRecord from './HikingRecord/HikingRecord';
 import HikingAlert from './HikingRecord/HikingAlert';
 import Footer from './HikingRecord/Footer';
+import Top from './HikingRecord/Top';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Import Router, Route, Routes
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 function App() {
   const userNo = 21;
   return (
     <Router>
       <div className="App">
+        <Top/>
         <Routes>
-          <Route path="/" element={<HikingRecord userNo={userNo} />} />
+          <Route path="/" element={<NaverMap userNo={userNo} />} />
           <Route path="/hiking-alert" element={<HikingAlert userNo={userNo} />} />
         </Routes>
         <Footer/>

@@ -1,17 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Toggle from 'react-toggle';
+import "react-toggle/style.css";
+import '../css/style.css';
 
 const HikingAlert = ({ userNo }) => {
-    const [alertSettings, setAlertSettings] = useState(null);
+    const [alertSettings, setAlertSettings] = useState({
+        hikingAlertFlag: 0,
+        destinationAlert: 0,
+        sunsetAlert: 0,
+        locationOverAlert: 0,
+        meetingTimeAlert: 0,
+        meetingTime: ''
+    });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [meetingTime, setMeetingTime] = useState(null);
 
     useEffect(() => {
         const fetchAlertSettings = async () => {
             try {
                 const response = await axios.post(`http://localhost:8001/hikingGuide/react/getAlertSetting/${userNo}`);
-                setAlertSettings(response.data);
+                console.log(response.data); // Print the values received to the console
+                
+                // Map response data to toggle states
+                setAlertSettings({
+                    hikingAlertFlag: response.data.hikingAlertFlag,
+                    destinationAlert: response.data.destinationAlert,
+                    sunsetAlert: response.data.sunsetAlert,
+                    locationOverAlert: response.data.locationOverAlert,
+                    meetingTimeAlert: response.data.meetingTimeAlert,
+                    meetingTime: response.data.meetingTime
+                });
                 setLoading(false);
             } catch (error) {
                 setError(error);
@@ -21,32 +40,45 @@ const HikingAlert = ({ userNo }) => {
         fetchAlertSettings();
     }, [userNo]);
 
-    console.log(alertSettings);
-
     const handleToggle = (setting) => {
         setAlertSettings({
             ...alertSettings,
-            [setting]: !alertSettings[setting],
+            [setting]: alertSettings[setting] === 1 ? 0 : 1,
+        });
+    };
+
+    const handleMeetingTimeChange = (event) => {
+        setAlertSettings({
+            ...alertSettings,
+            meetingTime: event.target.value,
         });
     };
 
     const saveSettings = async () => {
         try {
             // Update alert settings
-            await axios.post(`http://localhost:8001/hikingGuide/react/updateAlertSetting/${userNo}`, {
-                userNo,
-                ...alertSettings,
-            });
+            const alertPayload = {
+                hikingAlertFlag: alertSettings.hikingAlertFlag,
+                destinationAlert: alertSettings.destinationAlert,
+                sunsetAlert: alertSettings.sunsetAlert,
+                locationOverAlert: alertSettings.locationOverAlert,
+                meetingTimeAlert: alertSettings.meetingTimeAlert,
+                userNo: userNo
+            };
+
+            await axios.post(`http://localhost:8001/hikingGuide/react/updateAlertSetting/${userNo}`, alertPayload);
 
             // Update meeting time
-            await axios.post(`http://localhost:8001/hikingGuide/react/updateMeetingTime/${userNo}`, {
-                meetingTimeAlert: alertSettings.time_alert_setting,
-                meetingTime: alertSettings.meetingTime,
-            });
+            const meetingTimePayload = {
+                meetingTimeAlert: alertSettings.meetingTimeAlert,
+                meetingTime: alertSettings.meetingTime
+            };
 
-            alert('Settings updated successfully');
+            await axios.post(`http://localhost:8001/hikingGuide/react/updateMeetingTime/${userNo}`, meetingTimePayload);
+
+            alert('설정 되었습니다~');
         } catch (error) {
-            alert('Failed to update settings');
+            alert('다시 시도해주세요');
         }
     };
 
@@ -54,65 +86,71 @@ const HikingAlert = ({ userNo }) => {
     if (error) return <div>Error loading alert settings</div>;
 
     return (
-        <div>
-            <h1>Alert Settings</h1>
-            <div>
+        <div className="hiking-alert-container">
+            <h1>등산 안내 알림 설정</h1>
+            <br/><br/>
+            <div className="alert-setting hg-setting">
                 <label>
-                    <input
-                        type="checkbox"
-                        checked={alertSettings.hg_setting}
-                        onChange={() => handleToggle('hg_setting')}
+                    <span>전체 알림</span>
+                    <Toggle
+                        checked={alertSettings.hikingAlertFlag === 1}
+                        onChange={() => handleToggle('hikingAlertFlag')}
                     />
-                    HG Setting
                 </label>
+                <hr />
             </div>
-            <div>
+            <div className="alert-setting">
                 <label>
-                    <input
-                        type="checkbox"
-                        checked={alertSettings.destination_setting}
-                        onChange={() => handleToggle('destination_setting')}
+                    <span>목적지까지 거리 알림</span>
+                    <Toggle
+                        checked={alertSettings.destinationAlert === 1}
+                        onChange={() => handleToggle('destinationAlert')}
+                        disabled={alertSettings.hikingAlertFlag === 0}
                     />
-                    Destination Setting
                 </label>
             </div>
-            <div>
+            <div className="alert-setting">
                 <label>
-                    <input
-                        type="checkbox"
-                        checked={alertSettings.sunset_setting}
-                        onChange={() => handleToggle('sunset_setting')}
+                    <span>일몰 시간 알림</span>
+                    <Toggle
+                        checked={alertSettings.sunsetAlert === 1}
+                        onChange={() => handleToggle('sunsetAlert')}
+                        disabled={alertSettings.hikingAlertFlag === 0}
                     />
-                    Sunset Setting
                 </label>
             </div>
-            <div>
+            <div className="alert-setting">
                 <label>
-                    <input
-                        type="checkbox"
-                        checked={alertSettings.location_over_setting}
-                        onChange={() => handleToggle('location_over_setting')}
+                    <span>위치 이탈 알림</span>
+                    <Toggle
+                        checked={alertSettings.locationOverAlert === 1}
+                        onChange={() => handleToggle('locationOverAlert')}
+                        disabled={alertSettings.hikingAlertFlag === 0}
                     />
-                    Location Over Setting
                 </label>
             </div>
-            <div>
+            <div className="alert-setting">
                 <label>
-                    <input
-                        type="checkbox"
-                        checked={alertSettings.time_alert_setting}
-                        onChange={() => handleToggle('time_alert_setting')}
+                    <span>모임/개인 시간 설정 알림</span>
+                    <Toggle
+                        checked={alertSettings.meetingTimeAlert === 1}
+                        onChange={() => handleToggle('meetingTimeAlert')}
+                        disabled={alertSettings.hikingAlertFlag === 0}
                     />
-                    Time Alert Setting
                 </label>
             </div>
-            <div>
+            <div className="alert-setting">
                 <label>
-                    Meeting Time: {alertSettings.meetingTime}
+                    <span>모임/개인 시간 설정</span>
+                    <input
+                        type="time"
+                        value={alertSettings.meetingTime}
+                        onChange={handleMeetingTimeChange}
+                        disabled={alertSettings.hikingAlertFlag === 0 || alertSettings.meetingTimeAlert === 0}
+                    />
                 </label>
             </div>
-           
-            <button onClick={saveSettings}>Save Settings</button>
+            <button className="save-button" onClick={saveSettings}>설정 저장하기</button>
         </div>
     );
 };

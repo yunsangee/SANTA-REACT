@@ -6,7 +6,8 @@ import Mountain from '../Mountain/Mountain';
 import UserInformation from '../UserInformation/UserInformation';
 import HikingAlert from '../Mountain/HikingAlert';
 import { displayTrailInfo, clearTrailInfo } from '../Mountain/TrailDisplay';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import '../css/style.css';
 
 const NaverMap = () => {
   const [socket, setSocket] = useState(null);
@@ -17,7 +18,7 @@ const NaverMap = () => {
   const [longitude, setLongitude] = useState(null);
   const [mountains, setMountains] = useState([]);
   const [visibleTrails, setVisibleTrails] = useState(null);
-  const [hikingStatus, setHikingStatus] = useState('notStarted'); // 'notStarted', 'hiking', 'hikingCompleted', 'descending'
+  const [hikingStatus, setHikingStatus] = useState('notStarted');
   const [ascentTime, setAscentTime] = useState(0);
   const [descentStartTime, setDescentStartTime] = useState(0);
   const [descentTime, setDescentTime] = useState(0);
@@ -29,12 +30,12 @@ const NaverMap = () => {
   const [skyCondition, setSkyCondition] = useState('');
   const [sunsetTime, setSunsetTime] = useState('');
   const [selectedTrailEnd, setSelectedTrailEnd] = useState({ latitude: 0, longitude: 0 });
-  const [trailCoordinates, setTrailCoordinates] = useState([]); // Add trail coordinates state
+  const [trailCoordinates, setTrailCoordinates] = useState([]);
   const [trailLength, setTrailLength] = useState(0);
   const [trailAscent, setTrailAscent] = useState(0);
   const [trailDescent, setTrailDescent] = useState(0);
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -51,7 +52,7 @@ const NaverMap = () => {
           };
           const mapInstance = new naver.maps.Map('map', mapOptions);
           setMap(mapInstance);
-          window.map = mapInstance; // expose map to window object
+          window.map = mapInstance;
         };
 
         if (navigator.geolocation) {
@@ -70,7 +71,7 @@ const NaverMap = () => {
           initializeMap(37.5666805, 126.9784147);
         }
 
-        const socketInstance = io('http://localhost:4000', {
+        const socketInstance = io('http://192.168.0.51:4000', {
           reconnection: true,
           reconnectionAttempts: 5,
           reconnectionDelay: 1000,
@@ -84,7 +85,9 @@ const NaverMap = () => {
         });
 
         socketInstance.on('locationUpdate', (locations) => {
-          console.log('Location update received:', locations);
+          if (hikingStatus === 'hiking' || hikingStatus === 'descending') {
+            console.log('Location update received:', locations);
+          }
         });
 
         socketInstance.on('disconnect', () => {
@@ -92,7 +95,7 @@ const NaverMap = () => {
         });
 
         const logGeolocation = () => {
-          if (navigator.geolocation) {
+          if (navigator.geolocation && (hikingStatus === 'hiking' || hikingStatus === 'descending')) {
             navigator.geolocation.getCurrentPosition((position) => {
               const location = {
                 latitude: position.coords.latitude,
@@ -127,8 +130,6 @@ const NaverMap = () => {
             }, (error) => {
               console.error('Geolocation failed!', error);
             });
-          } else {
-            console.error('Geolocation not supported');
           }
         };
 
@@ -145,7 +146,7 @@ const NaverMap = () => {
       }
     };
     document.head.appendChild(script);
-  }, []);
+  }, [hikingStatus]);
 
   useEffect(() => {
     if (map && latitude !== null && longitude !== null) {
@@ -190,11 +191,10 @@ const NaverMap = () => {
           console.log('Marker clicked:', mountain.mountainName);
           console.log('Mountain trails:', mountain.mountainTrail);
 
-          setSelectedMountainName(mountain.mountainName); // Save the selected mountain name
+          setSelectedMountainName(mountain.mountainName);
 
-          // Zoom to the mountain marker
           map.setCenter(marker.getPosition());
-          map.setZoom(15);
+          map.setZoom(20);
 
           if (visibleTrails && visibleTrails.mountainNo === mountain.mountainNo) {
             clearTrailInfo(visibleTrails.trails);
@@ -217,10 +217,9 @@ const NaverMap = () => {
   }, [mountains, map, visibleTrails]);
 
   useEffect(() => {
-    // Expose setSelectedTrailDifficulty to the window object for trail info click handler
     window.setSelectedTrailDifficulty = setSelectedTrailDifficulty;
     window.setSelectedTrailEndCoord = setSelectedTrailEnd;
-    window.setSelectedTrailCoordinates = setTrailCoordinates; // Add function to set trail coordinates
+    window.setSelectedTrailCoordinates = setTrailCoordinates;
     window.setSelectedTrailLength = setTrailLength;
     window.setSelectedTrailAscent = setTrailAscent;
     window.setSelectedTrailDescent = setTrailDescent;
@@ -269,14 +268,14 @@ const NaverMap = () => {
       totalTime: time,
       hikingDifficulty: selectedTrailDifficulty,
       ascentTime,
-      descentTime: calculatedDescentTime, // Use the calculated descent time
+      descentTime: calculatedDescentTime,
       userDistance: distance,
       weather:{skyCondition}
     };
 
     console.log(hikingData);
     try {
-      await axios.post('http://localhost:8001/hikingGuide/react/addHikingRecord', hikingData, {
+      await axios.post('http://192.168.0.51:8001/hikingGuide/react/addHikingRecord', hikingData, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -302,28 +301,40 @@ const NaverMap = () => {
   } else if (selectedTrailDifficulty === '0') {
     trailDifficultyText = '어려움';
   }
-
   return (
     <>
-      <div id="map" style={{ width: '100%', height: '800px' }}></div>
-      <div style={{ position: 'absolute', bottom: '10px', right: '10px', zIndex: 1000 }}>
-     <button 
-        onClick={() => navigate('/hiking-alert')} // Navigate to HikingAlert
-        style={{ padding: '10px', backgroundColor: 'white' }}
-     >
-    설정
-  </button>
+      <div className="map-container">
+        <div className="top-border-line"></div>
+        <div id="map" style={{ width: '100%', height: '900px', position: 'relative' }}>
+          <div style={{ position: 'absolute', bottom: '10px', right: '10px', zIndex: 1000 }}>
+            <button 
+              onClick={() => navigate('/hiking-alert')}
+              style={{ 
+                padding: '10px', 
+                backgroundColor: 'white', 
+                border: 'none', 
+                borderRadius: '50%', 
+                fontSize: '24px', 
+                cursor: 'pointer'
+              }}
+            >
+              ⚙️
+            </button>
+          </div>
+        </div>
+        <div className="bottom-border-line"></div>
       </div>
-      <div style={{ position: 'absolute', bottom: '10px', left: '10px', zIndex: 1000 }}>
-        <button 
-          onClick={handleHikingStatusChange} 
-          style={{ padding: '10px', backgroundColor: 'white' }}
-        >
+      <div style={{ position: 'absolute', bottom: '90px', left: '10px', zIndex: 1000 }}>
+        <button className='hiking-button' onClick={handleHikingStatusChange}>
           {getButtonText()}
         </button>
       </div>
-      <WeatherComponent latitude={latitude} longitude={longitude} setSkyCondition={setSkyCondition} setSunsetTime={setSunsetTime} />
-      <Mountain setMountains={setMountains} />
+      <div className="weather">
+        <WeatherComponent latitude={latitude} longitude={longitude} setSkyCondition={setSkyCondition} setSunsetTime={setSunsetTime} />
+      </div>
+      <div className="mountain">
+        <Mountain setMountains={setMountains} />
+      </div>
       <UserInformation 
         isHiking={hikingStatus === 'hiking' || hikingStatus === 'descending'} 
         ascentTime={ascentTime} 
@@ -334,9 +345,9 @@ const NaverMap = () => {
         trailDifficulty={trailDifficultyText} 
         distance={distance} 
         setDistance={setDistance} 
-        trailLength={trailLength} // Add trail length prop
-        trailAscent={trailAscent} // Add trail ascent prop
-        trailDescent={trailDescent} // Add trail descent prop
+        trailLength={trailLength} 
+        trailAscent={trailAscent} 
+        trailDescent={trailDescent} 
       />
       <HikingAlert 
         currentLocation={{ latitude, longitude }} 
@@ -347,5 +358,4 @@ const NaverMap = () => {
     </>
   );
 };
-
-export default NaverMap;
+  export default NaverMap;
