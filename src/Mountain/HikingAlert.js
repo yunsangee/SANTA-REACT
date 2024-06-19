@@ -32,7 +32,7 @@ const expandPolygon = (latlngs, distance) => {
   return expandedLatLngs;
 };
 
-const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, trailCoordinates }) => {
+const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, trailCoordinates, hikingStatus }) => {
   const [meetingTime, setMeetingTime] = useState('');
   const [alertSettings, setAlertSettings] = useState(null);
   const [distanceAlertShown, setDistanceAlertShown] = useState({ 200: false, 100: false });
@@ -77,7 +77,7 @@ const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, tr
   }, [trailCoordinates]);
 
   useEffect(() => {
-    if (currentLocation && geoFence && alertSettings?.hikingAlertFlag === 1) {
+    if (currentLocation && geoFence && alertSettings?.hikingAlertFlag === 1 && (hikingStatus === 'hiking' || hikingStatus === 'descending')) {
       const userLatLng = L.latLng(currentLocation.latitude, currentLocation.longitude);
       const isInside = geoFence.getBounds().contains(userLatLng);
 
@@ -98,10 +98,10 @@ const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, tr
 
       console.log('User inside geofence:', isInside);
     }
-  }, [currentLocation, geoFence, alertSettings, notificationsEnabled]);
+  }, [currentLocation, geoFence, alertSettings, notificationsEnabled, hikingStatus]);
 
   useEffect(() => {
-    if (currentLocation && selectedTrailEnd && alertSettings?.hikingAlertFlag === 1 && alertSettings?.destinationAlert === 1 && notificationsEnabled) {
+    if (currentLocation && selectedTrailEnd && alertSettings?.hikingAlertFlag === 1 && alertSettings?.destinationAlert === 1 && notificationsEnabled && (hikingStatus === 'hiking' || hikingStatus === 'descending')) {
       if (selectedTrailEnd.latitude === 0 && selectedTrailEnd.longitude === 0) {
         console.log('Invalid trail end coordinates');
         return;
@@ -124,7 +124,7 @@ const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, tr
       }
     }
 
-    if (sunsetTime && alertSettings?.hikingAlertFlag === 1 && alertSettings?.sunsetAlert === 1 && notificationsEnabled) {
+    if (sunsetTime && alertSettings?.hikingAlertFlag === 1 && alertSettings?.sunsetAlert === 1 && notificationsEnabled && (hikingStatus === 'hiking' || hikingStatus === 'descending')) {
       const currentTime = new Date();
       const sunsetDateTime = new Date();
 
@@ -161,7 +161,7 @@ const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, tr
       }
     }
 
-    if (meetingTime && alertSettings?.hikingAlertFlag === 1 && alertSettings?.meetingTimeAlert === 1 && notificationsEnabled && !meetingTimeAlertShown.current) {
+    if (meetingTime && alertSettings?.hikingAlertFlag === 1 && alertSettings?.meetingTimeAlert === 1 && notificationsEnabled && !meetingTimeAlertShown.current && (hikingStatus === 'hiking' || hikingStatus === 'descending')) {
       const currentTime = new Date();
       const meetingDateTime = new Date();
 
@@ -180,7 +180,7 @@ const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, tr
         meetingTimeAlertShown.current = true; 
       }
     }
-  }, [currentLocation, selectedTrailEnd, sunsetTime, distanceAlertShown, sunsetAlertShown, alertSettings, meetingTime, notificationsEnabled]);
+  }, [currentLocation, selectedTrailEnd, sunsetTime, distanceAlertShown, sunsetAlertShown, alertSettings, meetingTime, notificationsEnabled, hikingStatus]);
 
   useEffect(() => {
     return () => {
@@ -193,22 +193,22 @@ const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, tr
   return (
     <>
       <button 
-  onClick={() => setNotificationsEnabled(prev => !prev)}
-  style={{ 
-    padding: '10px', 
-    backgroundColor: 'white', 
-    border: 'none', 
-    borderRadius: '50%', 
-    cursor: 'pointer',
-    position: 'absolute',
-    top: '870px',
-    right: '11px',
-    fontSize:25,
-    zIndex: 1000
-  }}
->
-  {notificationsEnabled ? '🔔' : '🔕'}
-</button>
+        onClick={() => setNotificationsEnabled(prev => !prev)}
+        style={{ 
+          padding: '10px', 
+          backgroundColor: 'white', 
+          border: 'none', 
+          borderRadius: '50%', 
+          cursor: 'pointer',
+          position: 'absolute',
+          top: '870px',
+          right: '11px',
+          fontSize:25,
+          zIndex: 1000
+        }}
+      >
+        {notificationsEnabled ? '🔔' : '🔕'}
+      </button>
       <ToastContainer position="top-center" />
     </>
   );

@@ -85,9 +85,7 @@ const NaverMap = () => {
         });
 
         socketInstance.on('locationUpdate', (locations) => {
-          if (hikingStatus === 'hiking' || hikingStatus === 'descending') {
-            console.log('Location update received:', locations);
-          }
+          console.log('Location update received:', locations);
         });
 
         socketInstance.on('disconnect', () => {
@@ -95,7 +93,7 @@ const NaverMap = () => {
         });
 
         const logGeolocation = () => {
-          if (navigator.geolocation && (hikingStatus === 'hiking' || hikingStatus === 'descending')) {
+          if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
               const location = {
                 latitude: position.coords.latitude,
@@ -146,7 +144,7 @@ const NaverMap = () => {
       }
     };
     document.head.appendChild(script);
-  }, [hikingStatus]);
+  }, []);
 
   useEffect(() => {
     if (map && latitude !== null && longitude !== null) {
@@ -350,12 +348,14 @@ const NaverMap = () => {
         trailDescent={trailDescent} 
       />
       <HikingAlert 
+        userNo={1}
         currentLocation={{ latitude, longitude }} 
         selectedTrailEnd={selectedTrailEnd} 
         sunsetTime={sunsetTime}
         trailCoordinates={trailCoordinates} 
+        hikingStatus={hikingStatus} 
       /> 
     </>
   );
 };
-  export default NaverMap;
+export default NaverMap;
