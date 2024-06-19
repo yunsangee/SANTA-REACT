@@ -1,11 +1,10 @@
-/* src/css/style.css */
-
 /* Define the font-face */
-
 
 /* Global Styles */
 body {
     font-family: 'KCC-Hanbit', Arial, sans-serif; /* Apply the custom font */
+    margin: 0;
+    padding: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -41,96 +40,79 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Navbar */
-.navbar .navbar-nav .nav-link {
-    padding: 10px 15px;
-    font-size: 16px;
-    transition: .5s;
+.container-fluid {
+    padding: 0;
 }
 
 .navbar {
     height: 100px;
     border-bottom: 1px solid rgba(255, 255, 255, .1);
+    transition: box-shadow 0.3s;
+    width: 100%;
+    justify-content: center; /* Center the navbar content */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Darker shadow */
 }
 
-.navbar .navbar-nav .nav-link:hover,
-.navbar .navbar-nav .nav-link.active,
-.fixed-top.bg-white .navbar .navbar-nav .nav-link:hover,
-.fixed-top.bg-white .navbar .navbar-nav .nav-link.active {
-    color: var(--bs-primary);
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.navbar .dropdown-toggle::after {
+.navbar-toggler {
     border: none;
-    content: "\f107";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 700;
-    vertical-align: middle;
-    margin-left: 8px;
+    color: rgb(80, 190, 80); /* Added color for toggle button */
 }
 
-.dropdown .dropdown-menu a:hover {
-    background: var(--bs-secondary);
-    color: var(--bs-primary);
+.navbar-nav .nav-item {
+    margin: 0 10px;
 }
 
-.navbar .nav-item:hover .dropdown-menu {
-    transform: rotateX(0deg);
-    visibility: visible;
-    background: var(--bs-light) !important;
-    border-radius: 10px !important;
-    transition: .5s;
-    opacity: 1;
+@media (max-width: 767px) {
+    .navbar-nav {
+        flex-direction: column;
+    }
+
+    .navbar-toggler {
+        color: rgb(80, 190, 80);
+    }
 }
 
 /* Custom Navbar Styles */
 .custom-navbar {
-  background-color: #fff;
-  border-bottom: 1px solid #e5e5e5;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .custom-logo {
-  color: #8dc63f;
-  font-weight: bold;
-  cursor: pointer;
+    color: rgb(80, 190, 80);
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center; /* Center the logo text */
+    margin: 50; /* Center align */
 }
 
 .custom-nav-links .custom-link {
-  color: #333;
-  font-size: 1rem;
-  font-weight: 500;
-  margin-left: 20px;
-  cursor: pointer;
+    color: #333;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-left: 20px;
+    cursor: pointer;
 }
 
 .custom-nav-links .custom-link:hover {
-  color: #8dc63f;
+    color: rgb(80, 190, 80);
 }
 
 .custom-login .custom-link {
-  color: #8dc63f;
-  font-size: 1rem;
-  margin-left: 10px;
-  cursor: pointer;
-}
-
-.navbar-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    color: rgb(80, 190, 80);
+    font-size: 1rem;
+    margin-left: 10px;
+    cursor: pointer;
 }
 
 .navbar-nav .nav-link.active {
-  color: #8dc63f;
-}
-
-.navbar-toggler {
-  border: none;
-}
-
-@media (max-width: 767px) {
-  .navbar-nav {
-    flex-direction: column;
-  }
+    color: rgb(80, 190, 80);
 }
 
 /* Modal Search */
@@ -145,47 +127,62 @@ h1, h2, h3, h4, h5, h6 {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    height: 250px; /* Adjust height as needed */
+    margin-top: 20px; /* Additional margin */
 }
 
-/* Footer.css */
+.background-blur {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(5px);
+    height: 100%; /* Ensure it covers the full height */
+    width: 100%; /* Ensure it covers the full width */
+    position: absolute; /* Position it absolutely */
+    top: 0;
+    left: 0;
+    z-index: -1; /* Place it behind other content */
+}
 
+/* Footer */
 .footer {
     background-color: #4e6b70; /* Adjust background color to match the image */
     color: rgba(255, 255, 255, 0.7); /* Ensure text color matches the image */
-    margin-top: 80px; 
-  }
-  
-  .custom-logo {
+    margin-top: 80px;
+}
+
+.custom-logo {
     color: lightgreen; /* Adjust color to light green */
     font-weight: bold;
     text-align: left; /* Align to the far left */
     font-size: 2.5rem; /* Increased font size for the logo */
-  }
-  
-  .border-bottom-custom {
+}
+
+.border-bottom-custom {
     border-bottom: 1px solid rgba(226, 175, 24, 0.5);
-  }
-  
-  .custom-heading {
+}
+
+.custom-heading {
     color: #ffffff;
     font-weight: bold;
     text-align: left; /* Align to the far left */
     font-size: 1.5rem; /* Increased font size for headings */
-  }
-  
-  .custom-paragraph {
+}
+
+.custom-paragraph {
     color: rgba(255, 255, 255, 0.7);
     text-align: left; /* Align to the far left */
     font-size: 1.2rem; /* Increased font size for paragraphs */
     margin-bottom: 10px; /* Adjust spacing */
-  }
-  
-  .footer-item {
+}
+
+.footer-item {
     margin-bottom: 1.5rem; /* Adjust spacing between items */
     padding-left: 15px; /* Add padding to align with the image */
-  }
-  
-  
+}
 
 /* Additional Styles */
 
@@ -276,7 +273,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn.border-secondary:hover {
     background: var(--bs-secondary) !important;
-    color: var (--bs-white) !important;
+    color: var(--bs-white) !important;
 }
 
 /* Topbar Styles */
@@ -313,28 +310,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--bs-primary) !important;
 }
 
-.background-blur {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    filter: blur(5px);
-    height: 100%; /* Ensure it covers the full height */
-    width: 100%; /* Ensure it covers the full width */
-    position: absolute; /* Position it absolutely */
-    top: 0;
-    left: 0;
-    z-index: -1; /* Place it behind other content */
-}
-
-.page-header {
-    position: relative; /* Ensure it holds the absolute positioned element */
-    overflow: hidden; /* Hide overflow of the blur effect */
-    display: flex;
-    align-items: center; /* Center items vertically */
-    justify-content: center; /* Center items horizontally */
-    height: 250px; /* Adjust height as needed */
-}
-
+/* Hiking Alert Container */
 .hiking-alert-container {
     font-family: 'Arial', sans-serif;
     font-size: 30px; /* Increase overall font size */
@@ -469,6 +445,7 @@ input[type="time"] {
     border-color: #4CAF50;
 }
 
+/* Additional Styles */
 .weather-component-wrapper {
     position: absolute;
     top: 10px;

@@ -38,15 +38,7 @@ export const displayTrailInfo = (map, trails, naver) => {
     const lastCoordinate = trail.mountainTrailCoordinates.slice(-1)[0];
 
     const customOverlayContent = `
-      <div style="
-        font-size: 10px; 
-        width: 200px; 
-        padding: 10px; 
-        background: white; 
-        border: 1px solid black; 
-        border-radius: 5px; 
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
-        cursor: pointer;" 
+      <div class="card text-dark bg-light" style="width: 14rem; padding: 8px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); cursor: pointer;" 
       onclick="window.zoomToTrail(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]});
       window.setTrailDifficulty('${trail.mountainTrailDifficulty}');
       window.setSelectedTrailEnd({latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});
@@ -55,10 +47,12 @@ export const displayTrailInfo = (map, trails, naver) => {
       window.setSelectedTrailAscent(${trail.expectedAscentTime});
       window.setSelectedTrailDescent(${trail.descentTime});
       console.log('Last coordinate of the trail:', {latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});">
-        <p style="margin: 0;"><strong>등산난이도:</strong> ${trailDifficultyText}</p>
-        <p style="margin: 0;"><strong>등산로길이:</strong> ${trail.mountainTrailLength} m</p>
-        <p style="margin: 0;"><strong>예상등산시간:</strong> ${trail.expectedAscentTime} min</p>
-        <p style="margin: 0;"><strong>예상하산시간:</strong> ${trail.descentTime} min</p>
+        <div class="card-body p-2">
+          <h6 class="card-title mb-1">등산난이도: ${trailDifficultyText}</h6>
+          <p class="card-text mb-1"><strong>길이:</strong> ${trail.mountainTrailLength}m</p>
+          <p class="card-text mb-1"><strong>등산시간:</strong> ${trail.expectedAscentTime}min</p>
+          <p class="card-text mb-1"><strong>하산시간:</strong> ${trail.descentTime}min</p>
+        </div>
       </div>
     `;
 

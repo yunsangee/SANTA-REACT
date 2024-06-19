@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.css';
-import '../css/style.css';
+import '../css/Top.css';
 
 
 const HikingListRecord = ({ userNo }) => {
@@ -99,10 +99,12 @@ const HikingListRecord = ({ userNo }) => {
 
   return (
     <div>
-      <div className="container-fluid page-header py-5 d-flex align-items-center justify-content-center" style={{ height: '250px', position: 'relative' }}>
-        <div className="background-blur" style={{ backgroundImage: 'url(/images/header-background.png)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(5px)', height: '100%', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}></div>
-        <h1 className="text-center text-white display-6" style={{ position: 'relative', zIndex: 1, fontSize: '35pt', fontWeight: 'bolder' }}>{NikcName}의 등산 기록</h1>
-      </div>
+  <div className="container-fluid page-header py-5 d-flex align-items-center justify-content-center" style={{ height: '250px', position: 'relative', marginTop: '190px' }}>
+  <div className="background-blur" style={{ backgroundImage: 'url(/images/header-background.png)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(5px)', height: '100%', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}></div>
+  <h1 className="text-center text-white display-6" style={{ position: 'relative', zIndex: 1, fontSize: '35pt', fontWeight: 'bolder' }}>{NikcName}의 등산 기록</h1>
+</div>
+
+
       <div className="container-fluid py-5">
         <div className="container py-5">
           {hikingList.length === 0 ? (

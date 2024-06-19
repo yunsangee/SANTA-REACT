@@ -1,6 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
-import '../css/style.css'; // Assuming you have a corresponding CSS file
+import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import '../css/Top.css';
 
 const Top = () => {
   const javaServerIp = process.env.REACT_APP_JAVA_SERVER_IP;
@@ -12,93 +14,99 @@ const Top = () => {
   };
 
   return (
-    <div className="container-fluid fixed-top custom-navbar">
-      <div className="container px-0">
-        <nav className="navbar navbar-light bg-white navbar-expand-xl">
+    <div className="container-fluid fixed-top px-0">
+      <nav className="navbar navbar-expand-xl navbar-light bg-white shadow-sm w-100">
+        <div className="container">
           <h1
             id="logoName"
-            className="custom-logo"
+            className="navbar-brand mb-0"
             onClick={() => handleNavigation(`http://${javaServerIp}/`)}
+            style={{ color: "rgb(80, 190, 80)", fontWeight: "bold", cursor: 'pointer' }}
           >
             SANTA
           </h1>
           <button
-            className="navbar-toggler py-2 px-3"
+            className="navbar-toggler"
             type="button"
-            data-toggle="collapse"
-            data-target="#navbarCollapse"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarCollapse"
             aria-controls="navbarCollapse"
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="fa fa-bars text-primary"></span>
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse bg-white" id="navbarCollapse">
-            <div className="navbar-nav mx-auto custom-nav-links">
-              <a
-                href="#"
-                id="Home"
-                className="nav-item nav-link active custom-link"
-                onClick={() => handleNavigation(`http://${javaServerIp}/`)}
-              >
-                홈
-              </a>
-              <a
-                href="#"
-                id="mountain"
-                className="nav-item nav-link custom-link"
-                onClick={() =>
-                  handleNavigation(`http://${javaServerIp}/mountain/searchMountain`)
-                }
-              >
-                산
-              </a>
-              <a
-                href="#"
-                id="certificationPost"
-                className="nav-item nav-link custom-link"
-                onClick={() =>
-                  handleNavigation(`http://${javaServerIp}/certificationPost/listCertificationPost`)
-                }
-              >
-                인증게시판
-              </a>
-              <a
-                href="#"
-                id="meetingPost"
-                className="nav-item nav-link custom-link"
-                onClick={() =>
-                  handleNavigation(`http://${javaServerIp}/meetingPost/getMeetingPostList`)
-                }
-              >
-                모임게시판
-              </a>
-              <a
-                href="#"
-                id="hikingGuide"
-                className="nav-item nav-link custom-link"
-                onClick={() => handleNavigation(`http://${reactServerIp}`)}
-              >
-                등산안내
-              </a>
-            </div>
-            <div className="d-flex m-3 me-0 custom-login">
+          <div className="collapse navbar-collapse" id="navbarCollapse">
+            <ul className="navbar-nav mx-auto mb-2 mb-xl-0">
+              <li className="nav-item">
+                <a
+                  href="#"
+                  id="Home"
+                  className="nav-link active"
+                  onClick={() => handleNavigation(`http://${javaServerIp}/`)}
+                  style={{ color: "rgb(80, 190, 80)" }}
+                >
+                  홈
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="#"
+                  id="mountain"
+                  className="nav-link"
+                  onClick={() => handleNavigation(`http://${javaServerIp}/mountain/searchMountain`)}
+                >
+                  산
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="#"
+                  id="certificationPost"
+                  className="nav-link"
+                  onClick={() => handleNavigation(`http://${javaServerIp}/certificationPost/listCertificationPost`)}
+                >
+                  인증게시판
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="#"
+                  id="meetingPost"
+                  className="nav-link"
+                  onClick={() => handleNavigation(`http://${javaServerIp}/meetingPost/getMeetingPostList`)}
+                >
+                  모임게시판
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  href="#"
+                  id="hikingGuide"
+                  className="nav-link"
+                  onClick={() => handleNavigation(`http://${reactServerIp}`)}
+                >
+                  등산안내
+                </a>
+              </li>
+            </ul>
+            <div className="d-flex justify-content-center">
               {sessionStorage.getItem('user') ? (
                 <a href="#" className="my-auto">
                   <i
                     id="userProfile"
                     className="fas fa-user fa-2x"
-                    onClick={() =>
-                      handleNavigation(`http://${javaServerIp}/mountain/searchMountain`)
-                    }
+                    onClick={() => handleNavigation(`http://${javaServerIp}/mountain/searchMountain`)}
+                    style={{ color: "rgb(80, 190, 80)" }}
                   ></i>
                 </a>
               ) : (
                 <a href="#" className="my-auto">
                   <i
                     id="loginButton"
-                    className="fas fa-sign-in-alt fa-1x custom-link"
+                    className="fas fa-sign-in-alt fa-1x"
                     onClick={() => handleNavigation(`http://${javaServerIp}/user/login`)}
+                    style={{ color: "rgb(80, 190, 80)" }}
                   >
                     {' '}
                     로그인
@@ -107,8 +115,8 @@ const Top = () => {
               )}
             </div>
           </div>
-        </nav>
-      </div>
+        </div>
+      </nav>
     </div>
   );
 };

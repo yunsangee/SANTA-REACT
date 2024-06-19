@@ -324,7 +324,7 @@ const NaverMap = () => {
         </div>
         <div className="bottom-border-line"></div>
       </div>
-      <div style={{ position: 'absolute', bottom: '90px', left: '10px', zIndex: 1000 }}>
+      <div style={{ position: 'absolute', bottom: '0px', left: '10px', zIndex: 1000 }}>
         <button className='hiking-button' onClick={handleHikingStatusChange}>
           {getButtonText()}
         </button>
