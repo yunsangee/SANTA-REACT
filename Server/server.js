@@ -13,7 +13,7 @@ app.use(cors());
 
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: ["GET", "POST"]
   }
 });
@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
 
     try {
       console.log('Sending location to Spring Boot server:', userLocation);
-      const response = await axios.post('http://localhost:8001/hikingGuide/react/getUserCoordination', userLocation, {
+      const response = await axios.post('https://www.dearmysanta.site/hikingGuide/react/getUserCoordination', userLocation, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -55,7 +55,7 @@ io.on('connection', (socket) => {
 
     try {
       console.log('Sending hiking record to Spring Boot server:', record);
-      const response = await axios.post('http://localhost:8001/hikingGuide/react/addHikingRecord', record, {
+      const response = await axios.post('http://www.dearmysanta.site/hikingGuide/react/addHikingRecord', record, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -125,7 +125,7 @@ app.get('/tts', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -6,7 +6,7 @@ const WeatherComponent = ({ latitude, longitude, setSkyCondition, setSunsetTime 
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const response = await fetch('http://localhost:8001/hikingGuide/react/getWeather', {
+        const response = await fetch('http://www.dearmysanta.site/hikingGuide/react/getWeather', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

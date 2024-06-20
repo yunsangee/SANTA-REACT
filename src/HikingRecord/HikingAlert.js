@@ -19,7 +19,7 @@ const HikingAlert = ({ userNo }) => {
     useEffect(() => {
         const fetchAlertSettings = async () => {
             try {
-                const response = await axios.post(`http://localhost:8001/hikingGuide/react/getAlertSetting/${userNo}`);
+                const response = await axios.post(`http://www.dearmysanta.site/hikingGuide/react/getAlertSetting/${userNo}`);
                 console.log(response.data); // Print the values received to the console
                 
                 // Map response data to toggle states
@@ -66,7 +66,7 @@ const HikingAlert = ({ userNo }) => {
                 userNo: userNo
             };
 
-            await axios.post(`http://localhost:8001/hikingGuide/react/updateAlertSetting/${userNo}`, alertPayload);
+            await axios.post(`http://www.dearmysanta.site/hikingGuide/react/updateAlertSetting/${userNo}`, alertPayload);
 
             // Update meeting time
             const meetingTimePayload = {
@@ -74,7 +74,7 @@ const HikingAlert = ({ userNo }) => {
                 meetingTime: alertSettings.meetingTime
             };
 
-            await axios.post(`http://localhost:8001/hikingGuide/react/updateMeetingTime/${userNo}`, meetingTimePayload);
+            await axios.post(`http://www.dearmysanta.site/hikingGuide/react/updateMeetingTime/${userNo}`, meetingTimePayload);
 
             alert('설정 되었습니다~');
         } catch (error) {

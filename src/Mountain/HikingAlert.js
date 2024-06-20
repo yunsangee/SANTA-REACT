@@ -45,7 +45,7 @@ const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, tr
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   const playTTS = async (message) => {
-    const response = await fetch(`http://localhost:4000/tts?text=${encodeURIComponent(message)}`);
+    const response = await fetch(`http://www.dearmysanta.site/hikingAssist/tts?text=${encodeURIComponent(message)}`);
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     audioRef.current.src = url;
@@ -56,7 +56,7 @@ const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, tr
     const fetchAlertSettings = async () => {
       try {
         userNo = 21;
-        const response = await axios.post(`http://localhost:8001/hikingGuide/react/getAlertSetting/${userNo}`);
+        const response = await axios.post(`http://www.dearmysanta.site/hikingGuide/react/getAlertSetting/${userNo}`);
         setAlertSettings(response.data);
         setMeetingTime(response.data.meetingTime);
         console.log(response.data);

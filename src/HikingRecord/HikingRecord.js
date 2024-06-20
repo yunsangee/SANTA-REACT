@@ -12,7 +12,7 @@ const HikingListRecord = ({ userNo }) => {
 
   useEffect(() => {
     userNo = 1;
-    axios.post(`http://localhost:8001/hikingGuide/react/getHikingListRecord/${userNo}`)
+    axios.post(`http://www.dearmysanta.site/hikingGuide/react/getHikingListRecord/${userNo}`)
       .then(response => {
         console.log(response.data); // 서버로부터 받은 데이터를 콘솔에 출력
         setHikingList(response.data);
@@ -69,7 +69,7 @@ const HikingListRecord = ({ userNo }) => {
   };
 
   const handleDeleteSelected = () => {
-    axios.post('http://localhost:8001/hikingGuide/react/deleteHikingRecord', selectedItems)
+    axios.post('http://www.dearmysanta.site/hikingGuide/react/deleteHikingRecord', selectedItems)
       .then(() => {
         setHikingList(hikingList.filter(record => !selectedItems.includes(record.hrNo)));
         setSelectedItems([]);

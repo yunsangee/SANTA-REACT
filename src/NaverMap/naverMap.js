@@ -71,7 +71,7 @@ const NaverMap = () => {
           initializeMap(37.5666805, 126.9784147);
         }
 
-        const socketInstance = io('http://192.168.0.51:4000', {
+        const socketInstance = io('https://www.dearmysanta.sit/hikingAssist', {
           reconnection: true,
           reconnectionAttempts: 5,
           reconnectionDelay: 1000,
@@ -273,7 +273,7 @@ const NaverMap = () => {
 
     console.log(hikingData);
     try {
-      await axios.post('http://192.168.0.51:8001/hikingGuide/react/addHikingRecord', hikingData, {
+      await axios.post('http://www.dearmysanta.site/hikingGuide/react/addHikingRecord', hikingData, {
         headers: {
           'Content-Type': 'application/json'
         }
