@@ -127,6 +127,6 @@ io.on('connection', (socket) => {
 
 });
 
-server.listen(4001, () => {
+server.listen(3002, () => {
     console.log('Server is listening on port 4001');
 });
