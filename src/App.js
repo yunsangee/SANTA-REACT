@@ -8,6 +8,7 @@ import Top from './HikingRecord/Top';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import './css/style.css';
 
 function App() {
   const userNo = 21;
