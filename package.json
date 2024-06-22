@@ -2,6 +2,7 @@
   "name": "santa",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/hikingguide",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@testing-library/jest-dom": "5.17.0",
