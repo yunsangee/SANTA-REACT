@@ -306,7 +306,7 @@ const NaverMap = () => {
         <div id="map" style={{ width: '100%', height: '900px', position: 'relative' }}>
           <div style={{ position: 'absolute', bottom: '10px', right: '10px', zIndex: 1000 }}>
             <button 
-              onClick={() => navigate('/hiking-alert')}
+              onClick={() => navigate('./hiking-alert')}
               style={{ 
                 padding: '10px', 
                 backgroundColor: 'white', 
