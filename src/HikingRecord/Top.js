@@ -82,7 +82,7 @@ const Top = () => {
               <li className="nav-item">
                 <a
                   href="#"
-                  id="hikingGuide"
+                  id="hikingguide"
                   className="nav-link"
                   onClick={() => handleNavigation(`https://${reactServerIp}`)}
                 >
