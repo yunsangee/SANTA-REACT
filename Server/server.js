@@ -55,7 +55,7 @@ io.on('connection', (socket) => {
 
     try {
       console.log('Sending hiking record to Spring Boot server:', record);
-      const response = await axios.post('http://www.dearmysanta.site/hikingguide/react/addHikingRecord', record, {
+      const response = await axios.post('https://www.dearmysanta.site/hikingguide/react/addHikingRecord', record, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -76,8 +76,7 @@ io.on('connection', (socket) => {
   });
 });
 
-// TTS 엔드포인트 추가
-const client_id = 'ch1xa6ojlq'; 
+// TTS endpointconst client_id = 'ch1xa6ojlq'; 
 const client_secret = 'TWRQUkyUMJXG82q1vjJgE9IpxkYVSQCnwOfKSjbP'; 
 
 app.get('/tts', async (req, res) => {
