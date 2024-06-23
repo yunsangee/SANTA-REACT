@@ -4,7 +4,7 @@ const Mountain = ({ setMountains }) => {
   useEffect(() => {
     const fetchMountains = async () => {
       try {
-        const response = await fetch('https://www.dearmysanta.site/hikingguide/hikingguide/react/getMountain', {
+        const response = await fetch('https://www.dearmysanta.site/react/getMountain', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
