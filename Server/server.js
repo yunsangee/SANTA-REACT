@@ -76,7 +76,7 @@ io.on('connection', (socket) => {
   });
 });
 
-client_id = 'ch1xa6ojlq'; 
+const client_id = 'ch1xa6ojlq'; 
 const client_secret = 'TWRQUkyUMJXG82q1vjJgE9IpxkYVSQCnwOfKSjbP'; 
 
 app.get('/tts', async (req, res) => {
