@@ -20,7 +20,7 @@ const Top = () => {
           <h1
             id="logoName"
             className="navbar-brand mb-0"
-            onClick={() => handleNavigation(`http://${javaServerIp}/`)}
+            onClick={() => handleNavigation(`https://${javaServerIp}/`)}
             style={{ color: "rgb(80, 190, 80)", fontWeight: "bold", cursor: 'pointer' }}
           >
             SANTA
@@ -43,7 +43,7 @@ const Top = () => {
                   href="#"
                   id="Home"
                   className="nav-link active"
-                  onClick={() => handleNavigation(`http://${javaServerIp}/`)}
+                  onClick={() => handleNavigation(`https://${javaServerIp}/`)}
                   style={{ color: "rgb(80, 190, 80)" }}
                 >
                   홈
@@ -54,7 +54,7 @@ const Top = () => {
                   href="#"
                   id="mountain"
                   className="nav-link"
-                  onClick={() => handleNavigation(`http://${javaServerIp}/mountain/searchMountain`)}
+                  onClick={() => handleNavigation(`https://${javaServerIp}/mountain/searchMountain`)}
                 >
                   산
                 </a>
@@ -64,7 +64,7 @@ const Top = () => {
                   href="#"
                   id="certificationPost"
                   className="nav-link"
-                  onClick={() => handleNavigation(`http://${javaServerIp}/certificationPost/listCertificationPost`)}
+                  onClick={() => handleNavigation(`https://${javaServerIp}/certificationPost/listCertificationPost`)}
                 >
                   인증게시판
                 </a>
@@ -74,7 +74,7 @@ const Top = () => {
                   href="#"
                   id="meetingPost"
                   className="nav-link"
-                  onClick={() => handleNavigation(`http://${javaServerIp}/meetingPost/getMeetingPostList`)}
+                  onClick={() => handleNavigation(`https://${javaServerIp}/meetingPost/getMeetingPostList`)}
                 >
                   모임게시판
                 </a>
@@ -84,7 +84,7 @@ const Top = () => {
                   href="#"
                   id="hikingGuide"
                   className="nav-link"
-                  onClick={() => handleNavigation(`http://${reactServerIp}`)}
+                  onClick={() => handleNavigation(`https://${reactServerIp}`)}
                 >
                   등산안내
                 </a>
@@ -96,7 +96,7 @@ const Top = () => {
                   <i
                     id="userProfile"
                     className="fas fa-user fa-2x"
-                    onClick={() => handleNavigation(`http://${javaServerIp}/mountain/searchMountain`)}
+                    onClick={() => handleNavigation(`https://${javaServerIp}/mountain/searchMountain`)}
                     style={{ color: "rgb(80, 190, 80)" }}
                   ></i>
                 </a>
@@ -105,7 +105,7 @@ const Top = () => {
                   <i
                     id="loginButton"
                     className="fas fa-sign-in-alt fa-1x"
-                    onClick={() => handleNavigation(`http://${javaServerIp}/user/login`)}
+                    onClick={() => handleNavigation(`https://${javaServerIp}/user/login`)}
                     style={{ color: "rgb(80, 190, 80)" }}
                   >
                     {' '}
