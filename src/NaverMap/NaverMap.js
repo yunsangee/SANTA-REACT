@@ -72,7 +72,7 @@ const NaverMap = () => {
         }
 
         const socketInstance = io('https://www.dearmysanta.site/hikingAssist', {
-          path: '/socket.io/hikingAssist',
+          path: 'hikingAssist/socket.io',
           reconnection: true,
           reconnectionAttempts: 5,
           reconnectionDelay: 1000,

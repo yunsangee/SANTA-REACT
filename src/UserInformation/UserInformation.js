@@ -22,6 +22,7 @@ const UserInformation = ({
 
   useEffect(() => {
     const socketInstance = io('https://www.dearmysanta.site/hikingAssist', {
+      path: '/hikingAssist/socket.io',
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
