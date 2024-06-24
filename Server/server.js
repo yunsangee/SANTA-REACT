@@ -16,7 +16,7 @@ const io = socketIo(server, {
     origin: "*",
     methods: ["GET", "POST"]
   },
-  path: 'hikingAssist'
+  path: '/hikingAssist'
 });
 
 io.on('connection', (socket) => {
