@@ -1,12 +1,15 @@
 .footer {
-    /* Add any specific styles for the footer */
-  }
-  
-  .footer-item {
-    /* Add any specific styles for footer items */
-  }
-  
-  .text-primary {
-    color: #007bff !important;
-  }
-  
+  /* Add any specific styles for the footer */
+}
+
+.footer-item {
+  /* Add any specific styles for footer items */
+}
+
+.text-primary {
+  color: #34a817 !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
