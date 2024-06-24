@@ -9,6 +9,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './css/style.css';
+import './css/Top.css';
+import './css/Footer.css';
 
 function App() {
   const userNo = 21;
@@ -18,8 +20,8 @@ function App() {
         <Top />
         <div className="content">
           <Routes>
-            <Route path="/hikingguide" element={<NaverMap userNo={userNo} />} />
-            <Route path="/hikingguide/hiking-alert" element={<HikingAlert userNo={userNo} />} />
+            <Route path="/hiking" element={<NaverMap userNo={userNo} />} />
+            <Route path="/hiking/hiking-alert" element={<HikingAlert userNo={userNo} />} />
           </Routes>
         </div>
         <Footer />

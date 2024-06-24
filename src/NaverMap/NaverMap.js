@@ -274,7 +274,7 @@ const NaverMap = () => {
 
     console.log(hikingData);
     try {
-      await axios.post('https://www.dearmysanta.site/hikingguide/react/addHikingRecord', hikingData, {
+      await axios.post('https://www.dearmysanta.site/hiking/react/addHikingRecord', hikingData, {
         headers: {
           'Content-Type': 'application/json'
         }
