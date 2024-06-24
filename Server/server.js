@@ -15,7 +15,8 @@ const io = socketIo(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"]
-  }
+  },
+  path: '/socket.io/hikingAssist'
 });
 
 io.on('connection', (socket) => {
