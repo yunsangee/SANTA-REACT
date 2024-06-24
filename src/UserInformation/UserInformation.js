@@ -33,14 +33,16 @@ const UserInformation = ({
     setSocket(socketInstance);
 
     socketInstance.on('locationUpdate', (location) => {
-      if (prevLocation) {
-        const distanceIncrement = calculateDistance(prevLocation, location);
-        setDistance(prevDistance => prevDistance + distanceIncrement);
-        setPath(prevPath => [...prevPath, location]);
-      } else {
-        setPath([location]);
+      if (isHiking) {
+        if (prevLocation) {
+          const distanceIncrement = calculateDistance(prevLocation, location);
+          setDistance(prevDistance => prevDistance + distanceIncrement);
+          setPath(prevPath => [...prevPath, location]);
+        } else {
+          setPath([location]);
+        }
+        setPrevLocation(location);
       }
-      setPrevLocation(location);
     });
 
     return () => {
@@ -48,7 +50,7 @@ const UserInformation = ({
         socketInstance.disconnect();
       }
     };
-  }, [prevLocation]);
+  }, [prevLocation, isHiking]);
 
   useEffect(() => {
     if (resetHiking) {
@@ -67,7 +69,7 @@ const UserInformation = ({
       window.polyline = new window.naver.maps.Polyline({
         path: polylinePath,
         map: window.map,
-        strokeColor: '#808080',
+        strokeColor: '#808080',  // Gray color for the path
         strokeWeight: 2
       });
     }
