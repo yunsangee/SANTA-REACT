@@ -16,7 +16,8 @@ const io = socketIo(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
-    }
+    },
+     path: '/chatting'
 });
 
 // app.use(cors());
@@ -128,5 +129,5 @@ io.on('connection', (socket) => {
 });
 
 server.listen(3002, () => {
-    console.log('Server is listening on port 4001');
+    console.log('Server is listening on port 3002');
 });

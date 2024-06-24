@@ -5,6 +5,8 @@ export const displayTrailInfo = (map, trails, naver) => {
   const customOverlays = [];
   const markerSize = 10; // Small size marker
   const offsetStep = 20; // Offset step to separate overlapping markers and overlays
+  let blinkingPolyline = null;
+  let blinkInterval = null;
 
   trails.forEach((trail, index) => {
     const path = trail.mountainTrailCoordinates.map(coord => new naver.maps.LatLng(coord[0], coord[1]));
@@ -46,6 +48,7 @@ export const displayTrailInfo = (map, trails, naver) => {
       window.setSelectedTrailLength(${trail.mountainTrailLength});
       window.setSelectedTrailAscent(${trail.expectedAscentTime});
       window.setSelectedTrailDescent(${trail.descentTime});
+      window.blinkPolyline(${index});
       console.log('Last coordinate of the trail:', {latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});">
         <div class="card-body p-2">
           <h6 class="card-title mb-1">등산난이도: ${trailDifficultyText}</h6>
@@ -79,6 +82,17 @@ export const displayTrailInfo = (map, trails, naver) => {
 
     customOverlays.push({ polyline, customOverlay, firstMarker });
   });
+
+  window.blinkPolyline = (index) => {
+    if (blinkingPolyline) {
+      clearInterval(blinkInterval);
+      blinkingPolyline.setVisible(true); // Ensure the last blinking polyline is visible
+    }
+    blinkingPolyline = customOverlays[index].polyline;
+    blinkInterval = setInterval(() => {
+      blinkingPolyline.setVisible(!blinkingPolyline.getVisible());
+    }, 500); // Toggle visibility every 500ms
+  };
 
   return customOverlays;
 };
