@@ -55,7 +55,7 @@ io.on('connection', (socket) => {
 
     try {
       console.log('Sending hiking record to Spring Boot server:', record);
-      const response = await axios.post('https://www.dearmysanta.site/hikingguide/react/addHikingRecord', record, {
+      const response = await axios.post('https://www.dearmysanta.site/hiking/react/addHikingRecord', record, {
         headers: {
           'Content-Type': 'application/json'
         }
