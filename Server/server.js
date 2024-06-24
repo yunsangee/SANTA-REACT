@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
 
     try {
       console.log('Sending location to Spring Boot server:', userLocation);
-      const response = await axios.post('https://www.dearmysanta.site/hikingguide/react/getUserCoordination', userLocation, {
+      const response = await axios.post('https://www.dearmysanta.site/hiking/react/getUserCoordination', userLocation, {
         headers: {
           'Content-Type': 'application/json'
         }
