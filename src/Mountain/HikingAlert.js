@@ -55,7 +55,7 @@ const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, tr
   useEffect(() => {
     const fetchAlertSettings = async () => {
       try {
-        userNo = 21;
+        userNo = 1;
         const response = await axios.post(`https://www.dearmysanta.site/hikingguide/react/getAlertSetting/${userNo}`);
         setAlertSettings(response.data);
         setMeetingTime(response.data.meetingTime);
