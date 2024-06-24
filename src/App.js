@@ -20,8 +20,8 @@ function App() {
         <Top />
         <div className="content">
           <Routes>
-            <Route path="/hiking" element={<NaverMap userNo={userNo} />} />
-            <Route path="/hiking/hiking-alert" element={<HikingAlert userNo={userNo} />} />
+            <Route path="/hikingguide" element={<NaverMap userNo={userNo} />} />
+            <Route path="/hikingguide/hiking-alert" element={<HikingAlert userNo={userNo} />} />
           </Routes>
         </div>
         <Footer />
