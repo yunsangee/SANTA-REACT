@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Toggle from 'react-toggle';
-import "react-toggle/style.css";
+
 
 const styles = {
     container: {

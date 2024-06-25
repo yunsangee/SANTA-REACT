@@ -1,7 +1,4 @@
-@import './css/Footer.css';
-@import './css/style.css';
-@import './css/Top.css';
-@import './App.css'
+@import './App.css';
 
 body {
   font-family: 'Open Sans', sans-serif;
