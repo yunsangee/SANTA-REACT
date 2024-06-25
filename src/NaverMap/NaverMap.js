@@ -323,10 +323,10 @@ const NaverMap = () => {
   };
 
   const saveHikingData = async (calculatedDescentTime) => {
-    const userNoFromCookie = Cookies.get('userNo');
+    const userNoFromCookie = parseInt(Cookies.get('userNo'), 10);  
     
     const hikingData = {
-      userNo: userNoFromCookie,
+      userNo: userNo,
       mountain: {
         mountainName: selectedMountainName
       },

@@ -47,7 +47,7 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   const playTTS = async (message) => {
-    const response = await fetch(`https://www.dearmysanta.site/hikingguide/tts?text=${encodeURIComponent(message)}`);
+    const response = await fetch(`https://www.dearmysanta.site/hikingAssist/tts?text=${encodeURIComponent(message)}`);
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     audioRef.current.src = url;
