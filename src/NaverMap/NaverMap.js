@@ -40,7 +40,7 @@ const styles = {
     left: '10px',
     zIndex: '1000',
     padding: '10px 20px',
-    backgroundColor: '#06910d9f',
+    backgroundColor: 'transparent', // Change this line to remove the green background
     color: 'white',
     border: 'none',
     borderRadius: '5px',
