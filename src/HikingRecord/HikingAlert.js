@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Toggle from 'react-toggle';
-
+import Cookies from 'js-cookie';
 
 const styles = {
     container: {
@@ -48,7 +48,7 @@ const styles = {
     }
 };
 
-const HikingAlert = ({ userNo }) => {
+const HikingAlert = () => {
     const [alertSettings, setAlertSettings] = useState({
         hikingAlertFlag: 0,
         destinationAlert: 0,
@@ -59,11 +59,15 @@ const HikingAlert = ({ userNo }) => {
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [userNo, setUserNo] = useState(null);
 
     useEffect(() => {
+        const userNoFromCookie = Cookies.get('userNo');
+        setUserNo(userNoFromCookie);
+
         const fetchAlertSettings = async () => {
             try {
-                const response = await axios.post(`https://www.dearmysanta.site/hiking/react/getAlertSetting/${userNo}`);
+                const response = await axios.post(`https://www.dearmysanta.site/hiking/react/getAlertSetting/${userNoFromCookie}`);
                 console.log(response.data); // Print the values received to the console
                 
                 // Map response data to toggle states
@@ -81,8 +85,11 @@ const HikingAlert = ({ userNo }) => {
                 setLoading(false);
             }
         };
-        fetchAlertSettings();
-    }, [userNo]);
+
+        if (userNoFromCookie) {
+            fetchAlertSettings();
+        }
+    }, []);
 
     const handleToggle = (setting) => {
         setAlertSettings({

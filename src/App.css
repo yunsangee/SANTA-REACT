@@ -569,6 +569,7 @@ body {
   
   /* Button Styles */
   .hiking-button {
+    position: relative;
     padding: 10px 20px;
     background-color: #06910d9f;
     color: white;
@@ -578,7 +579,7 @@ body {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    left: 300px;
+    bottom: 200px;
   }
   
   .hiking-button:hover {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Cookies from 'js-cookie';
 
 const styles = {
   pageHeader: {
@@ -74,20 +75,23 @@ const styles = {
   }
 };
 
-const HikingListRecord = ({ userNo }) => {
+const HikingListRecord = () => {
   const [hikingList, setHikingList] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const NikcName = "아기킹콩"; // NickName을 여기서 정의
+  const [nickName, setnickName] = useState('');
 
   useEffect(() => {
-    userNo = 1;
+    const userNo = Cookies.get('userNo');
+    const nickNameFromCookie = Cookies.get('nickName');
+    setnickName(nickNameFromCookie);
+
     axios.post(`https://www.dearmysanta.site/hiking/react/getHikingListRecord/${userNo}`)
       .then(response => {
         console.log(response.data); // 서버로부터 받은 데이터를 콘솔에 출력
         setHikingList(response.data);
       })
       .catch(error => console.error('Error fetching data:', error));
-  }, [userNo]);
+  }, []);
 
   const getSkyCondition = (code) => {
     const skyConditionCode = parseInt(code, 10);
@@ -169,7 +173,7 @@ const HikingListRecord = ({ userNo }) => {
     <div>
       <div className="container-fluid page-header py-5 d-flex align-items-center justify-content-center" style={styles.pageHeader}>
         <div className="background-blur" style={styles.backgroundBlur}></div>
-        <h1 className="text-center text-white display-6" style={styles.pageTitle}>{NikcName}의 등산 기록</h1>
+        <h1 className="text-center text-white display-6" style={styles.pageTitle}>{nickName}의 등산 기록</h1>
       </div>
 
       <div className="container-fluid py-5">

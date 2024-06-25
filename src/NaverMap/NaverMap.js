@@ -7,6 +7,7 @@ import UserInformation from '../UserInformation/UserInformation';
 import HikingAlert from '../Mountain/HikingAlert';
 import { displayTrailInfo, clearTrailInfo } from '../Mountain/TrailDisplay';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const styles = {
   containerFluid: {
@@ -66,7 +67,6 @@ const styles = {
     fontSize: '24px',
     cursor: 'pointer',
   },
-  
 };
 
 const NaverMap = () => {
@@ -94,10 +94,14 @@ const NaverMap = () => {
   const [trailLength, setTrailLength] = useState(0);
   const [trailAscent, setTrailAscent] = useState(0);
   const [trailDescent, setTrailDescent] = useState(0);
+  const [userNo, setUserNo] = useState(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    const userNoFromCookie = Cookies.get('userNo');
+    setUserNo(userNoFromCookie);
+
     const script = document.createElement('script');
     script.src = "https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ch1xa6ojlq";
     script.async = true;
@@ -318,18 +322,19 @@ const NaverMap = () => {
   };
 
   const saveHikingData = async (calculatedDescentTime) => {
-    const userNo = 1; 
+    const userNoFromCookie = Cookies.get('userNo');
+    
     const hikingData = {
-      userNo,
-      mountain:{
-      mountainName: selectedMountainName
+      userNo: userNoFromCookie,
+      mountain: {
+        mountainName: selectedMountainName
       },
       totalTime: time,
       hikingDifficulty: selectedTrailDifficulty,
       ascentTime,
       descentTime: calculatedDescentTime,
       userDistance: distance,
-      weather:{skyCondition}
+      weather: { skyCondition }
     };
 
     console.log(hikingData);
@@ -402,7 +407,7 @@ const NaverMap = () => {
         trailDescent={trailDescent} 
       />
       <HikingAlert 
-        userNo={1}
+        userNo={userNo}  // userNo를 전달합니다
         currentLocation={{ latitude, longitude }} 
         selectedTrailEnd={selectedTrailEnd} 
         sunsetTime={sunsetTime}
@@ -412,4 +417,5 @@ const NaverMap = () => {
     </>
   );
 };
+
 export default NaverMap;

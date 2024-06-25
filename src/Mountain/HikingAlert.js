@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import L from 'leaflet';
+import Cookies from 'js-cookie';
 import { calculateDistance } from '../Utils/calculateDistance';
 
 const expandLatLng = (latlng, distance) => {
@@ -32,7 +33,8 @@ const expandPolygon = (latlngs, distance) => {
   return expandedLatLngs;
 };
 
-const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, trailCoordinates, hikingStatus }) => {
+const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoordinates, hikingStatus }) => {
+  const [userNo, setUserNo] = useState(null);
   const [meetingTime, setMeetingTime] = useState('');
   const [alertSettings, setAlertSettings] = useState(null);
   const [distanceAlertShown, setDistanceAlertShown] = useState({ 200: false, 100: false });
@@ -53,10 +55,12 @@ const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, tr
   };
 
   useEffect(() => {
+    const userNoFromCookie = Cookies.get('userNo');
+    setUserNo(userNoFromCookie);
+
     const fetchAlertSettings = async () => {
       try {
-        userNo = 1;
-        const response = await axios.post(`https://www.dearmysanta.site/hiking/react/getAlertSetting/${userNo}`);
+        const response = await axios.post(`https://www.dearmysanta.site/hiking/react/getAlertSetting/${userNoFromCookie}`);
         setAlertSettings(response.data);
         setMeetingTime(response.data.meetingTime);
         console.log(response.data);
@@ -64,8 +68,11 @@ const HikingAlert = ({ userNo, currentLocation, selectedTrailEnd, sunsetTime, tr
         console.error('Error fetching alert settings:', error);
       }
     };
-    fetchAlertSettings();
-  }, [userNo]);
+
+    if (userNoFromCookie) {
+      fetchAlertSettings();
+    }
+  }, []);
 
   useEffect(() => {
     if (trailCoordinates && trailCoordinates.length > 0) {

@@ -6,8 +6,8 @@ const FooterContainer = styled.div`
   background-color: #343a40;
   color: rgba(255, 255, 255, 0.5);
   text-align: left !important;
-  margin-top: 50px;
-  `;
+  margin-top: 200px;
+`;
 
 const FooterInner = styled.div`
   padding: 1rem 0;
@@ -29,6 +29,17 @@ const FooterItem = styled.div`
 
 const TextPrimary = styled.h1`
   color: #34a817 !important;
+  margin-bottom: 0.5rem;
+`;
+
+const OrangeLine = styled.div`
+  position: absolute;
+  left: 0;
+  width: 100vw; /* 전체 화면 너비로 설정 */
+  height: 2px;
+  background-color: orange;
+  margin-top: 10px;
+  transform: translateX(-10%); /* 중앙 정렬 */
 `;
 
 const Footer = () => {
@@ -38,6 +49,7 @@ const Footer = () => {
         <FooterRow className="pb-3 mb-3 row g-4">
           <div className="col-lg-4">
             <TextPrimary className="mb-0">루돌프</TextPrimary>
+            <OrangeLine />
           </div>
         </FooterRow>
         <div className="row g-4">
