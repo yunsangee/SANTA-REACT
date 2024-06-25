@@ -1,9 +1,78 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../App.css';
-import '../css/Top.css';
 
+const styles = {
+  pageHeader: {
+    height: '250px',
+    position: 'relative',
+    marginTop: '190px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backgroundBlur: {
+    backgroundImage: 'url(/images/header-background.png)',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    filter: 'blur(5px)',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  pageTitle: {
+    position: 'relative',
+    zIndex: 1,
+    fontSize: '35pt',
+    fontWeight: 'bolder',
+    color: 'white',
+  },
+  card: {
+    height: '100%',
+    border: '1px solid lightgreen',
+    position: 'relative',
+    cursor: 'pointer',
+  },
+  hikingDate: {
+    position: 'absolute',
+    top: '10px',
+    left: '10px',
+    fontSize: 'large',
+    fontWeight: 'bold',
+  },
+  mountainName: {
+    fontSize: '1.5em',
+    fontWeight: 'bold',
+    marginTop: '10px',
+    transition: 'font-size 0.3s ease',
+  },
+  mountainNameDivider: {
+    margin: '10px 0',
+  },
+  cardHover: {
+    border: '2px solid #007bff',
+    boxShadow: '0 4px 8px rgba(0, 123, 255, 0.2)',
+    transition: '0.3s',
+  },
+  backToTop: {
+    position: 'fixed',
+    right: '30px',
+    bottom: '30px',
+    display: 'flex',
+    width: '45px',
+    height: '45px',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: '0.5s',
+    zIndex: 99,
+  },
+  deleteButton: {
+    marginRight: '10px',
+  }
+};
 
 const HikingListRecord = ({ userNo }) => {
   const [hikingList, setHikingList] = useState([]);
@@ -46,7 +115,6 @@ const HikingListRecord = ({ userNo }) => {
         return '알 수 없음 ❓'; // Unknown with question mark emoticon
     }
   };
-  
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -99,11 +167,10 @@ const HikingListRecord = ({ userNo }) => {
 
   return (
     <div>
-  <div className="container-fluid page-header py-5 d-flex align-items-center justify-content-center" style={{ height: '250px', position: 'relative', marginTop: '190px' }}>
-  <div className="background-blur" style={{ backgroundImage: 'url(/images/header-background.png)', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(5px)', height: '100%', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}></div>
-  <h1 className="text-center text-white display-6" style={{ position: 'relative', zIndex: 1, fontSize: '35pt', fontWeight: 'bolder' }}>{NikcName}의 등산 기록</h1>
-</div>
-
+      <div className="container-fluid page-header py-5 d-flex align-items-center justify-content-center" style={styles.pageHeader}>
+        <div className="background-blur" style={styles.backgroundBlur}></div>
+        <h1 className="text-center text-white display-6" style={styles.pageTitle}>{NikcName}의 등산 기록</h1>
+      </div>
 
       <div className="container-fluid py-5">
         <div className="container py-5">
@@ -112,26 +179,28 @@ const HikingListRecord = ({ userNo }) => {
           ) : (
             <>
               <div className="d-flex justify-content-end mb-3">
-                <button 
+                <button
                   className="btn btn-danger"
                   onClick={handleDeleteSelected}
                   disabled={selectedItems.length === 0}
+                  style={styles.deleteButton}
                 >
                   삭제하기
                 </button>
               </div>
               <div className="row">
                 {hikingList.map(record => (
-                  <div 
-                    className={`col-md-6 col-lg-4 mb-4`} 
-                    key={record.hrNo} 
+                  <div
+                    className={`col-md-6 col-lg-4 mb-4`}
+                    key={record.hrNo}
                     onClick={() => handleSelect(record.hrNo)}
+                    style={selectedItems.includes(record.hrNo) ? styles.cardHover : null}
                   >
-                    <div className={`card h-100 fruite-item ${selectedItems.includes(record.hrNo) ? 'border-primary' : ''}`}>
+                    <div className={`card h-100 fruite-item ${selectedItems.includes(record.hrNo) ? 'border-primary' : ''}`} style={styles.card}>
                       <div className="card-body light-green-border position-relative">
-                        <div className="hiking-date">{record.hikingDate}</div>
-                        <h3 className="mountain-name">{record.mountain?.mountainName}</h3>
-                        <hr className="mountain-name-divider" />
+                        <div className="hiking-date" style={styles.hikingDate}>{record.hikingDate}</div>
+                        <h3 className="mountain-name" style={styles.mountainName}>{record.mountain?.mountainName}</h3>
+                        <hr className="mountain-name-divider" style={styles.mountainNameDivider} />
                         <p className="card-text"><strong>날씨:</strong> {getSkyCondition(record.weather?.skyCondition)}</p>
                         <hr />
                         <p className="card-text"><strong>총 소요시간:</strong> {formatTime(record.totalTime)}</p>
@@ -143,14 +212,13 @@ const HikingListRecord = ({ userNo }) => {
                         <p className="card-text"><strong>하산 시간:</strong> {formatTime(record.descentTime)}</p>
                         <hr />
                         <p className="card-text"><strong>선택한 등산 난이도:</strong> {getTrailDifficulty(record.hikingDifficulty)}</p>
-                   
-                          <input 
-                            type="checkbox"
-                            className="form-check-input"
-                            checked={selectedItems.includes(record.hrNo)}
-                            onChange={(e) => { e.stopPropagation(); handleSelect(record.hrNo); }}
-                          />
-                     
+
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          checked={selectedItems.includes(record.hrNo)}
+                          onChange={(e) => { e.stopPropagation(); handleSelect(record.hrNo); }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -160,7 +228,7 @@ const HikingListRecord = ({ userNo }) => {
           )}
         </div>
       </div>
-      <button id="back-to-top" className="btn btn-primary border-3 border-primary rounded-circle back-to-top" onClick={scrollToTop}>
+      <button id="back-to-top" className="btn btn-primary border-3 border-primary rounded-circle" style={styles.backToTop} onClick={scrollToTop}>
         <i className="fa fa-arrow-up"></i>
       </button>
     </div>

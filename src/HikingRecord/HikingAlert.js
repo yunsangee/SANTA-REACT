@@ -2,7 +2,51 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Toggle from 'react-toggle';
 import "react-toggle/style.css";
-import '../css/style.css';
+
+const styles = {
+    container: {
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '30px',
+        lineHeight: '1.8',
+        margin: '20px'
+    },
+    alertSetting: {
+        marginBottom: '30px',
+    },
+    label: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        fontSize: '30px',
+        marginBottom: '10px'
+    },
+    labelSpan: {
+        marginRight: '20px'
+    },
+    hr: {
+        marginTop: '10px',
+        marginBottom: '30px',
+        border: 'none',
+        borderTop: '5px solid #4CAF50'
+    },
+    timeInput: {
+        fontSize: '30px',
+        padding: '10px',
+        marginLeft: '10px'
+    },
+    saveButton: {
+        fontSize: '22px',
+        padding: '15px 30px',
+        backgroundColor: '#4CAF50',
+        color: 'white',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer'
+    },
+    saveButtonHover: {
+        backgroundColor: '#45a049'
+    }
+};
 
 const HikingAlert = ({ userNo }) => {
     const [alertSettings, setAlertSettings] = useState({
@@ -86,22 +130,22 @@ const HikingAlert = ({ userNo }) => {
     if (error) return <div>Error loading alert settings</div>;
 
     return (
-        <div className="hiking-alert-container">
+        <div style={styles.container}>
             <h1>등산 안내 알림 설정</h1>
-            <br/><br/>
-            <div className="alert-setting hg-setting">
-                <label>
-                    <span>전체 알림</span>
+            <br /><br />
+            <div style={styles.alertSetting}>
+                <label style={styles.label}>
+                    <span style={styles.labelSpan}>전체 알림</span>
                     <Toggle
                         checked={alertSettings.hikingAlertFlag === 1}
                         onChange={() => handleToggle('hikingAlertFlag')}
                     />
                 </label>
-                <hr />
+                <hr style={styles.hr} />
             </div>
-            <div className="alert-setting">
-                <label>
-                    <span>목적지까지 거리 알림</span>
+            <div style={styles.alertSetting}>
+                <label style={styles.label}>
+                    <span style={styles.labelSpan}>목적지까지 거리 알림</span>
                     <Toggle
                         checked={alertSettings.destinationAlert === 1}
                         onChange={() => handleToggle('destinationAlert')}
@@ -109,9 +153,9 @@ const HikingAlert = ({ userNo }) => {
                     />
                 </label>
             </div>
-            <div className="alert-setting">
-                <label>
-                    <span>일몰 시간 알림</span>
+            <div style={styles.alertSetting}>
+                <label style={styles.label}>
+                    <span style={styles.labelSpan}>일몰 시간 알림</span>
                     <Toggle
                         checked={alertSettings.sunsetAlert === 1}
                         onChange={() => handleToggle('sunsetAlert')}
@@ -119,9 +163,9 @@ const HikingAlert = ({ userNo }) => {
                     />
                 </label>
             </div>
-            <div className="alert-setting">
-                <label>
-                    <span>위치 이탈 알림</span>
+            <div style={styles.alertSetting}>
+                <label style={styles.label}>
+                    <span style={styles.labelSpan}>위치 이탈 알림</span>
                     <Toggle
                         checked={alertSettings.locationOverAlert === 1}
                         onChange={() => handleToggle('locationOverAlert')}
@@ -129,9 +173,9 @@ const HikingAlert = ({ userNo }) => {
                     />
                 </label>
             </div>
-            <div className="alert-setting">
-                <label>
-                    <span>모임/개인 시간 설정 알림</span>
+            <div style={styles.alertSetting}>
+                <label style={styles.label}>
+                    <span style={styles.labelSpan}>모임/개인 시간 설정 알림</span>
                     <Toggle
                         checked={alertSettings.meetingTimeAlert === 1}
                         onChange={() => handleToggle('meetingTimeAlert')}
@@ -139,18 +183,26 @@ const HikingAlert = ({ userNo }) => {
                     />
                 </label>
             </div>
-            <div className="alert-setting">
-                <label>
-                    <span>모임/개인 시간 설정</span>
+            <div style={styles.alertSetting}>
+                <label style={styles.label}>
+                    <span style={styles.labelSpan}>모임/개인 시간 설정</span>
                     <input
                         type="time"
                         value={alertSettings.meetingTime}
                         onChange={handleMeetingTimeChange}
                         disabled={alertSettings.hikingAlertFlag === 0 || alertSettings.meetingTimeAlert === 0}
+                        style={styles.timeInput}
                     />
                 </label>
             </div>
-            <button className="save-button" onClick={saveSettings}>설정 저장하기</button>
+            <button
+                style={styles.saveButton}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = styles.saveButtonHover.backgroundColor}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = styles.saveButton.backgroundColor}
+                onClick={saveSettings}
+            >
+                설정 저장하기
+            </button>
         </div>
     );
 };

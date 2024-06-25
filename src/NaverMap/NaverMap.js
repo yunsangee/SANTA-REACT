@@ -7,7 +7,66 @@ import UserInformation from '../UserInformation/UserInformation';
 import HikingAlert from '../Mountain/HikingAlert';
 import { displayTrailInfo, clearTrailInfo } from '../Mountain/TrailDisplay';
 import { useNavigate } from 'react-router-dom';
-import '../css/style.css';
+
+const styles = {
+  containerFluid: {
+    padding: '0',
+  },
+  mapContainer: {
+    marginTop: '110px',
+    position: 'relative',
+  },
+  topBorderLine: {
+    width: '100%',
+    height: '5px',
+    backgroundColor: 'black',
+    position: 'absolute',
+    left: '0',
+    zIndex: '1000',
+    top: '0',
+  },
+  bottomBorderLine: {
+    width: '100%',
+    height: '5px',
+    backgroundColor: 'black',
+    position: 'absolute',
+    left: '0',
+    zIndex: '1000',
+    bottom: '0',
+  },
+  buttonStyle: {
+    position: 'absolute',
+    bottom: '0px',
+    left: '10px',
+    zIndex: '1000',
+    padding: '10px 20px',
+    backgroundColor: '#06910d9f',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    transition: 'background-color 0.3s ease, transform 0.2s ease',
+  },
+  buttonHoverStyle: {
+    backgroundColor: '#0056b3',
+    transform: 'translateY(-2px)',
+  },
+  settingButtonStyle: {
+    position: 'absolute',
+    bottom: '10px',
+    right: '10px',
+    zIndex: '1000',
+    padding: '10px',
+    backgroundColor: 'white',
+    border: 'none',
+    borderRadius: '50%',
+    fontSize: '24px',
+    cursor: 'pointer',
+  },
+};
 
 const NaverMap = () => {
   const [socket, setSocket] = useState(null);
@@ -302,28 +361,21 @@ const NaverMap = () => {
   }
   return (
     <>
-      <div className="map-container">
-        <div className="top-border-line"></div>
+      <div className="map-container" style={styles.mapContainer}>
+        <div className="top-border-line" style={styles.topBorderLine}></div>
         <div id="map" style={{ width: '100%', height: '900px', position: 'relative' }}>
-          <div style={{ position: 'absolute', bottom: '10px', right: '10px', zIndex: 1000 }}>
+          <div style={styles.settingButtonStyle}>
             <button 
               onClick={() => navigate('./hiking-alert')}
-              style={{ 
-                padding: '10px', 
-                backgroundColor: 'white', 
-                border: 'none', 
-                borderRadius: '50%', 
-                fontSize: '24px', 
-                cursor: 'pointer'
-              }}
+              style={styles.settingButtonStyle}
             >
               ⚙️
             </button>
           </div>
         </div>
-        <div className="bottom-border-line"></div>
+        <div className="bottom-border-line" style={styles.bottomBorderLine}></div>
       </div>
-      <div style={{ position: 'absolute', bottom: '0px', left: '10px', zIndex: 1000 }}>
+      <div style={styles.buttonStyle}>
         <button className='hiking-button' onClick={handleHikingStatusChange}>
           {getButtonText()}
         </button>

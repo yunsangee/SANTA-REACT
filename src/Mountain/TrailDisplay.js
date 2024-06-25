@@ -40,7 +40,7 @@ export const displayTrailInfo = (map, trails, naver) => {
     const lastCoordinate = trail.mountainTrailCoordinates.slice(-1)[0];
 
     const customOverlayContent = `
-      <div class="card text-dark bg-light" style="width: 14rem; padding: 8px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); cursor: pointer;" 
+      <div class="card text-dark bg-light" style="${getCardStyle(index)}" 
       onclick="window.zoomToTrail(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]});
       window.setTrailDifficulty('${trail.mountainTrailDifficulty}');
       window.setSelectedTrailEnd({latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});
@@ -150,3 +150,12 @@ window.setSelectedTrailDescent = (descent) => {
     window.setSelectedTrailDescent(descent);
   }
 };
+
+// Helper function to generate card style
+const getCardStyle = (index) => `
+  width: 14rem; 
+  padding: 8px; 
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+  cursor: pointer; 
+  z-index: ${1000 + index};
+`;
