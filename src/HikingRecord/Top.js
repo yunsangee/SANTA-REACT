@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import styled from 'styled-components';
+import $ from 'jquery';
 
 const Navbar = styled.nav`
   height: 100px;
@@ -15,13 +16,14 @@ const Navbar = styled.nav`
     padding: 10px 15px;
     font-size: 16px;
     transition: .5s;
+    color: black; /* Black color for other nav links */
   }
 
   .navbar-nav .nav-link:hover,
   .navbar-nav .nav-link.active,
   .fixed-top.bg-white .navbar-nav .nav-link:hover,
   .fixed-top.bg-white .navbar-nav .nav-link.active {
-    color: var(--bs-primary);
+    color: rgb(60, 170, 60); /* Green color on hover and active */
   }
 
   .dropdown-toggle::after {
@@ -66,9 +68,10 @@ const LogoName = styled.h1`
   font-weight: bold;
   cursor: pointer;
   transition: color 0.3s ease;
+  color: rgb(60, 170, 60); /* Green color for logo */
 
   &:hover {
-    color: rgb(60, 170, 60);
+    color: rgb(80, 190, 80);
   }
 `;
 
@@ -103,6 +106,98 @@ const LoginButtonIcon = styled.i`
   }
 `;
 
+const UserImage = styled.img`
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+`;
+
+const DropdownMenu = styled.div`
+  width: 200px;
+  left: -150px !important;
+`;
+
+const DropdownHeader = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+
+  img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+
+  .info {
+    flex: 1;
+
+    .name {
+      font-weight: bold;
+      font-size: 0.7em;
+    }
+
+    .email {
+      font-size: 0.7em;
+      color: #6c757d;
+    }
+  }
+
+  .setting-icon {
+    cursor: pointer;
+  }
+`;
+
+const DropdownItem = styled.a`
+  display: flex;
+  align-items: center;
+  padding: 5px;
+
+  i {
+    margin-right: 5px;
+    font-size: 0.7em;
+  }
+
+  .text {
+    font-size: 0.7em;
+  }
+`;
+
+const AlarmMessage = styled.div`
+  width: 300px;
+
+  .dropdown-item {
+    font-size: 0.6em;
+
+    .close-icon {
+      margin-left: 20px;
+      cursor: pointer;
+    }
+  }
+`;
+
+const AlarmSettings = styled.div`
+  width: 150px;
+  right: 100px;
+  bottom: 50px;
+  font-size: 0.6em;
+  display: none;
+  position: absolute;
+  top: 65%;
+  margin-left: 5px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  .form-switch {
+    display: flex;
+    align-items: center;
+  }
+`;
+
 const Top = () => {
   const javaServerIp = process.env.REACT_APP_JAVA_SERVER_IP;
   const reactServerIp = process.env.REACT_APP_REACT_SERVER_IP;
@@ -111,6 +206,187 @@ const Top = () => {
   const handleNavigation = (url) => {
     window.location.href = url;
   };
+
+  useEffect(() => {
+    // jQuery for handling click events and dropdowns
+    $(function() {
+      $('#logoName').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/`);
+      });
+
+      $('#mountain').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/mountain/searchMountain`);
+      });
+
+      $('#certificationPost').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/certificationPost/listCertificationPost`);
+      });
+
+      $('#meetingPost').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/meeting/getMeetingPostList`);
+      });
+
+      $('#hikingGuide').on('click', () => {
+        handleNavigation(`https://${reactServerIp}`);
+      });
+
+      $('#loginButton').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/user/login`);
+      });
+
+      $('#userProfile').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/mountain/searchMountain`);
+      });
+
+      $('#getUserList').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/user/getUserList`);
+      });
+
+      $('#statistics').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/mountain/getStatistics`);
+      });
+
+      $('#correctionPost').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/correctionPost/getCorrectionPostList`);
+      });
+
+      // Other user settings
+      $('#myInfo').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/user/getUser`);
+      });
+
+      $('#myMeetingPost').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/meeting/getMeetingPostList`);
+      });
+
+      $('#myCertificationPost').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/certificationPost/getCertificationPostList`);
+      });
+
+      $('#myMountainLike').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/mountain/getMountainLikeList?userNo=${sessionStorage.getItem('userNo')}`);
+      });
+
+      $('#mySchedule').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/user/getSchedule`);
+      });
+
+      $('#myHikingRecord').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/myHikingRecord`);
+      });
+
+      $('#qna').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/user/getQna`);
+      });
+
+      $('#logout').on('click', () => {
+        handleNavigation(`https://${javaServerIp}/user/logout`);
+      });
+
+      // Toggle dropdown menus
+      $('.dropdown-toggle').on('click', function(event) {
+        event.stopPropagation();
+        let dropdownMenu = $(this).next('.dropdown-menu');
+        if (dropdownMenu.hasClass('show')) {
+          dropdownMenu.removeClass('show');
+        } else {
+          $('.dropdown-menu').removeClass('show'); // Hide other dropdowns
+          dropdownMenu.addClass('show'); // Show current dropdown
+        }
+      });
+
+      // Close dropdown when clicking outside
+      $(document).on('click', function(event) {
+        if (!$(event.target).closest('.dropdown').length) {
+          $('.dropdown-menu').removeClass('show');
+        }
+      });
+
+      // Close alarm message
+      $(document).on('click', '.close-icon', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        let alarmNo = $(this).parent().find('#alarmNo').val();
+        $.ajax({
+          url: `/userEtc/rest/deleteAlarmMessage?alarmNo=${alarmNo}`,
+          method: 'GET',
+          success: function(response) {
+            $(this).closest('.dropdown-item').remove();
+          },
+          error: function(xhr, status, error) {
+            console.error('Error deleting alarm message:', error);
+          }
+        });
+      });
+
+      // Handle alarm settings
+      $('#settingsIcon').on('click', function() {
+        let modal = $('#settingsModal');
+        if (modal.css('display') === 'none' || modal.css('display') === '') {
+          modal.css('display', 'block');
+        } else {
+          modal.css('display', 'none');
+        }
+      });
+
+      $('.form-switch').on('click', function(event) {
+        event.stopPropagation();
+      });
+
+      // AJAX for alarm settings
+      $('#flexSwitchAllAlert').on('click', function() {
+        let isChecked = $(this).is(':checked');
+        let userNo = sessionStorage.getItem('userNo');
+        let alarmSettingType = 0;
+        $.ajax({
+          url: `/userEtc/rest/updateAlarmSetting?userNo=${userNo}&alarmSettingType=${alarmSettingType}`,
+          method: 'GET',
+          success: function(response) {
+            window.location.reload();
+          }
+        });
+      });
+
+      $('#flexSwitchCertificationPostAlert').on('click', function() {
+        let isChecked = $(this).is(':checked');
+        let userNo = sessionStorage.getItem('userNo');
+        let alarmSettingType = 1;
+        $.ajax({
+          url: `/userEtc/rest/updateAlarmSetting?userNo=${userNo}&alarmSettingType=${alarmSettingType}`,
+          method: 'GET',
+          success: function(response) {
+            window.location.reload();
+          }
+        });
+      });
+
+      $('#flexSwitchMeetingPostAlert').on('click', function() {
+        let isChecked = $(this).is(':checked');
+        let userNo = sessionStorage.getItem('userNo');
+        let alarmSettingType = 2;
+        $.ajax({
+          url: `/userEtc/rest/updateAlarmSetting?userNo=${userNo}&alarmSettingType=${alarmSettingType}`,
+          method: 'GET',
+          success: function(response) {
+            window.location.reload();
+          }
+        });
+      });
+
+      $('#flexSwitchHikingGuideAlert').on('click', function() {
+        let isChecked = $(this).is(':checked');
+        let userNo = sessionStorage.getItem('userNo');
+        let alarmSettingType = 3;
+        $.ajax({
+          url: `/userEtc/rest/updateAlarmSetting?userNo=${userNo}&alarmSettingType=${alarmSettingType}`,
+          method: 'GET',
+          success: function(response) {
+            window.location.reload();
+          }
+        });
+      });
+    });
+  }, []);
 
   return (
     <div className="container-fluid fixed-top px-0">
@@ -171,7 +447,7 @@ const Top = () => {
                   href="#"
                   id="meetingPost"
                   className="nav-link"
-                  onClick={() => handleNavigation(`https://${javaServerIp}/meetingPost/getMeetingPostList`)}
+                  onClick={() => handleNavigation(`https://${javaServerIp}/meeting/getMeetingPostList`)}
                 >
                   모임게시판
                 </NavLink>
@@ -179,7 +455,7 @@ const Top = () => {
               <li className="nav-item">
                 <NavLink
                   href="#"
-                  id="hiking"
+                  id="hikingGuide"
                   className="nav-link"
                   onClick={() => handleNavigation(`https://${reactServerIp}`)}
                 >
@@ -189,13 +465,30 @@ const Top = () => {
             </ul>
             <div className="d-flex justify-content-center">
               {sessionStorage.getItem('user') ? (
-                <a href="#" className="my-auto">
-                  <UserProfileIcon
-                    id="userProfile"
-                    className="fas fa-user fa-2x"
-                    onClick={() => handleNavigation(`https://${javaServerIp}/mountain/searchMountain`)}
-                  ></UserProfileIcon>
-                </a>
+                <div className="dropdown">
+                  <a className="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <UserImage src={sessionStorage.getItem('profileImage')} alt="User Image"/>
+                  </a>
+                  <DropdownMenu className="dropdown-menu dropdown-menu-left profile" aria-labelledby="navbarDropdown">
+                    <DropdownHeader className="dropdown-header">
+                      <img src={sessionStorage.getItem('profileImage')} alt="User Image"/>
+                      <div className="info">
+                        <div className="name">{sessionStorage.getItem('userName')}</div>
+                        <div className="email">{sessionStorage.getItem('userId')}</div>
+                      </div>
+                      <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
+                    </DropdownHeader>
+                    <DropdownItem className="dropdown-item" href="#"><i className="fas fa-certificate"></i> 인증 {sessionStorage.getItem('certificationCount')}회, 모임 {sessionStorage.getItem('meetingCount')}회 </DropdownItem>
+                    <DropdownItem className="dropdown-item" id="myInfo" href="#"><i className="fas fa-user"></i> 내 정보보기 <i className="fas fa-chevron-right"></i></DropdownItem>
+                    <DropdownItem className="dropdown-item" id="myMeetingPost" href="#"><i className="fas fa-users"></i> 내가 쓴 모임 게시글 보기 <i className="fas fa-chevron-right"></i></DropdownItem>
+                    <DropdownItem className="dropdown-item" id="myCertificationPost" href="#"><i className="fas fa-check-circle"></i> 내가 쓴 인증 게시글 보기 <i className="fas fa-chevron-right"></i></DropdownItem>
+                    <DropdownItem className="dropdown-item" id="myMountainLike" href="#"><i className="fas fa-heart"></i> 내가 좋아요 한 산 보기 <i className="fas fa-chevron-right"></i></DropdownItem>
+                    <DropdownItem className="dropdown-item" id="mySchedule" href="#"><i className="fas fa-calendar-alt"></i> 내 일정 보기 <i className="fas fa-chevron-right"></i></DropdownItem>
+                    <DropdownItem className="dropdown-item" id="myHikingRecord" href="#"><i className="fas fa-hiking"></i> 등산 기록 보기 <i className="fas fa-chevron-right"></i></DropdownItem>
+                    <DropdownItem className="dropdown-item" id="qna" href="#"><i className="fas fa-question-circle"></i> Q&A <i className="fas fa-chevron-right"></i></DropdownItem>
+                    <DropdownItem className="dropdown-item" id="logout" href="#"><i className="fas fa-sign-out-alt"></i> 로그아웃 <i className="fas fa-chevron-right"></i></DropdownItem>
+                  </DropdownMenu>
+                </div>
               ) : (
                 <a href="#" className="my-auto">
                   <LoginButtonIcon
