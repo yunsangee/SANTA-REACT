@@ -201,8 +201,8 @@ const AlarmSettings = styled.div`
 `;
 
 const Top = () => {
-  const javaServerIp = process.env.REACT_APP_JAVA_SERVER_IP;
-  const reactServerIp = process.env.REACT_APP_REACT_SERVER_IP;
+  const javaServerIp = 'https://www.dearmysanta.site';
+  const reactServerIp = 'https://www.dearmysanta.site/hikingguide';
   const navigate = useNavigate();
   const userNo = Cookies.get('userNo');
 
