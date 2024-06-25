@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import styled from 'styled-components';
 import $ from 'jquery';
+import Cookies from 'js-cookie';
 
 const Navbar = styled.nav`
   height: 100px;
@@ -203,85 +204,91 @@ const Top = () => {
   const javaServerIp = process.env.REACT_APP_JAVA_SERVER_IP;
   const reactServerIp = process.env.REACT_APP_REACT_SERVER_IP;
   const navigate = useNavigate();
+  const userNo = Cookies.get('userNo');
 
   const handleNavigation = (url) => {
     window.location.href = url;
+  };
+
+  const handleLogout = () => {
+    Cookies.remove('userNo');
+    window.location.reload();
   };
 
   useEffect(() => {
     // jQuery for handling click events and dropdowns
     $(function() {
       $('#logoName').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/`);
+        handleNavigation(`${javaServerIp}/`);
       });
 
       $('#mountain').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/mountain/searchMountain`);
+        handleNavigation(`${javaServerIp}/mountain/searchMountain`);
       });
 
       $('#certificationPost').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/certificationPost/listCertificationPost`);
+        handleNavigation(`${javaServerIp}/certificationPost/listCertificationPost`);
       });
 
       $('#meetingPost').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/meeting/getMeetingPostList`);
+        handleNavigation(`${javaServerIp}/meeting/getMeetingPostList`);
       });
 
       $('#hikingGuide').on('click', () => {
-        handleNavigation(`https://${reactServerIp}`);
+        handleNavigation(`${reactServerIp}`);
       });
 
       $('#loginButton').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/user/login`);
+        handleNavigation(`${javaServerIp}/user/login`);
       });
 
       $('#userProfile').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/mountain/searchMountain`);
+        handleNavigation(`${javaServerIp}/mountain/searchMountain`);
       });
 
       $('#getUserList').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/user/getUserList`);
+        handleNavigation(`${javaServerIp}/user/getUserList`);
       });
 
       $('#statistics').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/mountain/getStatistics`);
+        handleNavigation(`${javaServerIp}/mountain/getStatistics`);
       });
 
       $('#correctionPost').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/correctionPost/getCorrectionPostList`);
+        handleNavigation(`${javaServerIp}/correctionPost/getCorrectionPostList`);
       });
 
       // Other user settings
       $('#myInfo').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/user/getUser`);
+        handleNavigation(`${javaServerIp}/user/getUser`);
       });
 
       $('#myMeetingPost').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/meeting/getMeetingPostList`);
+        handleNavigation(`${javaServerIp}/meeting/getMeetingPostList`);
       });
 
       $('#myCertificationPost').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/certificationPost/getCertificationPostList`);
+        handleNavigation(`${javaServerIp}/certificationPost/getCertificationPostList`);
       });
 
       $('#myMountainLike').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/mountain/getMountainLikeList?userNo=${sessionStorage.getItem('userNo')}`);
+        handleNavigation(`${javaServerIp}/mountain/getMountainLikeList?userNo=${userNo}`);
       });
 
       $('#mySchedule').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/user/getSchedule`);
+        handleNavigation(`${javaServerIp}/user/getSchedule`);
       });
 
       $('#myHikingRecord').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/myHikingRecord`);
+        handleNavigation(`${javaServerIp}/myHikingRecord`);
       });
 
       $('#qna').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/user/getQna`);
+        handleNavigation(`${javaServerIp}/user/getQna`);
       });
 
       $('#logout').on('click', () => {
-        handleNavigation(`https://${javaServerIp}/user/logout`);
+        handleLogout();
       });
 
       // Toggle dropdown menus
@@ -387,7 +394,7 @@ const Top = () => {
         });
       });
     });
-  }, []);
+  }, [userNo]);
 
   return (
     <div className="container-fluid fixed-top px-0">
@@ -396,7 +403,7 @@ const Top = () => {
           <LogoName
             id="logoName"
             className="navbar-brand mb-0"
-            onClick={() => handleNavigation(`https://${javaServerIp}/`)}
+            onClick={() => handleNavigation(`${javaServerIp}/`)}
           >
             SANTA
           </LogoName>
@@ -418,7 +425,7 @@ const Top = () => {
                   href="#"
                   id="Home"
                   className="nav-link active"
-                  onClick={() => handleNavigation(`https://${javaServerIp}/`)}
+                  onClick={() => handleNavigation(`${javaServerIp}/`)}
                 >
                   홈
                 </NavLink>
@@ -428,7 +435,7 @@ const Top = () => {
                   href="#"
                   id="mountain"
                   className="nav-link"
-                  onClick={() => handleNavigation(`https://${javaServerIp}/mountain/searchMountain`)}
+                  onClick={() => handleNavigation(`${javaServerIp}/mountain/searchMountain`)}
                 >
                   산
                 </NavLink>
@@ -438,7 +445,7 @@ const Top = () => {
                   href="#"
                   id="certificationPost"
                   className="nav-link"
-                  onClick={() => handleNavigation(`https://${javaServerIp}/certificationPost/listCertificationPost`)}
+                  onClick={() => handleNavigation(`${javaServerIp}/certificationPost/listCertificationPost`)}
                 >
                   인증게시판
                 </NavLink>
@@ -448,7 +455,7 @@ const Top = () => {
                   href="#"
                   id="meetingPost"
                   className="nav-link"
-                  onClick={() => handleNavigation(`https://${javaServerIp}/meeting/getMeetingPostList`)}
+                  onClick={() => handleNavigation(`${javaServerIp}/meeting/getMeetingPostList`)}
                 >
                   모임게시판
                 </NavLink>
@@ -458,14 +465,14 @@ const Top = () => {
                   href="#"
                   id="hikingGuide"
                   className="nav-link"
-                  onClick={() => handleNavigation(`https://${reactServerIp}`)}
+                  onClick={() => handleNavigation(`${reactServerIp}`)}
                 >
                   등산안내
                 </NavLink>
               </li>
             </ul>
             <div className="d-flex justify-content-center">
-              {sessionStorage.getItem('user') ? (
+              {userNo ? (
                 <div className="dropdown">
                   <a className="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <UserImage src={sessionStorage.getItem('profileImage')} alt="User Image"/>
@@ -487,7 +494,7 @@ const Top = () => {
                     <DropdownItem className="dropdown-item" id="mySchedule" href="#"><i className="fas fa-calendar-alt"></i> 내 일정 보기 <i className="fas fa-chevron-right"></i></DropdownItem>
                     <DropdownItem className="dropdown-item" id="myHikingRecord" href="#"><i className="fas fa-hiking"></i> 등산 기록 보기 <i className="fas fa-chevron-right"></i></DropdownItem>
                     <DropdownItem className="dropdown-item" id="qna" href="#"><i className="fas fa-question-circle"></i> Q&A <i className="fas fa-chevron-right"></i></DropdownItem>
-                    <DropdownItem className="dropdown-item" id="logout" href="#"><i className="fas fa-sign-out-alt"></i> 로그아웃 <i className="fas fa-chevron-right"></i></DropdownItem>
+                    <DropdownItem className="dropdown-item" id="logout" href="#" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> 로그아웃 <i className="fas fa-chevron-right"></i></DropdownItem>
                   </DropdownMenu>
                 </div>
               ) : (
@@ -495,7 +502,7 @@ const Top = () => {
                   <LoginButtonIcon
                     id="loginButton"
                     className="fas fa-sign-in-alt fa-1x"
-                    onClick={() => handleNavigation(`https://${javaServerIp}/user/login`)}
+                    onClick={() => handleNavigation(`${javaServerIp}/user/login`)}
                   >
                     {' '}
                     로그인

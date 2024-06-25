@@ -101,6 +101,7 @@ const NaverMap = () => {
   useEffect(() => {
     const userNoFromCookie = Cookies.get('userNo');
     setUserNo(userNoFromCookie);
+    console.log('userNo:'+userNo)
 
     const script = document.createElement('script');
     script.src = "https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ch1xa6ojlq";

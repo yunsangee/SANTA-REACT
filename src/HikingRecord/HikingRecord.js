@@ -84,6 +84,7 @@ const HikingListRecord = () => {
     const userNo = Cookies.get('userNo');
     const nickNameFromCookie = Cookies.get('nickName');
     setnickName(nickNameFromCookie);
+    console.log('userNo, nickName'+userNo+nickName)
 
     axios.post(`https://www.dearmysanta.site/hiking/react/getHikingListRecord/${userNo}`)
       .then(response => {
@@ -92,6 +93,8 @@ const HikingListRecord = () => {
       })
       .catch(error => console.error('Error fetching data:', error));
   }, []);
+
+  console.log(nickName)
 
   const getSkyCondition = (code) => {
     const skyConditionCode = parseInt(code, 10);

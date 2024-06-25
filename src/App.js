@@ -18,6 +18,8 @@ function App() {
     setUserNo(userNoFromCookie);
   }, []);
 
+  console.log(userNo);
+
   if (userNo === null) {
     return <div>Loading...</div>; // 로딩 상태 표시
   }
