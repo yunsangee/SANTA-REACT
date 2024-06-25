@@ -66,6 +66,7 @@ const styles = {
     fontSize: '24px',
     cursor: 'pointer',
   },
+  
 };
 
 const NaverMap = () => {

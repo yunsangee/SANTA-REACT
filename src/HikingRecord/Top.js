@@ -68,10 +68,10 @@ const LogoName = styled.h1`
   font-weight: bold;
   cursor: pointer;
   transition: color 0.3s ease;
-  color: rgb(60, 170, 60); /* Green color for logo */
+  color: rgb(60, 170, 60); /* Green color for the SANTA text */
 
   &:hover {
-    color: rgb(80, 190, 80);
+    color: rgb(80, 190, 80); /* Slightly different green color on hover */
   }
 `;
 
@@ -100,9 +100,10 @@ const UserProfileIcon = styled.i`
 const LoginButtonIcon = styled.i`
   cursor: pointer;
   transition: color 0.3s ease;
+  color: rgb(60, 170, 60); /* Green color for the login/logout text */
 
   &:hover {
-    color: rgb(60, 170, 60);
+    color: rgb(80, 190, 80);
   }
 `;
 

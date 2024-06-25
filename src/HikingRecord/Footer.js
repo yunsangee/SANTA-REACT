@@ -6,7 +6,7 @@ const FooterContainer = styled.div`
   background-color: #343a40;
   color: rgba(255, 255, 255, 0.5);
   text-align: left !important;
-  margin-top: 20px;
+  margin-top: 50px;
   `;
 
 const FooterInner = styled.div`
