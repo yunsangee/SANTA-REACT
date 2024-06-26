@@ -9,7 +9,10 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST"]
+}));
 
 const io = socketIo(server, {
   cors: {
