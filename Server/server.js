@@ -101,6 +101,7 @@ app.get('/tts', async (req, res) => {
     const api_url = 'https://naveropenapi.apigw.ntruss.com/tts-premium/v1/tts';
 
     try {
+        console.log(`TTS 요청 받음: ${text}`);
         const response = await axios.post(api_url, `speaker=nara&volume=0&speed=0&pitch=0&text=${encodeURIComponent(text)}&format=mp3`, {
             headers: {
                 'X-NCP-APIGW-API-KEY-ID': client_id,
@@ -117,6 +118,7 @@ app.get('/tts', async (req, res) => {
         response.data.pipe(writeStream);
 
         writeStream.on('finish', () => {
+            console.log(`TTS 파일 생성 완료: ${filename}`);
             res.sendFile(filepath, (err) => {
                 if (err) {
                     console.error('Error sending the file:', err);
