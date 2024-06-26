@@ -48,7 +48,7 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
 
   const playTTS = async (message) => {
     try {
-      const response = await fetch(`https://www.dearmysanta.site/hikingAssist/tts?text=${encodeURIComponent(message)}`, {
+      const response = await fetch(`https://www.dearmysanta.site/tts?text=${encodeURIComponent(message)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
