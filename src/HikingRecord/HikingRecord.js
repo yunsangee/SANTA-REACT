@@ -16,7 +16,7 @@ const styles = {
     backgroundImage: `url(${imageUrl})`, 
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-     backgroundPositionY: '40%',
+     backgroundPositionY: '60%',
     filter: 'blur(5px)',
     height: '100%',
     position: 'absolute',
