@@ -41,7 +41,7 @@ const styles = {
     left: '10px',
     zIndex: '1000',
     padding: '10px 20px',
-    backgroundColor: 'transparent', // Change this line to remove the green background
+    backgroundColor: 'transparent',
     color: 'white',
     border: 'none',
     borderRadius: '5px',
@@ -99,9 +99,9 @@ const NaverMap = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userNoFromCookie = Cookies.get('userNo');
+    const userNoFromCookie = parseInt(Cookies.get('userNo'), 10);  
     setUserNo(userNoFromCookie);
-    console.log('userNo:'+userNo)
+    console.log('userNo:' + userNoFromCookie);
 
     const script = document.createElement('script');
     script.src = "https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ch1xa6ojlq";
@@ -323,8 +323,6 @@ const NaverMap = () => {
   };
 
   const saveHikingData = async (calculatedDescentTime) => {
-    const userNoFromCookie = parseInt(Cookies.get('userNo'), 10);  
-    
     const hikingData = {
       userNo: userNo,
       mountain: {
@@ -366,6 +364,7 @@ const NaverMap = () => {
   } else if (selectedTrailDifficulty === '0') {
     trailDifficultyText = '어려움';
   }
+
   return (
     <>
       <div className="map-container" style={styles.mapContainer}>

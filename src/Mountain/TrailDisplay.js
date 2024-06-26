@@ -7,6 +7,19 @@ export const displayTrailInfo = (map, trails, naver) => {
   const offsetStep = 20; // Offset step to separate overlapping markers and overlays
   let blinkingPolyline = null;
   let blinkInterval = null;
+  const minZoomLevel = 15; // Minimum zoom level to display trail info
+
+  // Add zoom_changed event listener to the map
+  naver.maps.Event.addListener(map, 'zoom_changed', () => {
+    const zoomLevel = map.getZoom();
+    customOverlays.forEach(({ customOverlay }) => {
+      if (zoomLevel >= minZoomLevel) {
+        customOverlay._element.querySelector('.card-body').style.display = 'block';
+      } else {
+        customOverlay._element.querySelector('.card-body').style.display = 'none';
+      }
+    });
+  });
 
   trails.forEach((trail, index) => {
     const path = trail.mountainTrailCoordinates.map(coord => new naver.maps.LatLng(coord[0], coord[1]));
@@ -50,7 +63,7 @@ export const displayTrailInfo = (map, trails, naver) => {
       window.setSelectedTrailDescent(${trail.descentTime});
       window.blinkPolyline(${index});
       console.log('Last coordinate of the trail:', {latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});">
-        <div class="card-body p-2">
+        <div class="card-body p-2" style="display: none;">
           <h6 class="card-title mb-1">등산난이도: ${trailDifficultyText}</h6>
           <p class="card-text mb-1"><strong>길이:</strong> ${trail.mountainTrailLength}m</p>
           <p class="card-text mb-1"><strong>등산시간:</strong> ${trail.expectedAscentTime}min</p>
@@ -89,10 +102,21 @@ export const displayTrailInfo = (map, trails, naver) => {
       blinkingPolyline.setVisible(true); // Ensure the last blinking polyline is visible
     }
     blinkingPolyline = customOverlays[index].polyline;
+    console.log('Blinking polyline:', blinkingPolyline);
     blinkInterval = setInterval(() => {
       blinkingPolyline.setVisible(!blinkingPolyline.getVisible());
     }, 500); // Toggle visibility every 500ms
   };
+
+  // Initialize overlay visibility based on current zoom level
+  const currentZoomLevel = map.getZoom();
+  customOverlays.forEach(({ customOverlay }) => {
+    if (currentZoomLevel >= minZoomLevel) {
+      customOverlay._element.querySelector('.card-body').style.display = 'block';
+    } else {
+      customOverlay._element.querySelector('.card-body').style.display = 'none';
+    }
+  });
 
   return customOverlays;
 };
