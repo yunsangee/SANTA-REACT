@@ -97,6 +97,7 @@ const NaverMap = () => {
   const [userNo, setUserNo] = useState(null);
 
   const navigate = useNavigate();
+  const zoomLevelThreshold = 15;
 
   useEffect(() => {
     const userNoFromCookie = parseInt(Cookies.get('userNo'), 10);  
@@ -118,6 +119,20 @@ const NaverMap = () => {
           const mapInstance = new naver.maps.Map('map', mapOptions);
           setMap(mapInstance);
           window.map = mapInstance;
+
+          // Add zoom_changed event listener
+          naver.maps.Event.addListener(mapInstance, 'zoom_changed', () => {
+            const currentZoom = mapInstance.getZoom();
+            console.log('Zoom level changed:', currentZoom);
+            if (currentZoom >= zoomLevelThreshold && visibleTrails) {
+              clearTrailInfo(visibleTrails.trails);
+              const newTrails = displayTrailInfo(mapInstance, mountains, naver);
+              setVisibleTrails({ mountainNo: mountains.mountainNo, trails: newTrails });
+            } else if (currentZoom < zoomLevelThreshold && visibleTrails) {
+              clearTrailInfo(visibleTrails.trails);
+              setVisibleTrails(null);
+            }
+          });
         };
 
         if (navigator.geolocation) {
@@ -269,8 +284,10 @@ const NaverMap = () => {
               clearTrailInfo(visibleTrails.trails);
             }
 
-            const newTrails = displayTrailInfo(map, mountain.mountainTrail, window.naver);
-            setVisibleTrails({ mountainNo: mountain.mountainNo, trails: newTrails });
+            if (map.getZoom() >= zoomLevelThreshold) {
+              const newTrails = displayTrailInfo(map, mountain.mountainTrail, window.naver);
+              setVisibleTrails({ mountainNo: mountain.mountainNo, trails: newTrails });
+            }
           }
         });
 
@@ -367,6 +384,7 @@ const NaverMap = () => {
   } else if (selectedTrailDifficulty === '0') {
     trailDifficultyText = '어려움';
   }
+
 
   return (
     <>

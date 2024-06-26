@@ -51,10 +51,10 @@ export const displayTrailInfo = (map, trails, naver) => {
       window.blinkPolyline(${trail.mountainTrailNo});
       console.log('Last coordinate of the trail:', {latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});">
         <div class="card-body p-2">
-          <h6 class="card-title mb-1">등산난이도: ${trailDifficultyText}</h6>
-          <p class="card-text mb-1"><strong>길이:</strong> ${trail.mountainTrailLength}m</p>
-          <p class="card-text mb-1"><strong>등산시간:</strong> ${trail.expectedAscentTime}min</p>
-          <p class="card-text mb-1"><strong>하산시간:</strong> ${trail.descentTime}min</p>
+          <h6 class="card-title mb-1" style="font-size: 12px;">등산난이도: ${trailDifficultyText}</h6>
+          <p class="card-text mb-1" style="font-size: 10px;"><strong>길이:</strong> ${trail.mountainTrailLength}m</p>
+          <p class="card-text mb-1" style="font-size: 10px;"><strong>등산시간:</strong> ${trail.expectedAscentTime}min</p>
+          <p class="card-text mb-1" style="font-size: 10px;"><strong>하산시간:</strong> ${trail.descentTime}min</p>
         </div>
       </div>
     `;
@@ -156,10 +156,11 @@ window.setSelectedTrailDescent = (descent) => {
 
 // Helper function to generate card style
 const getCardStyle = (index) => `
-  width: 14rem; 
-  padding: 8px; 
+  width: 10rem; /* Reduce card width */
+  padding: 4px; /* Reduce padding */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
   cursor: pointer; 
   z-index: ${1000 + index};
   border: 1px solid black; /* 검은색 선 추가 */
+  font-size: 10px; /* Reduce font size */
 `;
