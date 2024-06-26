@@ -48,19 +48,12 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
 
   const playTTS = async (message) => {
     try {
-      const response = await fetch(`https://www.dearmysanta.site/tts?text=${encodeURIComponent(message)}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
+      const response = await axios.get(`https://www.dearmysanta.site/tts`, {
+        params: { text: message },
+        responseType: 'blob',
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
+      const url = URL.createObjectURL(new Blob([response.data], { type: 'audio/mp3' }));
       audioRef.current.src = url;
       await audioRef.current.play();
     } catch (error) {
