@@ -291,7 +291,7 @@ const Top = () => {
       });
 
       $('#logout').on('click', () => {
-        handleLogout();
+        handleLogout(`${javaServerIp}/`);
       });
 
       // Toggle dropdown menus
