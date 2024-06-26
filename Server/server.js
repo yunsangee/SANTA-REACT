@@ -16,7 +16,8 @@ const io = socketIo(server, {
     origin: "*",
     methods: ["GET", "POST"]
   },
-  path: '/hikingAssist'
+  path: '/hikingAssist',
+  transports: ['websocket'] // WebSocket 사용을 강제합니다.
 });
 
 io.on('connection', (socket) => {
@@ -104,7 +105,7 @@ app.get('/tts', async (req, res) => {
       res.sendFile(filepath, (err) => {
         if (err) {
           console.error('Error sending the file:', err);
-          res.status(500).send('Error sending the file');
+          return res.status(500).send('Error sending the file');
         }
         fs.unlink(filepath, (err) => {
           if (err) {

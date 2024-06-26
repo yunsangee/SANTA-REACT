@@ -325,15 +325,17 @@ const NaverMap = () => {
   const saveHikingData = async (calculatedDescentTime) => {
     const hikingData = {
       userNo: userNo,
+      totalTime: time.toString(), // String 타입으로 변환
+      userDistance: distance, // Number 타입
+      ascentTime: ascentTime.toString(), // String 타입으로 변환
+      descentTime: calculatedDescentTime.toString(), // String 타입으로 변환
+      hikingDifficulty: parseInt(selectedTrailDifficulty, 10), // Number 타입
       mountain: {
         mountainName: selectedMountainName
       },
-      totalTime: time,
-      hikingDifficulty: selectedTrailDifficulty,
-      ascentTime,
-      descentTime: calculatedDescentTime,
-      userDistance: distance,
-      weather: { skyCondition }
+      weather: {
+        skyCondition: parseInt(skyCondition, 10) // Number 타입
+      }
     };
 
     console.log(hikingData);
