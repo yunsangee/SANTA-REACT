@@ -19,11 +19,11 @@ const io = socketIo(server, {
 app.use(cors());
 app.use(express.json());
 
-const client_id = 'ch1xa6ojlq'; 
-const client_secret = 'TWRQUkyUMJXG82q1vjJgE9IpxkYVSQCnwOfKSjbP'; 
+const client_id = 'ch1xa6ojlq';
+const client_secret = 'TWRQUkyUMJXG82q1vjJgE9IpxkYVSQCnwOfKSjbP';
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 io.on('connection', (socket) => {
