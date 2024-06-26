@@ -58,7 +58,7 @@ const Footer = () => {
               <h4 className="mb-3">회사 정보</h4>
               <p className="mb-2">주소: 서울 강남구 강남대로94길 20, 삼오빌딩 5층</p>
               <p className="mb-2">사업자 등록 번호: 328-85-02112</p>
-              <p className="mb-0">대표자: 김새봄</p>
+              <p className="mb-0">대표자: 이정한</p>
             </FooterItem>
           </div>
           <div className="col-lg-6 col-md-6">
