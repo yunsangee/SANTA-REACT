@@ -12,11 +12,15 @@ export const displayTrailInfo = (map, trails, naver) => {
   // Add zoom_changed event listener to the map
   naver.maps.Event.addListener(map, 'zoom_changed', () => {
     const zoomLevel = map.getZoom();
-    customOverlays.forEach(({ customOverlay }) => {
+    customOverlays.forEach(({ customOverlay, firstMarker }) => {
       if (zoomLevel >= minZoomLevel) {
+        customOverlay.setMap(map);
         customOverlay._element.querySelector('.card-body').style.display = 'block';
+        if (firstMarker) firstMarker.setMap(map);
       } else {
+        customOverlay.setMap(null);
         customOverlay._element.querySelector('.card-body').style.display = 'none';
+        if (firstMarker) firstMarker.setMap(null);
       }
     });
   });
@@ -75,7 +79,7 @@ export const displayTrailInfo = (map, trails, naver) => {
     const customOverlay = new CustomOverlay({
       content: customOverlayContent,
       position: path[0],
-      map: map,
+      map: null,
       offset: { x: 0, y: -markerSize - offsetStep * index } // Apply an offset to separate overlapping markers and overlays
     });
 
@@ -85,7 +89,7 @@ export const displayTrailInfo = (map, trails, naver) => {
     const firstCoordinate = trail.mountainTrailCoordinates[0];
     const firstMarker = new naver.maps.Marker({
       position: new naver.maps.LatLng(firstCoordinate[0], firstCoordinate[1]),
-      map: map,
+      map: null,
       icon: {
         url: 'https://maps.google.com/mapfiles/kml/paddle/blu-blank.png',
         scaledSize: new naver.maps.Size(markerSize, markerSize)
@@ -104,17 +108,23 @@ export const displayTrailInfo = (map, trails, naver) => {
     blinkingPolyline = customOverlays[index].polyline;
     console.log('Blinking polyline:', blinkingPolyline);
     blinkInterval = setInterval(() => {
-      blinkingPolyline.setVisible(!blinkingPolyline.getVisible());
+      if (blinkingPolyline) {
+        blinkingPolyline.setVisible(!blinkingPolyline.getVisible());
+      }
     }, 500); // Toggle visibility every 500ms
   };
 
   // Initialize overlay visibility based on current zoom level
   const currentZoomLevel = map.getZoom();
-  customOverlays.forEach(({ customOverlay }) => {
+  customOverlays.forEach(({ customOverlay, firstMarker }) => {
     if (currentZoomLevel >= minZoomLevel) {
+      customOverlay.setMap(map);
       customOverlay._element.querySelector('.card-body').style.display = 'block';
+      if (firstMarker) firstMarker.setMap(map);
     } else {
+      customOverlay.setMap(null);
       customOverlay._element.querySelector('.card-body').style.display = 'none';
+      if (firstMarker) firstMarker.setMap(null);
     }
   });
 
@@ -182,4 +192,5 @@ const getCardStyle = (index) => `
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
   cursor: pointer; 
   z-index: ${1000 + index};
+  border: 1px solid black; /* 검은색 선 추가 */
 `;
