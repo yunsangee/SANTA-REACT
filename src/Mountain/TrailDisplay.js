@@ -48,7 +48,7 @@ export const displayTrailInfo = (map, trails, naver) => {
       window.setSelectedTrailLength(${trail.mountainTrailLength});
       window.setSelectedTrailAscent(${trail.expectedAscentTime});
       window.setSelectedTrailDescent(${trail.descentTime});
-      window.blinkPolyline(${index});
+      window.blinkPolyline(${trail.mountainTrailNo});
       console.log('Last coordinate of the trail:', {latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});">
         <div class="card-body p-2">
           <h6 class="card-title mb-1">등산난이도: ${trailDifficultyText}</h6>
@@ -66,7 +66,7 @@ export const displayTrailInfo = (map, trails, naver) => {
       offset: { x: 0, y: -markerSize - offsetStep * index } // Apply an offset to separate overlapping markers and overlays
     });
 
-    customOverlays.push({ polyline, customOverlay });
+    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay });
 
     // Add a small marker at the first coordinate of the trail with an offset
     const firstCoordinate = trail.mountainTrailCoordinates[0];
@@ -80,18 +80,21 @@ export const displayTrailInfo = (map, trails, naver) => {
       zIndex: 100 + index // Ensure markers are drawn above the polyline
     });
 
-    customOverlays.push({ polyline, customOverlay, firstMarker });
+    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay, firstMarker });
   });
 
-  window.blinkPolyline = (index) => {
+  window.blinkPolyline = (trailNo) => {
     if (blinkingPolyline) {
       clearInterval(blinkInterval);
       blinkingPolyline.setVisible(true); // Ensure the last blinking polyline is visible
     }
-    blinkingPolyline = customOverlays[index].polyline;
-    blinkInterval = setInterval(() => {
-      blinkingPolyline.setVisible(!blinkingPolyline.getVisible());
-    }, 500); // Toggle visibility every 500ms
+    const overlay = customOverlays.find(overlay => overlay.trailNo === trailNo);
+    if (overlay) {
+      blinkingPolyline = overlay.polyline;
+      blinkInterval = setInterval(() => {
+        blinkingPolyline.setVisible(!blinkingPolyline.getVisible());
+      }, 500); // Toggle visibility every 500ms
+    }
   };
 
   return customOverlays;

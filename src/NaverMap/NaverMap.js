@@ -136,16 +136,16 @@ const NaverMap = () => {
           initializeMap(37.5666805, 126.9784147);
         }
 
-          const socketInstance = io('https://www.dearmysanta.site', {
-            path: '/hikingAssist',
-            reconnection: true,
-            reconnectionAttempts: 5,
-            reconnectionDelay: 1000,
-            reconnectionDelayMax: 5000,
-            timeout: 2000,
-          });
-      
-          setSocket(socketInstance);
+        const socketInstance = io('https://www.dearmysanta.site', {
+          path: '/hikingAssist',
+          reconnection: true,
+          reconnectionAttempts: 5,
+          reconnectionDelay: 1000,
+          reconnectionDelayMax: 5000,
+          timeout: 2000,
+        });
+
+        setSocket(socketInstance);
 
         socketInstance.on('connect', () => {
           console.log('Connected to server');
