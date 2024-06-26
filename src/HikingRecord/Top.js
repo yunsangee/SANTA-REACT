@@ -216,7 +216,7 @@ const Top = () => {
   };
 
   const profileImage = Cookies.get('npic');
-  const profileImageUrl = profileImage ? `https://kr.object.ncloudstorage.com/your-bucket-name/${profileImage}` : '';
+  const profileImageUrl = profileImage ? `https://kr.object.ncloudstorage.com/santabucket2/${profileImage}` : '';
 
   useEffect(() => {
     // jQuery for handling click events and dropdowns
