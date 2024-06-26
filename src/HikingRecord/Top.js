@@ -215,6 +215,9 @@ const Top = () => {
     window.location.reload();
   };
 
+  const profileImage = Cookies.get('npic');
+  const profileImageUrl = profileImage ? `https://object-storage-url/${profileImage}` : '';
+
   useEffect(() => {
     // jQuery for handling click events and dropdowns
     $(function() {
@@ -475,11 +478,11 @@ const Top = () => {
               {userNo ? (
                 <div className="dropdown">
                   <a className="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <UserImage src={sessionStorage.getItem('profileImage')} alt="User Image"/>
+                    <UserImage src={profileImageUrl} alt="User Image"/>
                   </a>
                   <DropdownMenu className="dropdown-menu dropdown-menu-left profile" aria-labelledby="navbarDropdown">
                     <DropdownHeader className="dropdown-header">
-                      <img src={sessionStorage.getItem('profileImage')} alt="User Image"/>
+                      <img src={profileImageUrl} alt="User Image"/>
                       <div className="info">
                         <div className="name">{sessionStorage.getItem('userName')}</div>
                         <div className="email">{sessionStorage.getItem('userId')}</div>

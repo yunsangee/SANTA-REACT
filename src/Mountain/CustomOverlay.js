@@ -26,7 +26,7 @@ export const createCustomOverlay = (naver) => {
     }
 
     onRemove() {
-      if (this._element.parentNode) {
+      if (this._element && this._element.parentNode) {
         this._element.parentNode.removeChild(this._element);
         this._element = null;
       }
