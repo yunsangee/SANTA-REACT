@@ -12,8 +12,8 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  backgroundBlur: {
-    backgroundImage: 'url(/images/header-background.png)',
+  backgroundBlur: (imageUrl) => ({
+    backgroundImage: `url(${imageUrl})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     filter: 'blur(5px)',
@@ -23,7 +23,7 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-  },
+  }),
   pageTitle: {
     position: 'relative',
     zIndex: 1,
@@ -53,11 +53,6 @@ const styles = {
   mountainNameDivider: {
     margin: '10px 0',
   },
-  cardHover: {
-    border: '2px solid #007bff',
-    boxShadow: '0 4px 8px rgba(0, 123, 255, 0.2)',
-    transition: '0.3s',
-  },
   backToTop: {
     position: 'fixed',
     right: '30px',
@@ -78,13 +73,15 @@ const styles = {
 const HikingListRecord = () => {
   const [hikingList, setHikingList] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [nickName, setnickName] = useState('');
+  const [nickName, setNickName] = useState('');
+
+  const imageUrl = 'https://kr.object.ncloudstorage.com/santabucket2/139_0_1';
 
   useEffect(() => {
     const userNo = Cookies.get('userNo');
     const nickNameFromCookie = Cookies.get('nickName');
-    setnickName(nickNameFromCookie);
-    console.log('userNo, nickName'+userNo+nickName)
+    setNickName(nickNameFromCookie);
+    console.log('userNo, nickName' + userNo + nickName);
 
     axios.post(`https://www.dearmysanta.site/hiking/react/getHikingListRecord/${userNo}`)
       .then(response => {
@@ -94,7 +91,7 @@ const HikingListRecord = () => {
       .catch(error => console.error('Error fetching data:', error));
   }, []);
 
-  console.log(nickName)
+  console.log(nickName);
 
   const getSkyCondition = (code) => {
     const skyConditionCode = parseInt(code, 10);
@@ -175,7 +172,7 @@ const HikingListRecord = () => {
   return (
     <div>
       <div className="container-fluid page-header py-5 d-flex align-items-center justify-content-center" style={styles.pageHeader}>
-        <div className="background-blur" style={styles.backgroundBlur}></div>
+        <div className="background-blur" style={styles.backgroundBlur(imageUrl)}></div>
         <h1 className="text-center text-white display-6" style={styles.pageTitle}>{nickName}의 등산 기록</h1>
       </div>
 
@@ -201,9 +198,8 @@ const HikingListRecord = () => {
                     className={`col-md-6 col-lg-4 mb-4`}
                     key={record.hrNo}
                     onClick={() => handleSelect(record.hrNo)}
-                    style={selectedItems.includes(record.hrNo) ? styles.cardHover : null}
                   >
-                    <div className={`card h-100 fruite-item ${selectedItems.includes(record.hrNo) ? 'border-primary' : ''}`} style={styles.card}>
+                    <div className={`card h-100 fruite-item`} style={styles.card}>
                       <div className="card-body light-green-border position-relative">
                         <div className="hiking-date" style={styles.hikingDate}>{record.hikingDate}</div>
                         <h3 className="mountain-name" style={styles.mountainName}>{record.mountain?.mountainName}</h3>

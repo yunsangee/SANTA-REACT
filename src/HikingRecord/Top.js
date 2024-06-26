@@ -216,7 +216,7 @@ const Top = () => {
   };
 
   const profileImage = Cookies.get('npic');
-  const profileImageUrl = profileImage ? `https://object-storage-url/${profileImage}` : '';
+  const profileImageUrl = profileImage ? `https://kr.object.ncloudstorage.com/your-bucket-name/${profileImage}` : '';
 
   useEffect(() => {
     // jQuery for handling click events and dropdowns
@@ -283,7 +283,7 @@ const Top = () => {
       });
 
       $('#myHikingRecord').on('click', () => {
-        handleNavigation(`${javaServerIp}/myHikingRecord`);
+        handleNavigation(`${javaServerIp}/HikingRecord`);
       });
 
       $('#qna').on('click', () => {
