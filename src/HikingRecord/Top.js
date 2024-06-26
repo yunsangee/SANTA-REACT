@@ -215,7 +215,7 @@ const Top = () => {
     window.location.reload();
   };
 
-  const profileImage = Cookies.get('npic');
+  const profileImage = Cookies.get('profile');
   const profileImageUrl = profileImage ? `${profileImage}` : '';
 
   useEffect(() => {
