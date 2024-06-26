@@ -7,25 +7,17 @@ export const createCustomOverlay = (naver) => {
       this._element.style.position = 'absolute';
       this._element.style.zIndex = '100';
       this._position = options.position;
-      this._offset = options.offset || { x: 0, y: 0 };
+      this._offset = options.offset || { x: 0, y: 0 }; 
       this.setMap(options.map);
     }
 
     onAdd() {
-      const panes = this.getPanes();
-      if (panes && panes.overlayLayer) {
-        panes.overlayLayer.appendChild(this._element);
-      } else {
-        console.error('Failed to get panes or overlayLayer is null');
-      }
+      const overlayLayer = this.getPanes().overlayLayer;
+      overlayLayer.appendChild(this._element);
     }
 
     draw() {
       const projection = this.getProjection();
-      if (!projection) {
-        console.error('Failed to get projection');
-        return;
-      }
       const position = this._position;
       const pixelPosition = projection.fromCoordToOffset(position);
 

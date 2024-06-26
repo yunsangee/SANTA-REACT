@@ -3,34 +3,10 @@ import { createCustomOverlay } from './CustomOverlay';
 export const displayTrailInfo = (map, trails, naver) => {
   const CustomOverlay = createCustomOverlay(naver);
   const customOverlays = [];
-  const markers = [];
   const markerSize = 10; // Small size marker
   const offsetStep = 20; // Offset step to separate overlapping markers and overlays
   let blinkingPolyline = null;
   let blinkInterval = null;
-  const minZoomLevel = 15; // Minimum zoom level to display trail info
-
-  // Add zoom_changed event listener to the map
-  naver.maps.Event.addListener(map, 'zoom_changed', () => {
-    const zoomLevel = map.getZoom();
-    customOverlays.forEach((customOverlay) => {
-      if (zoomLevel >= minZoomLevel) {
-        customOverlay.setMap(map);
-        customOverlay._element.querySelector('.card-body').style.display = 'block';
-      } else {
-        customOverlay.setMap(null);
-        customOverlay._element.querySelector('.card-body').style.display = 'none';
-      }
-    });
-
-    markers.forEach((firstMarker) => {
-      if (zoomLevel >= minZoomLevel) {
-        firstMarker.setMap(map);
-      } else {
-        firstMarker.setMap(null);
-      }
-    });
-  });
 
   trails.forEach((trail, index) => {
     const path = trail.mountainTrailCoordinates.map(coord => new naver.maps.LatLng(coord[0], coord[1]));
@@ -74,7 +50,7 @@ export const displayTrailInfo = (map, trails, naver) => {
       window.setSelectedTrailDescent(${trail.descentTime});
       window.blinkPolyline(${index});
       console.log('Last coordinate of the trail:', {latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});">
-        <div class="card-body p-2" style="display: none;">
+        <div class="card-body p-2">
           <h6 class="card-title mb-1">등산난이도: ${trailDifficultyText}</h6>
           <p class="card-text mb-1"><strong>길이:</strong> ${trail.mountainTrailLength}m</p>
           <p class="card-text mb-1"><strong>등산시간:</strong> ${trail.expectedAscentTime}min</p>
@@ -86,17 +62,17 @@ export const displayTrailInfo = (map, trails, naver) => {
     const customOverlay = new CustomOverlay({
       content: customOverlayContent,
       position: path[0],
-      map: null,
+      map: map,
       offset: { x: 0, y: -markerSize - offsetStep * index } // Apply an offset to separate overlapping markers and overlays
     });
 
-    customOverlays.push(customOverlay);
+    customOverlays.push({ polyline, customOverlay });
 
     // Add a small marker at the first coordinate of the trail with an offset
     const firstCoordinate = trail.mountainTrailCoordinates[0];
     const firstMarker = new naver.maps.Marker({
       position: new naver.maps.LatLng(firstCoordinate[0], firstCoordinate[1]),
-      map: null,
+      map: map,
       icon: {
         url: 'https://maps.google.com/mapfiles/kml/paddle/blu-blank.png',
         scaledSize: new naver.maps.Size(markerSize, markerSize)
@@ -104,7 +80,7 @@ export const displayTrailInfo = (map, trails, naver) => {
       zIndex: 100 + index // Ensure markers are drawn above the polyline
     });
 
-    markers.push(firstMarker);
+    customOverlays.push({ polyline, customOverlay, firstMarker });
   });
 
   window.blinkPolyline = (index) => {
@@ -113,43 +89,19 @@ export const displayTrailInfo = (map, trails, naver) => {
       blinkingPolyline.setVisible(true); // Ensure the last blinking polyline is visible
     }
     blinkingPolyline = customOverlays[index].polyline;
-    console.log('Blinking polyline:', blinkingPolyline);
     blinkInterval = setInterval(() => {
-      if (blinkingPolyline) {
-        blinkingPolyline.setVisible(!blinkingPolyline.getVisible());
-      }
+      blinkingPolyline.setVisible(!blinkingPolyline.getVisible());
     }, 500); // Toggle visibility every 500ms
   };
 
-  // Initialize overlay visibility based on current zoom level
-  const currentZoomLevel = map.getZoom();
-  customOverlays.forEach((customOverlay) => {
-    if (currentZoomLevel >= minZoomLevel) {
-      customOverlay.setMap(map);
-      customOverlay._element.querySelector('.card-body').style.display = 'block';
-    } else {
-      customOverlay.setMap(null);
-      customOverlay._element.querySelector('.card-body').style.display = 'none';
-    }
-  });
-
-  markers.forEach((firstMarker) => {
-    if (currentZoomLevel >= minZoomLevel) {
-      firstMarker.setMap(map);
-    } else {
-      firstMarker.setMap(null);
-    }
-  });
-
-  return { customOverlays, markers };
+  return customOverlays;
 };
 
-export const clearTrailInfo = ({ customOverlays, markers }) => {
-  customOverlays.forEach((customOverlay) => {
+export const clearTrailInfo = (overlays) => {
+  overlays.forEach(({ polyline, customOverlay, firstMarker }) => {
+    polyline.setMap(null);
     customOverlay.setMap(null);
-  });
-  markers.forEach((firstMarker) => {
-    firstMarker.setMap(null);
+    if (firstMarker) firstMarker.setMap(null); // Remove the first marker if it exists
   });
 };
 
