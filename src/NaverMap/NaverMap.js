@@ -112,7 +112,7 @@ const NaverMap = () => {
 
           // Add zoom_changed event listener
         // Add zoom_changed event listener
-naver.maps.Event.addListener(mapInstance, 'zoom_changed', () => {
+  naver.maps.Event.addListener(mapInstance, 'zoom_changed', () => {
   const currentZoom = mapInstance.getZoom();
   setZoomLevel(currentZoom); // Update zoom level state
   console.log('Zoom level changed:', currentZoom);
