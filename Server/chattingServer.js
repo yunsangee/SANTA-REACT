@@ -17,7 +17,8 @@ const io = socketIo(server, {
         origin: "*",
         methods: ["GET", "POST"]
     },
-     path: '/chatting'
+    path : '/chattingserver'
+
 });
 
 // app.use(cors());
