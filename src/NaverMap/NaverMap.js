@@ -8,32 +8,12 @@ import HikingAlert from '../Mountain/HikingAlert';
 import { displayTrailInfo, clearTrailInfo } from '../Mountain/TrailDisplay';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
 
 const styles = {
-  containerFluid: {
-    padding: '0',
-  },
   mapContainer: {
     marginTop: '110px',
     position: 'relative',
-  },
-  topBorderLine: {
-    width: '100%',
-    height: '5px',
-    backgroundColor: 'black',
-    position: 'absolute',
-    left: '0',
-    zIndex: '1000',
-    top: '0',
-  },
-  bottomBorderLine: {
-    width: '100%',
-    height: '5px',
-    backgroundColor: 'black',
-    position: 'absolute',
-    left: '0',
-    zIndex: '1000',
-    bottom: '0',
   },
   buttonStyle: {
     position: 'absolute',
@@ -50,10 +30,6 @@ const styles = {
     cursor: 'pointer',
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     transition: 'background-color 0.3s ease, transform 0.2s ease',
-  },
-  buttonHoverStyle: {
-    backgroundColor: '#0056b3',
-    transform: 'translateY(-2px)',
   },
   settingButtonStyle: {
     position: 'absolute',
@@ -108,9 +84,10 @@ const NaverMap = () => {
   const [trailDescent, setTrailDescent] = useState(0);
   const [userNo, setUserNo] = useState(null);
   const [locationUpdate, setLocationUpdate] = useState(null); // Add state to track location updates
+  const [zoomLevel, setZoomLevel] = useState(14); // Add state to track zoom level
 
   const navigate = useNavigate();
-  const zoomLevelThreshold = 14;
+  const zoomLevelThreshold = 13;
 
   useEffect(() => {
     const userNoFromCookie = parseInt(Cookies.get('userNo'), 10);  
@@ -136,6 +113,7 @@ const NaverMap = () => {
           // Add zoom_changed event listener
           naver.maps.Event.addListener(mapInstance, 'zoom_changed', () => {
             const currentZoom = mapInstance.getZoom();
+            setZoomLevel(currentZoom); // Update zoom level state
             console.log('Zoom level changed:', currentZoom);
             if (currentZoom >= zoomLevelThreshold && visibleTrails) {
               clearTrailInfo(visibleTrails.trails);
@@ -313,13 +291,22 @@ const NaverMap = () => {
   }, [mountains, map, visibleTrails]);
 
   useEffect(() => {
-    window.setSelectedTrailDifficulty = setSelectedTrailDifficulty;
-    window.setSelectedTrailEndCoord = setSelectedTrailEnd;
-    window.setSelectedTrailCoordinates = setTrailCoordinates;
-    window.setSelectedTrailLength = setTrailLength;
-    window.setSelectedTrailAscent = setTrailAscent;
-    window.setSelectedTrailDescent = setTrailDescent;
-  }, []);
+    if (zoomLevel >= zoomLevelThreshold) {
+      window.setSelectedTrailDifficulty = setSelectedTrailDifficulty;
+      window.setSelectedTrailEndCoord = setSelectedTrailEnd;
+      window.setSelectedTrailCoordinates = setTrailCoordinates;
+      window.setSelectedTrailLength = setTrailLength;
+      window.setSelectedTrailAscent = setTrailAscent;
+      window.setSelectedTrailDescent = setTrailDescent;
+    } else {
+      window.setSelectedTrailDifficulty = () => {};
+      window.setSelectedTrailEndCoord = () => {};
+      window.setSelectedTrailCoordinates = () => {};
+      window.setSelectedTrailLength = () => {};
+      window.setSelectedTrailAscent = () => {};
+      window.setSelectedTrailDescent = () => {};
+    }
+  }, [zoomLevel]);
 
   const handleHikingStatusChange = () => {
     if (hikingStatus === 'notStarted') {
@@ -378,8 +365,19 @@ const NaverMap = () => {
           'Content-Type': 'application/json'
         }
       });
+      Swal.fire({
+        icon: 'success',
+        title: '등산 정보가 기록되었습니다.',
+        showConfirmButton: false,
+        timer: 1500
+      });
       console.log('Hiking data saved successfully.');
     } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: '기록에 실패하였습니다.',
+        text: error.message,
+      });
       console.error('Error saving hiking data:', error.message);
     }
   };
