@@ -5,7 +5,7 @@ const cors = require('cors');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-const request = require('request');  // Add this line
+const request = require('request');
 
 const app = express();
 const server = http.createServer(app);
@@ -81,44 +81,49 @@ io.on('connection', (socket) => {
   });
 });
 
-const client_id = 'ch1xa6ojlq'; 
-const client_secret = 'TWRQUkyUMJXG82q1vjJgE9IpxkYVSQCnwOfKSjbP'; 
+const client_id = 'ch1xa6ojlq';
+const client_secret = 'TWRQUkyUMJXG82q1vjJgE9IpxkYVSQCnwOfKSjbP';
 
 app.get('/hikingAssist/tts', function(req, res) {
-  const text = req.query.text || '좋은 하루 되세요';
+  const text = decodeURIComponent(req.query.text || '좋은 하루 되세요'); // URL 인코딩 해제
   const api_url = 'https://naveropenapi.apigw.ntruss.com/tts-premium/v1/tts';
 
   const options = {
     url: api_url,
     form: { speaker: 'nara', volume: '0', speed: '0', pitch: '0', text: text, format: 'mp3' },
-    headers: { 
-      'X-NCP-APIGW-API-KEY-ID': client_id, 
-      'X-NCP-APIGW-API-KEY': client_secret 
+    headers: {
+      'X-NCP-APIGW-API-KEY-ID': client_id,
+      'X-NCP-APIGW-API-KEY': client_secret
     },
+    encoding: null // Ensure response is treated as binary
   };
 
-  const writeStream = fs.createWriteStream(`./tts_${Date.now()}.mp3`);
-  const _req = request.post(options)
+  const filePath = path.join(__dirname, `tts_${Date.now()}.mp3`);
+  const writeStream = fs.createWriteStream(filePath);
+
+  request.post(options)
     .on('response', function(response) {
-      console.log(response.statusCode); 
+      console.log(response.statusCode);
       console.log(response.headers['content-type']);
     })
     .pipe(writeStream)
     .on('finish', () => {
-      res.sendFile(writeStream.path, (err) => {
+      res.sendFile(filePath, (err) => {
         if (err) {
           console.error('Error sending the file:', err);
           res.status(500).send('Error sending the file');
         }
-        fs.unlink(writeStream.path, (err) => {
+        fs.unlink(filePath, (err) => {
           if (err) {
             console.error('Error deleting the file:', err);
           }
         });
       });
+    })
+    .on('error', (err) => {
+      console.error('Error during TTS request:', err);
+      res.status(500).send('Error during TTS request');
     });
-  
-  _req.pipe(res);
 });
 
 const PORT = process.env.PORT || 3001;
