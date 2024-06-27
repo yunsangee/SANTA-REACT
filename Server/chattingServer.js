@@ -127,6 +127,14 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('disconnect', () => {
+        console.log(`Client disconnected: ${socket.id}`);  // 클라이언트가 연결을 종료할 때 로그 기록
+    });
+
+    socket.on('error', (err) => {
+        console.log(`Client error: ${socket.id}, error: ${err.message}`);  // WebSocket 오류 발생 시 로그 기록
+    });
+
 });
 
 server.listen(3002, () => {
