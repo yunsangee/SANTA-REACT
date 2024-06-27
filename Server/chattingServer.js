@@ -16,8 +16,8 @@ const io = socketIo(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
-    },
-    path : '/chattingserver'
+    }//,
+    // path : '/chattingserver'
 
 });
 
@@ -47,7 +47,8 @@ const chatSchema = new mongoose.Schema({
 const Chat = mongoose.model('Chat', chatSchema);
 
 // 채팅방 생성 핸들러
-app.post('/chattingserver/createChattingRoom', async (req, res) => {
+//app.post('/chattingserver/createChattingRoom', async (req, res) => {
+app.post('/createChattingRoom', async (req, res) => {
     const { roomNo } = req.body;
     
     const existingRoom = await Chat.findOne({ roomNo });
