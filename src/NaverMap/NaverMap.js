@@ -111,19 +111,21 @@ const NaverMap = () => {
           window.map = mapInstance;
 
           // Add zoom_changed event listener
-          naver.maps.Event.addListener(mapInstance, 'zoom_changed', () => {
-            const currentZoom = mapInstance.getZoom();
-            setZoomLevel(currentZoom); // Update zoom level state
-            console.log('Zoom level changed:', currentZoom);
-            if (currentZoom >= zoomLevelThreshold && visibleTrails) {
-              clearTrailInfo(visibleTrails.trails);
-              const newTrails = displayTrailInfo(mapInstance, mountains, naver, currentZoom);
-              setVisibleTrails({ mountainNo: mountains.mountainNo, trails: newTrails });
-            } else if (currentZoom < zoomLevelThreshold && visibleTrails) {
-              clearTrailInfo(visibleTrails.trails);
-              setVisibleTrails(null);
-            }
-          });
+        // Add zoom_changed event listener
+naver.maps.Event.addListener(mapInstance, 'zoom_changed', () => {
+  const currentZoom = mapInstance.getZoom();
+  setZoomLevel(currentZoom); // Update zoom level state
+  console.log('Zoom level changed:', currentZoom);
+  if (currentZoom >= zoomLevelThreshold && visibleTrails) {
+    clearTrailInfo(visibleTrails.trails);
+    const newTrails = displayTrailInfo(mapInstance, mountains, naver, currentZoom);
+    setVisibleTrails({ mountainNo: mountains.mountainNo, trails: newTrails });
+  } else if (currentZoom < zoomLevelThreshold && visibleTrails) {
+    clearTrailInfo(visibleTrails.trails);
+    setVisibleTrails(null);
+  }
+});
+
         };
 
         if (navigator.geolocation) {
@@ -254,7 +256,7 @@ const NaverMap = () => {
           map: map,
           title: mountain.mountainName,
           icon: {
-            url: 'https://kr.object.ncloudstorage.com/santabucket2/trace.svg',
+            url: 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png',
             scaledSize: new window.naver.maps.Size(20, 20)
           }
         });
@@ -309,7 +311,6 @@ const NaverMap = () => {
   }, [zoomLevel]);
 
   const handleHikingStatusChange = () => {
-
     if (typeof window.stopBlinkingPolyline === 'function') {
       window.stopBlinkingPolyline(); // Stop blinking polyline when hiking starts
     } else {
@@ -321,7 +322,7 @@ const NaverMap = () => {
       });
       return; // Exit the function if stopBlinkingPolyline is not defined
     }
-
+    
     if (hikingStatus === 'notStarted') {
       setHikingStatus('hiking');
       startTimer();
