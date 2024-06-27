@@ -17,7 +17,7 @@ const io = socketIo(server, {
         origin: "*",
         methods: ["GET", "POST"]
     },
-    path : '/chattingserver'
+    path : '/chattingserver/'
 
 });
 
