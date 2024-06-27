@@ -21,7 +21,7 @@ const io = socketIo(server, {
 
 });
 
-// app.use(cors());
+app.use(cors());
 app.use(bodyParser.json());
 
 const properties = PropertiesReader(path.join(__dirname, 'common.properties'));
