@@ -241,6 +241,10 @@ const Top = () => {
         handleNavigation(`${reactServerIp}`);
       });
 
+      $('#meetingChat').on('click', () => {
+        handleNavigation(`${javaServerIp}/chatting/getChattingRoomList`);
+      });
+
       $('#loginButton').on('click', () => {
         handleNavigation(`${javaServerIp}/user/login`);
       });
@@ -283,11 +287,11 @@ const Top = () => {
       });
 
       $('#myHikingRecord').on('click', () => {
-        handleNavigation(`${javaServerIp}/HikingRecord`);
+        handleNavigation(`${javaServerIp}/hikingguide/HikingRecord`);
       });
 
       $('#qna').on('click', () => {
-        handleNavigation(`${javaServerIp}/user/getQna`);
+        handleNavigation(`${javaServerIp}/user/getQnaList`);
       });
 
       $('#logout').on('click', () => {
@@ -463,6 +467,18 @@ const Top = () => {
                   모임게시판
                 </NavLink>
               </li>
+
+              <li className="nav-item">
+                <NavLink
+                  href="#"
+                  id="meetingChat"
+                  className="nav-link"
+                  onClick={() => handleNavigation(`${javaServerIp}/chatting/getChattingRoomList`)}
+                >
+                  모임채팅
+                </NavLink>
+              </li>
+
               <li className="nav-item">
                 <NavLink
                   href="#"

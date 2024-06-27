@@ -100,7 +100,7 @@ app.get('/tts', function(req, res) {
   const writeStream = fs.createWriteStream(`./tts_${Date.now()}.mp3`);
   const _req = request.post(options)
     .on('response', function(response) {
-      console.log(response.statusCode); // 200
+      console.log(response.statusCode); 
       console.log(response.headers['content-type']);
     })
     .pipe(writeStream)

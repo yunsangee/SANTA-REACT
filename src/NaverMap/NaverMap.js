@@ -67,6 +67,18 @@ const styles = {
     fontSize: '24px',
     cursor: 'pointer',
   },
+  locateButtonStyle: {
+    position: 'absolute',
+    bottom: '50px',
+    right: '10px',
+    zIndex: '1000',
+    padding: '10px',
+    backgroundColor: 'white',
+    border: 'none',
+    borderRadius: '50%',
+    fontSize: '24px',
+    cursor: 'pointer',
+  },
 };
 
 const NaverMap = () => {
@@ -95,9 +107,10 @@ const NaverMap = () => {
   const [trailAscent, setTrailAscent] = useState(0);
   const [trailDescent, setTrailDescent] = useState(0);
   const [userNo, setUserNo] = useState(null);
+  const [locationUpdate, setLocationUpdate] = useState(null); // Add state to track location updates
 
   const navigate = useNavigate();
-  const zoomLevelThreshold = 15;
+  const zoomLevelThreshold = 14;
 
   useEffect(() => {
     const userNoFromCookie = parseInt(Cookies.get('userNo'), 10);  
@@ -113,7 +126,7 @@ const NaverMap = () => {
         const initializeMap = (lat, lon) => {
           const mapOptions = {
             center: new naver.maps.LatLng(lat, lon),
-            zoom: 15,
+            zoom: 14,
             mapTypeControl: true
           };
           const mapInstance = new naver.maps.Map('map', mapOptions);
@@ -126,7 +139,7 @@ const NaverMap = () => {
             console.log('Zoom level changed:', currentZoom);
             if (currentZoom >= zoomLevelThreshold && visibleTrails) {
               clearTrailInfo(visibleTrails.trails);
-              const newTrails = displayTrailInfo(mapInstance, mountains, naver);
+              const newTrails = displayTrailInfo(mapInstance, mountains, naver, currentZoom);
               setVisibleTrails({ mountainNo: mountains.mountainNo, trails: newTrails });
             } else if (currentZoom < zoomLevelThreshold && visibleTrails) {
               clearTrailInfo(visibleTrails.trails);
@@ -168,6 +181,7 @@ const NaverMap = () => {
 
         socketInstance.on('locationUpdate', (locations) => {
           console.log('Location update received:', locations);
+          setLocationUpdate(locations); // Update state to trigger rerender
         });
 
         socketInstance.on('disconnect', () => {
@@ -285,7 +299,7 @@ const NaverMap = () => {
             }
 
             if (map.getZoom() >= zoomLevelThreshold) {
-              const newTrails = displayTrailInfo(map, mountain.mountainTrail, window.naver);
+              const newTrails = displayTrailInfo(map, mountain.mountainTrail, window.naver, map.getZoom());
               setVisibleTrails({ mountainNo: mountain.mountainNo, trails: newTrails });
             }
           }
@@ -376,6 +390,35 @@ const NaverMap = () => {
     if (hikingStatus === 'descending') return '하산완료';
   };
 
+  const handleLocateMe = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const newLocation = new window.naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        map.setCenter(newLocation);
+
+        if (currentMarker) {
+          currentMarker.setMap(null);
+        }
+
+        const marker = new window.naver.maps.Marker({
+          position: newLocation,
+          map: map,
+          title: 'Your Location',
+          icon: {
+            url: 'https://maps.google.com/mapfiles/kml/paddle/blu-blank.png',
+            scaledSize: new window.naver.maps.Size(23, 23)
+          }
+        });
+        setCurrentMarker(marker);
+
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+      }, (error) => {
+        console.error('Geolocation failed!', error);
+      });
+    }
+  };
+
   let trailDifficultyText = '';
   if (selectedTrailDifficulty === '2') {
     trailDifficultyText = '쉬움';
@@ -384,7 +427,6 @@ const NaverMap = () => {
   } else if (selectedTrailDifficulty === '0') {
     trailDifficultyText = '어려움';
   }
-
 
   return (
     <>
@@ -397,6 +439,14 @@ const NaverMap = () => {
               style={styles.settingButtonStyle}
             >
               ⚙️
+            </button>
+          </div>
+          <div style={styles.locateButtonStyle}>
+            <button 
+              onClick={handleLocateMe}
+              style={styles.locateButtonStyle}
+            >
+              📍
             </button>
           </div>
         </div>

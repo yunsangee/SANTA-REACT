@@ -1,6 +1,6 @@
 import { createCustomOverlay } from './CustomOverlay';
 
-export const displayTrailInfo = (map, trails, naver) => {
+export const displayTrailInfo = (map, trails, naver, currentZoom) => {
   const CustomOverlay = createCustomOverlay(naver);
   const customOverlays = [];
   const markerSize = 10; // Small size marker
@@ -63,7 +63,8 @@ export const displayTrailInfo = (map, trails, naver) => {
       content: customOverlayContent,
       position: path[0],
       map: map,
-      offset: { x: 0, y: -markerSize - offsetStep * index } // Apply an offset to separate overlapping markers and overlays
+      offset: { x: 0, y: -markerSize - offsetStep * index },
+      visible: currentZoom > 13 // Add visibility condition based on zoom level
     });
 
     customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay });
