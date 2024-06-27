@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
 
 const styles = {
   pageHeader: {
@@ -16,7 +17,7 @@ const styles = {
     backgroundImage: `url(${imageUrl})`, 
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-     backgroundPositionY: '60%',
+    backgroundPositionY: '60%',
     filter: 'blur(5px)',
     height: '100%',
     position: 'absolute',
@@ -71,7 +72,7 @@ const styles = {
   }
 };
 
-const HikingListRecord = () => {
+const HikingAlert = () => {
   const [hikingList, setHikingList] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [nickName, setNickName] = useState('');
@@ -141,13 +142,27 @@ const HikingListRecord = () => {
     );
   };
 
-  const handleDeleteSelected = () => {
-    axios.post('https://www.dearmysanta.site/hiking/react/deleteHikingRecord', selectedItems)
-      .then(() => {
-        setHikingList(hikingList.filter(record => !selectedItems.includes(record.hrNo)));
-        setSelectedItems([]);
-      })
-      .catch(error => console.error('Error deleting records:', error));
+  const handleDeleteSelected = async () => {
+    try {
+      await axios.post('https://www.dearmysanta.site/hiking/react/deleteHikingRecord', selectedItems);
+      setHikingList(hikingList.filter(record => !selectedItems.includes(record.hrNo)));
+      setSelectedItems([]);
+      Swal.fire({
+        icon: 'success',
+        title: '삭제되었습니다',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    } catch (error) {
+      console.error('Error deleting records:', error);
+      Swal.fire({
+        icon: 'error',
+        title: '삭제에 실패하였습니다',
+        text: error.message,
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
   };
 
   useEffect(() => {
@@ -239,4 +254,4 @@ const HikingListRecord = () => {
   );
 };
 
-export default HikingListRecord;
+export default HikingAlert;

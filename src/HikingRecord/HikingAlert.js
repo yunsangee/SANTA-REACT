@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Toggle from 'react-toggle';
 import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
 
 const styles = {
     container: {
@@ -104,34 +105,45 @@ const HikingAlert = () => {
             meetingTime: event.target.value,
         });
     };
-
     const saveSettings = async () => {
         try {
-            // Update alert settings
-            const alertPayload = {
-                hikingAlertFlag: alertSettings.hikingAlertFlag,
-                destinationAlert: alertSettings.destinationAlert,
-                sunsetAlert: alertSettings.sunsetAlert,
-                locationOverAlert: alertSettings.locationOverAlert,
-                meetingTimeAlert: alertSettings.meetingTimeAlert,
-                userNo: userNo
-            };
-
-            await axios.post(`https://www.dearmysanta.site/hiking/react/updateAlertSetting/${userNo}`, alertPayload);
-
-            // Update meeting time
-            const meetingTimePayload = {
-                meetingTimeAlert: alertSettings.meetingTimeAlert,
-                meetingTime: alertSettings.meetingTime
-            };
-
-            await axios.post(`https://www.dearmysanta.site/hiking/react/updateMeetingTime/${userNo}`, meetingTimePayload);
-
-            alert('설정 되었습니다~');
+          // Update alert settings
+          const alertPayload = {
+            hikingAlertFlag: alertSettings.hikingAlertFlag,
+            destinationAlert: alertSettings.destinationAlert,
+            sunsetAlert: alertSettings.sunsetAlert,
+            locationOverAlert: alertSettings.locationOverAlert,
+            meetingTimeAlert: alertSettings.meetingTimeAlert,
+            userNo: userNo
+          };
+      
+          await axios.post(`https://www.dearmysanta.site/hiking/react/updateAlertSetting/${userNo}`, alertPayload);
+      
+          // Update meeting time
+          const meetingTimePayload = {
+            meetingTimeAlert: alertSettings.meetingTimeAlert,
+            meetingTime: alertSettings.meetingTime
+          };
+      
+          await axios.post(`https://www.dearmysanta.site/hiking/react/updateMeetingTime/${userNo}`, meetingTimePayload);
+      
+          Swal.fire({
+            icon: 'success',
+            title: '설정 되었습니다~',
+            showConfirmButton: false,
+            timer: 1500
+          });
         } catch (error) {
-            alert('다시 시도해주세요');
+          Swal.fire({
+            icon: 'error',
+            title: '다시 시도해주세요',
+            text: error.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
         }
-    };
+      };
+      
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error loading alert settings</div>;

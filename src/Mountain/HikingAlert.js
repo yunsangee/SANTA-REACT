@@ -216,7 +216,7 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
           cursor: 'pointer',
           position: 'absolute',
           top: '870px',
-          right: '11px',
+          right: '15px',
           fontSize:25,
           zIndex: 1000
         }}

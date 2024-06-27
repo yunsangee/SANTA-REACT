@@ -45,7 +45,7 @@ const styles = {
   },
   locateButtonStyle: {
     position: 'absolute',
-    bottom: '50px',
+    bottom: '70px',
     right: '10px',
     zIndex: '1000',
     padding: '10px',
@@ -309,8 +309,20 @@ const NaverMap = () => {
   }, [zoomLevel]);
 
   const handleHikingStatusChange = () => {
-    if (hikingStatus === 'notStarted') {
+    
+    if (typeof window.stopBlinkingPolyline === 'function') {
       window.stopBlinkingPolyline(); // Stop blinking polyline when hiking starts
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: '산과 등산코스를 먼저 선택해주세요',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return; // Exit the function if stopBlinkingPolyline is not defined
+    }
+
+    if (hikingStatus === 'notStarted') {
       setHikingStatus('hiking');
       startTimer();
     } else if (hikingStatus === 'hiking') {
