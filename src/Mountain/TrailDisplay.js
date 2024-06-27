@@ -78,9 +78,10 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
         url: 'https://maps.google.com/mapfiles/kml/paddle/blu-blank.png',
         scaledSize: new naver.maps.Size(markerSize, markerSize)
       },
-      zIndex: 100 + index // Ensure markers are drawn above the polyline
+      zIndex: 100 + index // Ensure markers are drawn above the polyline,
     });
 
+    firstMarker.setVisible(currentZoom > 13); // Add visibility condition based on zoom level
     customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay, firstMarker });
   });
 

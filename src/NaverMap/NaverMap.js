@@ -254,7 +254,7 @@ const NaverMap = () => {
           map: map,
           title: mountain.mountainName,
           icon: {
-            url: 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png',
+            url: 'https://kr.object.ncloudstorage.com/santabucket2/trace.svg',
             scaledSize: new window.naver.maps.Size(20, 20)
           }
         });
@@ -309,7 +309,7 @@ const NaverMap = () => {
   }, [zoomLevel]);
 
   const handleHikingStatusChange = () => {
-    
+
     if (typeof window.stopBlinkingPolyline === 'function') {
       window.stopBlinkingPolyline(); // Stop blinking polyline when hiking starts
     } else {
