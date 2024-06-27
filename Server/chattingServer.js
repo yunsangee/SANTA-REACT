@@ -16,8 +16,8 @@ const io = socketIo(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
-    }//,
-    // path : '/chattingserver'
+    },
+    path : '/chattingserver'
 
 });
 
