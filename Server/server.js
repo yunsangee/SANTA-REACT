@@ -30,7 +30,6 @@ io.on('connection', (socket) => {
     console.log('Received location from user:', socket.id, location);
 
     const userLocation = {
-      userNo: 1,
       userLatitude: location.latitude,
       userLongitude: location.longitude
     };

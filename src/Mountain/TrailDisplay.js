@@ -64,9 +64,9 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
       position: path[0],
       map: map,
       offset: { x: 0, y: -markerSize - offsetStep * index },
-      visible: currentZoom > 16 // Add visibility condition based on zoom level
     });
 
+    customOverlay.setVisible(currentZoom > 16); // Add visibility condition based on zoom level
     customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay });
 
     // Add a small marker at the first coordinate of the trail with an offset
