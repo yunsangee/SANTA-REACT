@@ -98,6 +98,13 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
     }
   };
 
+  window.stopBlinkingPolyline = () => {
+    if (blinkingPolyline) {
+      clearInterval(blinkInterval);
+      blinkingPolyline.setVisible(true); // Ensure the polyline is visible when blinking stops
+    }
+  };
+
   return customOverlays;
 };
 

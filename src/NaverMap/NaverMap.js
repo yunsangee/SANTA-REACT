@@ -323,6 +323,7 @@ const NaverMap = () => {
 
   const handleHikingStatusChange = () => {
     if (hikingStatus === 'notStarted') {
+      window.stopBlinkingPolyline(); // Stop blinking polyline when hiking starts
       setHikingStatus('hiking');
       startTimer();
     } else if (hikingStatus === 'hiking') {
