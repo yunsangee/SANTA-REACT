@@ -47,9 +47,10 @@ const chatSchema = new mongoose.Schema({
 const Chat = mongoose.model('Chat', chatSchema);
 
 // 채팅방 생성 핸들러
-//app.post('/chattingserver/createChattingRoom', async (req, res) => {
-app.post('/createChattingRoom', async (req, res) => {
+app.post('/chattingserver/createChattingRoom', async (req, res) => {
+
     const { roomNo } = req.body;
+    console.log(`roomNo 확인 : ${roomNo}`);
     
     const existingRoom = await Chat.findOne({ roomNo });
     if (!existingRoom) {
