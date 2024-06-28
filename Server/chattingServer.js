@@ -49,7 +49,7 @@ const Chat = mongoose.model('Chat', chatSchema);
 
 // 채팅방 생성 핸들러
 app.post('/createChattingRoom', async (req, res) => {
-    console.log("들어는 왔다.");
+    console.log(`들어는 왔다. ${req.body}`);
     const { roomNo } = req.body;
     console.log(`roomNo 확인 : ${roomNo}`);
     
