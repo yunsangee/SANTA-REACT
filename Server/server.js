@@ -89,10 +89,18 @@ app.get('/hikingAssist/tts', function(req, res) {
 
   const options = {
     url: api_url,
-    form: { speaker: 'nara', volume: '0', speed: '0', pitch: '0', text: text, format: 'mp3' },
+    form: { 
+      speaker: 'nara', 
+      volume: '0', 
+      speed: '0', 
+      pitch: '0', 
+      text: text, 
+      format: 'mp3' 
+    },
     headers: {
       'X-NCP-APIGW-API-KEY-ID': client_id,
-      'X-NCP-APIGW-API-KEY': client_secret
+      'X-NCP-APIGW-API-KEY': client_secret,
+      'Content-Type': 'application/x-www-form-urlencoded' // Ensure the correct content type is set
     },
     encoding: null // Ensure response is treated as binary
   };
