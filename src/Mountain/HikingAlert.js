@@ -53,7 +53,7 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
         params: { text: encodedMessage },
         responseType: 'blob',
       });
-  
+
       const url = URL.createObjectURL(new Blob([response.data], { type: 'audio/mp3' }));
       audioRef.current.src = url;
       await audioRef.current.play();
@@ -66,7 +66,6 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
       }
     }
   };
-  
 
   useEffect(() => {
     const userNoFromCookie = Cookies.get('userNo');
