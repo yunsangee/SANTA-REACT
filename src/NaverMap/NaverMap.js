@@ -266,7 +266,7 @@ const NaverMap = () => {
           setSelectedMountainName(mountain.mountainName);
 
           map.setCenter(marker.getPosition());
-          map.setZoom(20);
+          map.setZoom(16);
 
           if (visibleTrails && visibleTrails.mountainNo === mountain.mountainNo) {
             clearTrailInfo(visibleTrails.trails);
@@ -309,9 +309,11 @@ const NaverMap = () => {
 
     // 오버레이 visibility 업데이트
     if (visibleTrails) {
+      console.log('Updating overlays visibility based on zoom level:', zoomLevel);
       visibleTrails.trails.forEach(({ customOverlay }) => {
         const isVisible = zoomLevel >= zoomLevelThreshold;
         if (customOverlay && typeof customOverlay.setVisible === 'function') {
+          console.log(`Setting visibility of overlay to ${isVisible}`);
           customOverlay.setVisible(isVisible);
         }
       });

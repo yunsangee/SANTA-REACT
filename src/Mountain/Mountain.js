@@ -17,6 +17,7 @@ const Mountain = ({ setMountains }) => {
           const data = await response.json();
           setMountains(data);
         } else {
+          
           console.error('Failed to fetch mountain data');
         }
       } catch (error) {
