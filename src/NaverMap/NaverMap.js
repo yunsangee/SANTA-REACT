@@ -111,21 +111,19 @@ const NaverMap = () => {
           window.map = mapInstance;
 
           // Add zoom_changed event listener
-        // Add zoom_changed event listener
-  naver.maps.Event.addListener(mapInstance, 'zoom_changed', () => {
-  const currentZoom = mapInstance.getZoom();
-  setZoomLevel(currentZoom); // Update zoom level state
-  console.log('Zoom level changed:', currentZoom);
-  if (currentZoom >= zoomLevelThreshold && visibleTrails) {
-    clearTrailInfo(visibleTrails.trails);
-    const newTrails = displayTrailInfo(mapInstance, mountains, naver, currentZoom);
-    setVisibleTrails({ mountainNo: mountains.mountainNo, trails: newTrails });
-  } else if (currentZoom < zoomLevelThreshold && visibleTrails) {
-    clearTrailInfo(visibleTrails.trails);
-    setVisibleTrails(null);
-  }
-});
-
+          naver.maps.Event.addListener(mapInstance, 'zoom_changed', () => {
+            const currentZoom = mapInstance.getZoom();
+            setZoomLevel(currentZoom); // Update zoom level state
+            console.log('Zoom level changed:', currentZoom);
+            if (currentZoom >= zoomLevelThreshold && visibleTrails) {
+              clearTrailInfo(visibleTrails.trails);
+              const newTrails = displayTrailInfo(mapInstance, mountains, naver, currentZoom);
+              setVisibleTrails({ mountainNo: mountains.mountainNo, trails: newTrails });
+            } else if (currentZoom < zoomLevelThreshold && visibleTrails) {
+              clearTrailInfo(visibleTrails.trails);
+              setVisibleTrails(null);
+            }
+          });
         };
 
         if (navigator.geolocation) {
@@ -308,7 +306,16 @@ const NaverMap = () => {
       window.setSelectedTrailAscent = () => {};
       window.setSelectedTrailDescent = () => {};
     }
-  }, [zoomLevel]);
+
+    // Hide or show overlays based on zoom level
+    if (visibleTrails) {
+      visibleTrails.trails.forEach(({ customOverlay, firstMarker }) => {
+        const isVisible = zoomLevel >= zoomLevelThreshold;
+        customOverlay.setVisible(isVisible);
+        if (firstMarker) firstMarker.setVisible(isVisible);
+      });
+    }
+  }, [zoomLevel, visibleTrails]);
 
   const handleHikingStatusChange = () => {
     if (typeof window.stopBlinkingPolyline === 'function') {

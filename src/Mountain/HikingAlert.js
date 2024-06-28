@@ -61,7 +61,6 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
     }
 };
 
-
   useEffect(() => {
     const userNoFromCookie = Cookies.get('userNo');
     setUserNo(userNoFromCookie);
@@ -218,7 +217,7 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
           position: 'absolute',
           top: '870px',
           right: '15px',
-          fontSize:25,
+          fontSize: 25,
           zIndex: 1000
         }}
       >
