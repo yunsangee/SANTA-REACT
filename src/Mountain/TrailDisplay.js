@@ -4,7 +4,7 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
   const CustomOverlay = createCustomOverlay(naver);
   const customOverlays = [];
   const markerSize = 10; // Small size marker
-  const offsetStep = 20; // Offset step to separate overlapping markers and overlays
+  const offsetStep = 30; // Offset step to separate overlapping markers and overlays
   let blinkingPolyline = null;
   let blinkInterval = null;
 
@@ -122,7 +122,7 @@ window.zoomToTrail = (lat, lon) => {
   const latLng = new window.naver.maps.LatLng(lat, lon);
   if (window.map) {
     window.map.setCenter(latLng);
-    window.map.setZoom(23);
+    window.map.setZoom(18);
   }
 };
 
@@ -170,6 +170,6 @@ const getCardStyle = (index) => `
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
   cursor: pointer; 
   z-index: ${1000 + index};
-  border: 1px solid black; /* 검은색 선 추가 */
+  border: 3px solid black; /* 검은색 선 추가 */
   font-size: 10px; /* Reduce font size */
 `;
