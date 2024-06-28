@@ -114,13 +114,14 @@ const NaverMap = () => {
             const currentZoom = mapInstance.getZoom();
             setZoomLevel(currentZoom);
             console.log('Zoom level changed:', currentZoom);
-            if (currentZoom >= zoomLevelThreshold && visibleTrails) {
-              clearTrailInfo(visibleTrails.trails);
-              const newTrails = displayTrailInfo(mapInstance, mountains, naver, currentZoom);
-              setVisibleTrails({ mountainNo: mountains.mountainNo, trails: newTrails });
-            } else if (currentZoom < zoomLevelThreshold && visibleTrails) {
-              clearTrailInfo(visibleTrails.trails);
-              setVisibleTrails(null);
+
+            // 오버레이 visibility 업데이트
+            if (visibleTrails) {
+              visibleTrails.trails.forEach(({ customOverlay }) => {
+                if (customOverlay && typeof customOverlay.setVisible === 'function') {
+                  customOverlay.setVisible(currentZoom >= zoomLevelThreshold);
+                }
+              });
             }
           });
         };
@@ -306,15 +307,12 @@ const NaverMap = () => {
       window.setSelectedTrailDescent = () => {};
     }
 
-    // Hide or show overlays based on zoom level
+    // 오버레이 visibility 업데이트
     if (visibleTrails) {
-      visibleTrails.trails.forEach(({ customOverlay, firstMarker }) => {
+      visibleTrails.trails.forEach(({ customOverlay }) => {
         const isVisible = zoomLevel >= zoomLevelThreshold;
         if (customOverlay && typeof customOverlay.setVisible === 'function') {
           customOverlay.setVisible(isVisible);
-        }
-        if (firstMarker && typeof firstMarker.setVisible === 'function') {
-          firstMarker.setVisible(isVisible);
         }
       });
     }
@@ -498,8 +496,8 @@ const NaverMap = () => {
         trailLength={trailLength} 
         trailAscent={trailAscent} 
         trailDescent={trailDescent} 
-        />
-        <HikingAlert 
+      />
+      <HikingAlert 
         userNo={userNo}  // userNo를 전달합니다
         currentLocation={{ latitude, longitude }} 
         selectedTrailEnd={selectedTrailEnd} 
