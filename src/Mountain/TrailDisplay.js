@@ -1,3 +1,4 @@
+
 import { createCustomOverlay } from './CustomOverlay';
 
 export const displayTrailInfo = (map, trails, naver, currentZoom) => {
@@ -39,7 +40,7 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 
     const lastCoordinate = trail.mountainTrailCoordinates.slice(-1)[0];
 
-    const customOverlayContent = `
+    const customOverlayContent = 
       <div class="card text-dark bg-light" style="${getCardStyle(index)}" 
       onclick="window.zoomToTrail(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]});
       window.setTrailDifficulty('${trail.mountainTrailDifficulty}');
@@ -57,16 +58,16 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
           <p class="card-text mb-1" style="font-size: 10px;"><strong>하산시간:</strong> ${trail.descentTime}min</p>
         </div>
       </div>
-    `;
+    ;
 
     const customOverlay = new CustomOverlay({
       content: customOverlayContent,
       position: path[0],
       map: map,
       offset: { x: 0, y: -markerSize - offsetStep * index },
+      visible: currentZoom > 16 
     });
 
-    customOverlay.setVisible(currentZoom > 16); // Add visibility condition based on zoom level
     customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay });
 
     // Add a small marker at the first coordinate of the trail with an offset

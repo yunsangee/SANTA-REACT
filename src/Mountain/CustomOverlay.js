@@ -21,8 +21,8 @@ export const createCustomOverlay = (naver) => {
       const position = this._position;
       const pixelPosition = projection.fromCoordToOffset(position);
 
-      this._element.style.left = `${pixelPosition.x + this._offset.x}px`;
-      this._element.style.top = `${pixelPosition.y + this._offset.y}px`;
+      this._element.style.left = ${pixelPosition.x + this._offset.x}px;
+      this._element.style.top = ${pixelPosition.y + this._offset.y}px;
     }
 
     onRemove() {

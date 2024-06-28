@@ -87,7 +87,7 @@ const NaverMap = () => {
   const [zoomLevel, setZoomLevel] = useState(14); // Add state to track zoom level
 
   const navigate = useNavigate();
-  const zoomLevelThreshold = 16;
+  const zoomLevelThreshold = 13;
 
   useEffect(() => {
     const userNoFromCookie = parseInt(Cookies.get('userNo'), 10);  
@@ -111,19 +111,21 @@ const NaverMap = () => {
           window.map = mapInstance;
 
           // Add zoom_changed event listener
-          naver.maps.Event.addListener(mapInstance, 'zoom_changed', () => {
-            const currentZoom = mapInstance.getZoom();
-            setZoomLevel(currentZoom); // Update zoom level state
-            console.log('Zoom level changed:', currentZoom);
-            if (currentZoom >= zoomLevelThreshold && visibleTrails) {
-              clearTrailInfo(visibleTrails.trails);
-              const newTrails = displayTrailInfo(mapInstance, mountains, naver, currentZoom);
-              setVisibleTrails({ mountainNo: mountains.mountainNo, trails: newTrails });
-            } else if (currentZoom < zoomLevelThreshold && visibleTrails) {
-              clearTrailInfo(visibleTrails.trails);
-              setVisibleTrails(null);
-            }
-          });
+        // Add zoom_changed event listener
+  naver.maps.Event.addListener(mapInstance, 'zoom_changed', () => {
+  const currentZoom = mapInstance.getZoom();
+  setZoomLevel(currentZoom); // Update zoom level state
+  console.log('Zoom level changed:', currentZoom);
+  if (currentZoom >= zoomLevelThreshold && visibleTrails) {
+    clearTrailInfo(visibleTrails.trails);
+    const newTrails = displayTrailInfo(mapInstance, mountains, naver, currentZoom);
+    setVisibleTrails({ mountainNo: mountains.mountainNo, trails: newTrails });
+  } else if (currentZoom < zoomLevelThreshold && visibleTrails) {
+    clearTrailInfo(visibleTrails.trails);
+    setVisibleTrails(null);
+  }
+});
+
         };
 
         if (navigator.geolocation) {
@@ -291,22 +293,22 @@ const NaverMap = () => {
   }, [mountains, map, visibleTrails]);
 
   useEffect(() => {
-    if (zoomLevel >= 16 && visibleTrails) {
-      visibleTrails.trails.forEach(trail => {
-        trail.customOverlay.setVisible(true);
-        if (trail.firstMarker) {
-          trail.firstMarker.setVisible(true);
-        }
-      });
-    } else if (zoomLevel < 16 && visibleTrails) {
-      visibleTrails.trails.forEach(trail => {
-        trail.customOverlay.setVisible(false);
-        if (trail.firstMarker) {
-          trail.firstMarker.setVisible(false);
-        }
-      });
+    if (zoomLevel >= zoomLevelThreshold) {
+      window.setSelectedTrailDifficulty = setSelectedTrailDifficulty;
+      window.setSelectedTrailEndCoord = setSelectedTrailEnd;
+      window.setSelectedTrailCoordinates = setTrailCoordinates;
+      window.setSelectedTrailLength = setTrailLength;
+      window.setSelectedTrailAscent = setTrailAscent;
+      window.setSelectedTrailDescent = setTrailDescent;
+    } else {
+      window.setSelectedTrailDifficulty = () => {};
+      window.setSelectedTrailEndCoord = () => {};
+      window.setSelectedTrailCoordinates = () => {};
+      window.setSelectedTrailLength = () => {};
+      window.setSelectedTrailAscent = () => {};
+      window.setSelectedTrailDescent = () => {};
     }
-  }, [zoomLevel, visibleTrails]);
+  }, [zoomLevel]);
 
   const handleHikingStatusChange = () => {
     if (typeof window.stopBlinkingPolyline === 'function') {
