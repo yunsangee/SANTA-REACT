@@ -83,8 +83,8 @@ const NaverMap = () => {
   const [trailAscent, setTrailAscent] = useState(0);
   const [trailDescent, setTrailDescent] = useState(0);
   const [userNo, setUserNo] = useState(null);
-  const [locationUpdate, setLocationUpdate] = useState(null); // Add state to track location updates
-  const [zoomLevel, setZoomLevel] = useState(14); // Add state to track zoom level
+  const [locationUpdate, setLocationUpdate] = useState(null);
+  const [zoomLevel, setZoomLevel] = useState(14);
 
   const navigate = useNavigate();
   const zoomLevelThreshold = 13;
@@ -110,10 +110,9 @@ const NaverMap = () => {
           setMap(mapInstance);
           window.map = mapInstance;
 
-          // Add zoom_changed event listener
           naver.maps.Event.addListener(mapInstance, 'zoom_changed', () => {
             const currentZoom = mapInstance.getZoom();
-            setZoomLevel(currentZoom); // Update zoom level state
+            setZoomLevel(currentZoom);
             console.log('Zoom level changed:', currentZoom);
             if (currentZoom >= zoomLevelThreshold && visibleTrails) {
               clearTrailInfo(visibleTrails.trails);
@@ -159,7 +158,7 @@ const NaverMap = () => {
 
         socketInstance.on('locationUpdate', (locations) => {
           console.log('Location update received:', locations);
-          setLocationUpdate(locations); // Update state to trigger rerender
+          setLocationUpdate(locations);
         });
 
         socketInstance.on('disconnect', () => {
@@ -311,15 +310,19 @@ const NaverMap = () => {
     if (visibleTrails) {
       visibleTrails.trails.forEach(({ customOverlay, firstMarker }) => {
         const isVisible = zoomLevel >= zoomLevelThreshold;
-        customOverlay.setVisible(isVisible);
-        if (firstMarker) firstMarker.setVisible(isVisible);
+        if (customOverlay && typeof customOverlay.setVisible === 'function') {
+          customOverlay.setVisible(isVisible);
+        }
+        if (firstMarker && typeof firstMarker.setVisible === 'function') {
+          firstMarker.setVisible(isVisible);
+        }
       });
     }
   }, [zoomLevel, visibleTrails]);
 
   const handleHikingStatusChange = () => {
     if (typeof window.stopBlinkingPolyline === 'function') {
-      window.stopBlinkingPolyline(); // Stop blinking polyline when hiking starts
+      window.stopBlinkingPolyline();
     } else {
       Swal.fire({
         icon: 'error',
@@ -327,7 +330,7 @@ const NaverMap = () => {
         showConfirmButton: false,
         timer: 1500
       });
-      return; // Exit the function if stopBlinkingPolyline is not defined
+      return;
     }
     
     if (hikingStatus === 'notStarted') {
@@ -365,16 +368,16 @@ const NaverMap = () => {
   const saveHikingData = async (calculatedDescentTime) => {
     const hikingData = {
       userNo: userNo,
-      totalTime: time.toString(), // String 타입으로 변환
-      userDistance: distance, // Number 타입
-      ascentTime: ascentTime.toString(), // String 타입으로 변환
-      descentTime: calculatedDescentTime.toString(), // String 타입으로 변환
-      hikingDifficulty: parseInt(selectedTrailDifficulty, 10), // Number 타입
+      totalTime: time.toString(),
+      userDistance: distance,
+      ascentTime: ascentTime.toString(),
+      descentTime: calculatedDescentTime.toString(),
+      hikingDifficulty: parseInt(selectedTrailDifficulty, 10),
       mountain: {
         mountainName: selectedMountainName
       },
       weather: {
-        skyCondition: parseInt(skyCondition, 10) // Number 타입
+        skyCondition: parseInt(skyCondition, 10)
       }
     };
 
@@ -495,8 +498,8 @@ const NaverMap = () => {
         trailLength={trailLength} 
         trailAscent={trailAscent} 
         trailDescent={trailDescent} 
-      />
-      <HikingAlert 
+        />
+        <HikingAlert 
         userNo={userNo}  // userNo를 전달합니다
         currentLocation={{ latitude, longitude }} 
         selectedTrailEnd={selectedTrailEnd} 
