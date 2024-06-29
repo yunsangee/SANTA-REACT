@@ -5,11 +5,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import $ from 'jquery';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import './app.css'; // Ensure to import the CSS file
+
 
 const Top = () => {
   const javaServerIp = 'https://www.dearmysanta.site';
-  const reactServerIp = 'https://www.dearmysanta.site/hikingguide';
+  const reactServerIp = 'https://www.dearmysanta.site/hikingguide'; 
   const navigate = useNavigate();
   const userNo = Cookies.get('userNo');
 
