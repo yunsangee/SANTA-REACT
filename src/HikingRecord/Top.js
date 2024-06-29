@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import $ from 'jquery';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Top = () => {
   const javaServerIp = 'https://www.dearmysanta.site';
@@ -60,81 +60,39 @@ const Top = () => {
     fetchPostCounts();
 
     $(function() {
-      $('#logoName').on('click', () => {
-        handleNavigation(`${javaServerIp}/`);
-      });
+      const currentUrl = window.location.pathname;
+      console.log("현재 URL:", currentUrl);
 
-      $('#mountain').on('click', () => {
-        handleNavigation(`${javaServerIp}/mountain/searchMountain`);
-      });
+      const pathParts = currentUrl.split('/');
+      let startPathPart = pathParts[1];
+      console.log("첫번째 URL 요소:", startPathPart);
 
-      $('#certificationPost').on('click', () => {
-        handleNavigation(`${javaServerIp}/certificationPost/listCertificationPost`);
-      });
+      if (startPathPart === "") {
+        startPathPart = "home";
+      }
 
-      $('#meetingPost').on('click', () => {
-        handleNavigation(`${javaServerIp}/meeting/getMeetingPostList`);
-      });
+      $('.nav-link').removeClass('active');
+      $(`.${startPathPart}`).addClass('active');
 
-      $('#hikingGuide').on('click', () => {
-        handleNavigation(`${reactServerIp}`);
-      });
-
-      $('#meetingChat').on('click', () => {
-        handleNavigation(`${javaServerIp}/chatting/getChattingRoomList`);
-      });
-
-      $('#loginButton').on('click', () => {
-        handleNavigation(`${javaServerIp}/user/login`);
-      });
-
-      $('#userProfile').on('click', () => {
-        handleNavigation(`${javaServerIp}/mountain/searchMountain`);
-      });
-
-      $('#getUserList').on('click', () => {
-        handleNavigation(`${javaServerIp}/user/getUserList`);
-      });
-
-      $('#statistics').on('click', () => {
-        handleNavigation(`${javaServerIp}/mountain/getStatistics`);
-      });
-
-      $('#correctionPost').on('click', () => {
-        handleNavigation(`${javaServerIp}/correctionPost/getCorrectionPostList`);
-      });
-
-      $('#myInfo').on('click', () => {
-        handleNavigation(`${javaServerIp}/user/getUser`);
-      });
-
-      $('#myMeetingPost').on('click', () => {
-        handleNavigation(`${javaServerIp}/meeting/getMeetingPostList`);
-      });
-
-      $('#myCertificationPost').on('click', () => {
-        handleNavigation(`${javaServerIp}/certificationPost/getCertificationPostList`);
-      });
-
-      $('#myMountainLike').on('click', () => {
-        handleNavigation(`${javaServerIp}/mountain/getMountainLikeList?userNo=${userNo}`);
-      });
-
-      $('#mySchedule').on('click', () => {
-        handleNavigation(`${javaServerIp}/user/getSchedule`);
-      });
-
-      $('#myHikingRecord').on('click', () => {
-        handleNavigation(`${javaServerIp}/hikingguide/HikingRecord`);
-      });
-
-      $('#qna').on('click', () => {
-        handleNavigation(`${javaServerIp}/user/getQnaList`);
-      });
-
-      $('#logout').on('click', () => {
-        handleLogout(`${javaServerIp}/`);
-      });
+      $('#logoName').on('click', () => handleNavigation(`${javaServerIp}/`));
+      $('#mountain').on('click', () => handleNavigation(`${javaServerIp}/mountain/searchMountain`));
+      $('#certificationPost').on('click', () => handleNavigation(`${javaServerIp}/certificationPost/listCertificationPost`));
+      $('#meetingPost').on('click', () => handleNavigation(`${javaServerIp}/meeting/getMeetingPostList`));
+      $('#hikingGuide').on('click', () => handleNavigation(`${reactServerIp}`));
+      $('#meetingChat').on('click', () => handleNavigation(`${javaServerIp}/chatting/getChattingRoomList`));
+      $('#loginButton').on('click', () => handleNavigation(`${javaServerIp}/user/login`));
+      $('#userProfile').on('click', () => handleNavigation(`${javaServerIp}/mountain/searchMountain`));
+      $('#getUserList').on('click', () => handleNavigation(`${javaServerIp}/user/getUserList`));
+      $('#statistics').on('click', () => handleNavigation(`${javaServerIp}/mountain/getStatistics`));
+      $('#correctionPost').on('click', () => handleNavigation(`${javaServerIp}/correctionPost/getCorrectionPostList`));
+      $('#myInfo').on('click', () => handleNavigation(`${javaServerIp}/user/getUser`));
+      $('#myMeetingPost').on('click', () => handleNavigation(`${javaServerIp}/meeting/getMeetingPostList`));
+      $('#myCertificationPost').on('click', () => handleNavigation(`${javaServerIp}/certificationPost/getCertificationPostList`));
+      $('#myMountainLike').on('click', () => handleNavigation(`${javaServerIp}/mountain/getMountainLikeList?userNo=${userNo}`));
+      $('#mySchedule').on('click', () => handleNavigation(`${javaServerIp}/user/getSchedule`));
+      $('#myHikingRecord').on('click', () => handleNavigation(`${javaServerIp}/hikingguide/HikingRecord`));
+      $('#qna').on('click', () => handleNavigation(`${javaServerIp}/user/getQnaList`));
+      $('#logout').on('click', handleLogout);
 
       $('.dropdown-toggle').on('click', function(event) {
         event.stopPropagation();
@@ -272,7 +230,7 @@ const Top = () => {
                 <a
                   href="#"
                   id="Home"
-                  className="nav-link nav-link-custom active"
+                  className="nav-link nav-link-custom home"
                   onClick={() => handleNavigation(`${javaServerIp}/`)}
                 >
                   홈
@@ -282,7 +240,7 @@ const Top = () => {
                 <a
                   href="#"
                   id="mountain"
-                  className="nav-link nav-link-custom"
+                  className="nav-link nav-link-custom mountain"
                   onClick={() => handleNavigation(`${javaServerIp}/mountain/searchMountain`)}
                 >
                   산
@@ -292,7 +250,7 @@ const Top = () => {
                 <a
                   href="#"
                   id="certificationPost"
-                  className="nav-link nav-link-custom"
+                  className="nav-link nav-link-custom certificationPost"
                   onClick={() => handleNavigation(`${javaServerIp}/certificationPost/listCertificationPost`)}
                 >
                   인증게시판
@@ -302,7 +260,7 @@ const Top = () => {
                 <a
                   href="#"
                   id="meetingPost"
-                  className="nav-link nav-link-custom"
+                  className="nav-link nav-link-custom meeting"
                   onClick={() => handleNavigation(`${javaServerIp}/meeting/getMeetingPostList`)}
                 >
                   모임게시판
@@ -312,7 +270,7 @@ const Top = () => {
                 <a
                   href="#"
                   id="meetingChat"
-                  className="nav-link nav-link-custom"
+                  className="nav-link nav-link-custom chatting"
                   onClick={() => handleNavigation(`${javaServerIp}/chatting/getChattingRoomList`)}
                 >
                   모임채팅
@@ -322,7 +280,7 @@ const Top = () => {
                 <a
                   href="#"
                   id="hikingGuide"
-                  className="nav-link nav-link-custom"
+                  className="nav-link nav-link-custom hikingGuide"
                   onClick={() => handleNavigation(`${reactServerIp}`)}
                 >
                   등산안내
@@ -343,17 +301,26 @@ const Top = () => {
                           <div className="name">{sessionStorage.getItem('userName')}</div>
                           <div className="email">{sessionStorage.getItem('userId')}</div>
                         </div>
-                        <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
+                        <svg
+                          className="setting-icon"
+                          id="settingsIcon"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          width="24"
+                          height="24"
+                        >
+                          <path fill="#3CAA3C" d="M12 15.5l-7-7 1.5-1.5 5.5 5.5 5.5-5.5L19 8.5z" />
+                        </svg>
                       </div>
                       <a className="dropdown-item dropdown-item-custom" href="#"><i className="fas fa-certificate"></i> 인증 {sessionStorage.getItem('certificationCount')}회, 모임 {sessionStorage.getItem('meetingCount')}회 </a>
-                      <a className="dropdown-item dropdown-item-custom" id="myInfo" href="#"><i className="fas fa-user"></i> 내 정보보기 <i className="fas fa-chevron-right"></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="myMeetingPost" href="#"><i className="fas fa-users"></i> 내가 쓴 모임 게시글 보기 <i className="fas fa-chevron-right"></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="myCertificationPost" href="#"><i className="fas fa-check-circle"></i> 내가 쓴 인증 게시글 보기 <i className="fas fa-chevron-right"></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="myMountainLike" href="#"><i className="fas fa-heart"></i> 내가 좋아요 한 산 보기 <i className="fas fa-chevron-right"></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="mySchedule" href="#"><i className="fas fa-calendar-alt"></i> 내 일정 보기 <i className="fas fa-chevron-right"></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="myHikingRecord" href="#"><i className="fas fa-hiking"></i> 등산 기록 보기 <i className="fas fa-chevron-right"></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="qna" href="#"><i className="fas fa-question-circle"></i> Q&A <i className="fas fa-chevron-right"></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="logout" href="#" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> 로그아웃 <i className="fas fa-chevron-right"></i></a>
+                      <a className="dropdown-item dropdown-item-custom" id="myInfo" href="#"><i className="fas fa-user"></i> 내 정보보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
+                      <a className="dropdown-item dropdown-item-custom" id="myMeetingPost" href="#"><i className="fas fa-users"></i> 내가 쓴 모임 게시글 보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
+                      <a className="dropdown-item dropdown-item-custom" id="myCertificationPost" href="#"><i className="fas fa-check-circle"></i> 내가 쓴 인증 게시글 보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
+                      <a className="dropdown-item dropdown-item-custom" id="myMountainLike" href="#"><i className="fas fa-heart"></i> 내가 좋아요 한 산 보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
+                      <a className="dropdown-item dropdown-item-custom" id="mySchedule" href="#"><i className="fas fa-calendar-alt"></i> 내 일정 보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
+                      <a className="dropdown-item dropdown-item-custom" id="myHikingRecord" href="#"><i className="fas fa-hiking"></i> 등산 기록 보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
+                      <a className="dropdown-item dropdown-item-custom" id="qna" href="#"><i className="fas fa-question-circle"></i> Q&A <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
+                      <a className="dropdown-item dropdown-item-custom" id="logout" href="#" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> 로그아웃 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
                     </div>
                   </div>
                   <i className="fas fa-bell user-profile-icon" onClick={handleBellClick} style={{ marginLeft: '15px', fontSize: '20px', color: 'rgb(60, 170, 60)' }} />
@@ -374,6 +341,49 @@ const Top = () => {
           </div>
         </div>
       </nav>
+      <div className="container alarmSettings" id="settingsModal" style={{display: 'none', position: 'absolute', top: '65%', marginLeft: '5px', right: 0, background: 'white', border: '1px solid #ccc', padding: '20px', boxShadow: '0 0 10px rgba(0,0,0,0.1)'}}>
+        <h6>알림 설정</h6>
+        <div className="form-group">
+          <label className="d-flex align-items-center">
+            전체알림
+            <div className="form-check form-switch ml-auto">
+              <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchAllAlert"
+                defaultChecked={sessionStorage.getItem('allAlertSetting') == 1}/>
+              <label className="form-check-label" htmlFor="flexSwitchAllAlert"></label>
+            </div>
+          </label>
+        </div>
+        <div className="form-group">
+          <label className="d-flex align-items-center">
+            인증 게시글 알림
+            <div className="form-check form-switch ml-auto">
+              <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCertificationPostAlert"
+                defaultChecked={sessionStorage.getItem('certificationPostAlertSetting') == 1}/>
+              <label className="form-check-label" htmlFor="flexSwitchCertificationPostAlert"></label>
+            </div>
+          </label>
+        </div>
+        <div className="form-group">
+          <label className="d-flex align-items-center">
+            모임 게시글 알림
+            <div className="form-check form-switch ml-auto">
+              <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchMeetingPostAlert"
+                defaultChecked={sessionStorage.getItem('meetingPostAlertSetting') == 1}/>
+              <label className="form-check-label" htmlFor="flexSwitchMeetingPostAlert"></label>
+            </div>
+          </label>
+        </div>
+        <div className="form-group">
+          <label className="d-flex align-items-center">
+            등산 안내 알림
+            <div className="form-check form-switch ml-auto">
+              <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchHikingGuideAlert"
+                defaultChecked={sessionStorage.getItem('hikingGuideAlertSetting') == 1}/>
+              <label className="form-check-label" htmlFor="flexSwitchHikingGuideAlert"></label>
+            </div>
+          </label>
+        </div>
+      </div>
     </div>
   );
 };

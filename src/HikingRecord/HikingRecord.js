@@ -3,7 +3,6 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
-import '../App.css';
 
 const styles = {
   pageHeader: {
