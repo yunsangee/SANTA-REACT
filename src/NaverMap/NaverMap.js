@@ -399,7 +399,6 @@ const NaverMap = () => {
       Swal.fire({
         icon: 'error',
         title: '기록에 실패하였습니다.',
-        text: error.message,
       });
       console.error('Error saving hiking data:', error.message);
     }
