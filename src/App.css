@@ -690,3 +690,173 @@ body {
   .nav-item {
     text-align: left; /* Ensure text inside nav items is aligned to the left */
   }
+
+  /* Navbar styles */
+.navbar-custom {
+  height: 100px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  transition: box-shadow 0.3s ease;
+}
+
+.navbar-custom .navbar-nav .nav-link {
+  padding: 10px 15px;
+  font-size: 16px;
+  transition: 0.5s;
+  color: black;
+}
+
+.navbar-custom .navbar-nav .nav-link:hover,
+.navbar-custom .navbar-nav .nav-link.active,
+.fixed-top.bg-white .navbar-custom .navbar-nav .nav-link:hover,
+.fixed-top.bg-white .navbar-custom .navbar-nav .nav-link.active {
+  color: rgb(60, 170, 60);
+}
+
+.navbar-custom .dropdown-toggle::after {
+  border: none;
+  content: "\\f107";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 700;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+@media (min-width: 1200px) {
+  .navbar-custom .nav-item .dropdown-menu {
+    display: block;
+    visibility: hidden;
+    top: 100%;
+    transform: rotateX(-75deg);
+    transform-origin: 0% 0%;
+    border: 0;
+    transition: 0.5s;
+    opacity: 0;
+  }
+}
+
+.navbar-custom .nav-item:hover .dropdown-menu {
+  transform: rotateX(0deg);
+  visibility: visible;
+  background: var(--bs-light) !important;
+  border-radius: 10px !important;
+  transition: 0.5s;
+  opacity: 1;
+}
+
+.navbar-custom .dropdown-menu a:hover {
+  background: var(--bs-secondary);
+  color: var(--bs-primary);
+}
+
+/* LogoName styles */
+.logo-name {
+  font-size: 2.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  color: rgb(60, 170, 60);
+}
+
+.logo-name:hover {
+  color: rgb(80, 190, 80);
+}
+
+/* NavLink styles */
+.nav-link-custom {
+  transition: color 0.3s ease;
+}
+
+.nav-link-custom:hover {
+  color: rgb(60, 170, 60);
+}
+
+.nav-link-custom.active {
+  color: rgb(80, 190, 80);
+  font-weight: bold;
+}
+
+/* UserProfileIcon styles */
+.user-profile-icon {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.user-profile-icon:hover {
+  color: rgb(60, 170, 60);
+}
+
+/* LoginButtonIcon styles */
+.login-button-icon {
+  cursor: pointer;
+  transition: color 0.3s ease;
+  color: rgb(60, 170, 60);
+}
+
+.login-button-icon:hover {
+  color: rgb(80, 190, 80);
+}
+
+/* UserImage styles */
+.user-image {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+/* DropdownMenu styles */
+.dropdown-menu-custom {
+  width: 200px;
+  left: -150px !important;
+}
+
+/* DropdownHeader styles */
+.dropdown-header-custom {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.dropdown-header-custom img {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.dropdown-header-custom .info {
+  flex: 1;
+}
+
+.dropdown-header-custom .info .name {
+  font-weight: bold;
+  font-size: 0.7em;
+}
+
+.dropdown-header-custom .info .email {
+  font-size: 0.7em;
+  color: #6c757d;
+}
+
+.dropdown-header-custom .setting-icon {
+  cursor: pointer;
+}
+
+/* DropdownItem styles */
+.dropdown-item-custom {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.dropdown-item-custom i {
+  margin-right: 5px;
+  font-size: 0.7em;
+}
+
+.dropdown-item-custom .text {
+  font-size: 0.7em;
+}
