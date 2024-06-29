@@ -301,26 +301,17 @@ const Top = () => {
                           <div className="name">{sessionStorage.getItem('userName')}</div>
                           <div className="email">{sessionStorage.getItem('userId')}</div>
                         </div>
-                        <svg
-                          className="setting-icon"
-                          id="settingsIcon"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          width="24"
-                          height="24"
-                        >
-                          <path fill="#3CAA3C" d="M12 15.5l-7-7 1.5-1.5 5.5 5.5 5.5-5.5L19 8.5z" />
-                        </svg>
+                        <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
                       </div>
                       <a className="dropdown-item dropdown-item-custom" href="#"><i className="fas fa-certificate"></i> 인증 {sessionStorage.getItem('certificationCount')}회, 모임 {sessionStorage.getItem('meetingCount')}회 </a>
-                      <a className="dropdown-item dropdown-item-custom" id="myInfo" href="#"><i className="fas fa-user"></i> 내 정보보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="myMeetingPost" href="#"><i className="fas fa-users"></i> 내가 쓴 모임 게시글 보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="myCertificationPost" href="#"><i className="fas fa-check-circle"></i> 내가 쓴 인증 게시글 보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="myMountainLike" href="#"><i className="fas fa-heart"></i> 내가 좋아요 한 산 보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="mySchedule" href="#"><i className="fas fa-calendar-alt"></i> 내 일정 보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="myHikingRecord" href="#"><i className="fas fa-hiking"></i> 등산 기록 보기 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="qna" href="#"><i className="fas fa-question-circle"></i> Q&A <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
-                      <a className="dropdown-item dropdown-item-custom" id="logout" href="#" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> 로그아웃 <i className="fas fa-chevron-right" style={{ color: '#3CAA3C' }}></i></a>
+                      <a className="dropdown-item dropdown-item-custom" id="myInfo" href="#"><i className="fas fa-user"></i> 내 정보보기 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3CAA3C" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/></svg></a>
+                      <a className="dropdown-item dropdown-item-custom" id="myMeetingPost" href="#"><i className="fas fa-users"></i> 내가 쓴 모임 게시글 보기 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3CAA3C" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/></svg></a>
+                      <a className="dropdown-item dropdown-item-custom" id="myCertificationPost" href="#"><i className="fas fa-check-circle"></i> 내가 쓴 인증 게시글 보기 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3CAA3C" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/></svg></a>
+                      <a className="dropdown-item dropdown-item-custom" id="myMountainLike" href="#"><i className="fas fa-heart"></i> 내가 좋아요 한 산 보기 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3CAA3C" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/></svg></a>
+                      <a className="dropdown-item dropdown-item-custom" id="mySchedule" href="#"><i className="fas fa-calendar-alt"></i> 내 일정 보기 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3CAA3C" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/></svg></a>
+                      <a className="dropdown-item dropdown-item-custom" id="myHikingRecord" href="#"><i className="fas fa-hiking"></i> 등산 기록 보기 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3CAA3C" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/></svg></a>
+                      <a className="dropdown-item dropdown-item-custom" id="qna" href="#"><i className="fas fa-question-circle"></i> Q&A <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3CAA3C" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/></svg></a>
+                      <a className="dropdown-item dropdown-item-custom" id="logout" href="#" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> 로그아웃 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3CAA3C" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/></svg></a>
                     </div>
                   </div>
                   <i className="fas fa-bell user-profile-icon" onClick={handleBellClick} style={{ marginLeft: '15px', fontSize: '20px', color: 'rgb(60, 170, 60)' }} />
