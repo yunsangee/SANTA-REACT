@@ -7,26 +7,25 @@ import $ from 'jquery';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-// Styled Components
 const Navbar = styled.nav`
   height: 100px;
   border-bottom: 1px solid rgba(255, 255, 255, .1);
   background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
   transition: box-shadow 0.3s ease;
-
+  
   .navbar-nav .nav-link {
     padding: 10px 15px;
     font-size: 16px;
     transition: .5s;
-    color: black; 
+    color: black; /* Black color for other nav links */
   }
 
   .navbar-nav .nav-link:hover,
   .navbar-nav .nav-link.active,
   .fixed-top.bg-white .navbar-nav .nav-link:hover,
   .fixed-top.bg-white .navbar-nav .nav-link.active {
-    color: rgb(60, 170, 60); 
+    color: rgb(60, 170, 60); /* Green color on hover and active */
   }
 
   .dropdown-toggle::after {
@@ -71,10 +70,10 @@ const LogoName = styled.h1`
   font-weight: bold;
   cursor: pointer;
   transition: color 0.3s ease;
-  color: rgb(60, 170, 60); 
+  color: rgb(60, 170, 60); /* Green color for the SANTA text */
 
   &:hover {
-    color: rgb(80, 190, 80); 
+    color: rgb(80, 190, 80); /* Slightly different green color on hover */
   }
 `;
 
@@ -103,7 +102,7 @@ const UserProfileIcon = styled.i`
 const LoginButtonIcon = styled.i`
   cursor: pointer;
   transition: color 0.3s ease;
-  color: rgb(60, 170, 60); 
+  color: rgb(60, 170, 60); /* Green color for the login/logout text */
 
   &:hover {
     color: rgb(80, 190, 80);
@@ -175,8 +174,6 @@ const Top = () => {
   const navigate = useNavigate();
   const userNo = Cookies.get('userNo');
 
-  const [userInfo, setUserInfo] = useState(null);
-
   const handleNavigation = (url) => {
     window.location.href = url;
   };
@@ -184,19 +181,6 @@ const Top = () => {
   const handleLogout = () => {
     Cookies.remove('userNo');
     window.location.reload();
-  };
-
-  const fetchUserInfo = async () => {
-    if (userNo) {
-      try {
-        const response = await axios.get(`${javaServerIp}/api/userInfo`, {
-          params: { userNo }
-        });
-        setUserInfo(response.data);
-      } catch (error) {
-        console.error('Error fetching user info:', error);
-      }
-    }
   };
 
   const fetchPostCounts = async () => {
@@ -232,7 +216,6 @@ const Top = () => {
   };
 
   useEffect(() => {
-    fetchUserInfo();
     fetchPostCounts();
 
     $(function() {
@@ -412,7 +395,8 @@ const Top = () => {
     });
   }, [userNo]);
 
-  const profileImageUrl = userInfo?.profileImage || '';
+  const profileImage = Cookies.get('profile');
+  const profileImageUrl = profileImage ? `${profileImage}` : '';
 
   return (
     <div className="container-fluid fixed-top px-0">
@@ -512,8 +496,8 @@ const Top = () => {
                       <DropdownHeader className="dropdown-header">
                         <img src={profileImageUrl} alt="User Image"/>
                         <div className="info">
-                          <div className="name">{userInfo?.name}</div>
-                          <div className="email">{userInfo?.email}</div>
+                          <div className="name">{sessionStorage.getItem('userName')}</div>
+                          <div className="email">{sessionStorage.getItem('userId')}</div>
                         </div>
                         <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
                       </DropdownHeader>
@@ -529,7 +513,6 @@ const Top = () => {
                     </DropdownMenu>
                   </div>
                   <UserProfileIcon className="fas fa-bell" onClick={handleBellClick} style={{ marginLeft: '15px', fontSize: '20px', color: 'rgb(60, 170, 60)' }} />
-                  <LoginButtonIcon id="logoutIcon" className="fas fa-sign-out-alt" onClick={handleLogout} style={{ marginLeft: '15px', fontSize: '20px', color: 'rgb(60, 170, 60)' }} />
                 </>
               ) : (
                 <a href="#" className="my-auto">
