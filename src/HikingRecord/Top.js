@@ -168,11 +168,15 @@ const DropdownItem = styled.a`
   }
 `;
 
+
 const Top = () => {
   const javaServerIp = 'https://www.dearmysanta.site';
   const reactServerIp = 'https://www.dearmysanta.site/hikingguide';
   const navigate = useNavigate();
   const userNo = Cookies.get('userNo');
+
+  const [meetingCount, setMeetingCount] = useState(sessionStorage.getItem('meetingCount') || 0);
+  const [certificationCount, setCertificationCount] = useState(sessionStorage.getItem('certificationCount') || 0);
 
   const handleNavigation = (url) => {
     window.location.href = url;
@@ -188,8 +192,12 @@ const Top = () => {
       const response = await axios.get(`${javaServerIp}/userEtc/rest/getCount`, {
         withCredentials: true 
       });
-      sessionStorage.setItem('meetingCount', response.data.meetingPostCount);
-      sessionStorage.setItem('certificationCount', response.data.certificationPostCount);
+      console.log('fetchPostCounts response:', response.data);
+      const { meetingPostCount, certificationPostCount } = response.data;
+      sessionStorage.setItem('meetingCount', meetingPostCount);
+      sessionStorage.setItem('certificationCount', certificationPostCount);
+      setMeetingCount(meetingPostCount);
+      setCertificationCount(certificationPostCount);
     } catch (error) {
       console.error('Error fetching post counts:', error);
     }
@@ -197,10 +205,11 @@ const Top = () => {
 
   const updateAlarmSetting = async (userNo, alarmSettingType) => {
     try {
-      await axios.get(`${javaServerIp}/userEtc/rest/updateAlarmSetting`, {
+      const response = await axios.get(`${javaServerIp}/userEtc/rest/updateAlarmSetting`, {
         params: { userNo, alarmSettingType },
         withCredentials: true 
       });
+      console.log('updateAlarmSetting response:', response.data);
       alert('Alarm settings updated');
     } catch (error) {
       console.error('Error updating alarm settings:', error);
@@ -320,6 +329,7 @@ const Top = () => {
           url: `/userEtc/rest/deleteAlarmMessage?alarmNo=${alarmNo}`,
           method: 'GET',
           success: function(response) {
+            console.log('deleteAlarmMessage response:', response);
             $(this).closest('.dropdown-item').remove();
           },
           error: function(xhr, status, error) {
@@ -349,6 +359,7 @@ const Top = () => {
           url: `/userEtc/rest/updateAlarmSetting?userNo=${userNo}&alarmSettingType=${alarmSettingType}`,
           method: 'GET',
           success: function(response) {
+            console.log('updateAlarmSetting response:', response);
             window.location.reload();
           }
         });
@@ -362,6 +373,7 @@ const Top = () => {
           url: `/userEtc/rest/updateAlarmSetting?userNo=${userNo}&alarmSettingType=${alarmSettingType}`,
           method: 'GET',
           success: function(response) {
+            console.log('updateAlarmSetting response:', response);
             window.location.reload();
           }
         });
@@ -375,6 +387,7 @@ const Top = () => {
           url: `/userEtc/rest/updateAlarmSetting?userNo=${userNo}&alarmSettingType=${alarmSettingType}`,
           method: 'GET',
           success: function(response) {
+            console.log('updateAlarmSetting response:', response);
             window.location.reload();
           }
         });
@@ -388,6 +401,7 @@ const Top = () => {
           url: `/userEtc/rest/updateAlarmSetting?userNo=${userNo}&alarmSettingType=${alarmSettingType}`,
           method: 'GET',
           success: function(response) {
+            console.log('updateAlarmSetting response:', response);
             window.location.reload();
           }
         });
@@ -501,7 +515,7 @@ const Top = () => {
                         </div>
                         <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
                       </DropdownHeader>
-                      <DropdownItem className="dropdown-item" href="#"><i className="fas fa-certificate"></i> 인증 {sessionStorage.getItem('certificationCount')}회, 모임 {sessionStorage.getItem('meetingCount')}회 </DropdownItem>
+                      <DropdownItem className="dropdown-item" href="#"><i className="fas fa-certificate"></i> 인증 {certificationCount}회, 모임 {meetingCount}회 </DropdownItem>
                       <DropdownItem className="dropdown-item" id="myInfo" href="#"><i className="fas fa-user"></i> 내 정보보기 <i className="fas fa-chevron-right"></i></DropdownItem>
                       <DropdownItem className="dropdown-item" id="myMeetingPost" href="#"><i className="fas fa-users"></i> 내가 쓴 모임 게시글 보기 <i className="fas fa-chevron-right"></i></DropdownItem>
                       <DropdownItem className="dropdown-item" id="myCertificationPost" href="#"><i className="fas fa-check-circle"></i> 내가 쓴 인증 게시글 보기 <i className="fas fa-chevron-right"></i></DropdownItem>
