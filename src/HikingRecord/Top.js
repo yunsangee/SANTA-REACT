@@ -23,7 +23,7 @@ const Top = () => {
     Cookies.remove('userNo');
     Cookies.remove('userName');
     Cookies.remove('userId');  // 로그아웃 시 닉네임 쿠키도 제거
-    window.location.reload();
+    handleNavigation(`${javaServerIp}`);
   };
 
   const fetchPostCounts = async () => {
