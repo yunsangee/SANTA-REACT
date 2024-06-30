@@ -12,6 +12,7 @@ const Top = () => {
   const reactServerIp = 'https://www.dearmysanta.site/hikingguide'; 
   const navigate = useNavigate();
   const userNo = Cookies.get('userNo');
+  const userName = Cookies.get('nickName');  // 쿠키에서 닉네임을 가져옴
 
   const handleNavigation = (url) => {
     window.location.href = url;
@@ -19,6 +20,7 @@ const Top = () => {
 
   const handleLogout = () => {
     Cookies.remove('userNo');
+    Cookies.remove('userName');  // 로그아웃 시 닉네임 쿠키도 제거
     window.location.reload();
   };
 
@@ -28,8 +30,8 @@ const Top = () => {
         withCredentials: true 
       });
       console.log('fetchPostCounts response:', response.data);
-      sessionStorage.setItem('meetingCount', response.data.meetingPostCount);
-      sessionStorage.setItem('certificationCount', response.data.certificationPostCount);
+      sessionStorage.setItem('meetingPostCount', response.data.meetingPostCount);
+      sessionStorage.setItem('certificationPostCount', response.data.certificationPostCount);
     } catch (error) {
       console.error('Error fetching post counts:', error);
     }
@@ -298,12 +300,12 @@ const Top = () => {
                       <div className="dropdown-header dropdown-header-custom">
                         <img src={profileImageUrl} alt="User Image"/>
                         <div className="info">
-                          <div className="name">{sessionStorage.getItem('userName')}</div>
+                          <div className="name">{userName}</div>  
                           <div className="email">{sessionStorage.getItem('userId')}</div>
                         </div>
                         <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
                       </div>
-                      <a className="dropdown-item dropdown-item-custom" href="#"><i className="fas fa-certificate"></i> 인증 {sessionStorage.getItem('certificationCount')}회, 모임 {sessionStorage.getItem('meetingCount')}회 </a>
+                      <a className="dropdown-item dropdown-item-custom" href="#"><i className="fas fa-certificate"></i> 인증 {sessionStorage.getItem('certificationPostCount')}회, 모임 {sessionStorage.getItem('meetingPostCount')}회 </a>
                       <a className="dropdown-item dropdown-item-custom" id="myInfo" href="#"><i className="fas fa-user"></i> 내 정보보기 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3CAA3C" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/></svg></a>
                       <a className="dropdown-item dropdown-item-custom" id="myMeetingPost" href="#"><i className="fas fa-users"></i> 내가 쓴 모임 게시글 보기 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3CAA3C" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/></svg></a>
                       <a className="dropdown-item dropdown-item-custom" id="myCertificationPost" href="#"><i className="fas fa-check-circle"></i> 내가 쓴 인증 게시글 보기 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3CAA3C" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/></svg></a>
