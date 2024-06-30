@@ -7,13 +7,13 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-
 const Top = () => {
   const javaServerIp = 'https://www.dearmysanta.site';
   const reactServerIp = 'https://www.dearmysanta.site/hikingguide'; 
   const navigate = useNavigate();
   const userNo = Cookies.get('userNo');
   const userName = Cookies.get('nickName');  // 쿠키에서 닉네임을 가져옴
+  const userId = Cookies.get('userId');
 
   const handleNavigation = (url) => {
     window.location.href = url;
@@ -21,7 +21,8 @@ const Top = () => {
 
   const handleLogout = () => {
     Cookies.remove('userNo');
-    Cookies.remove('userName');  // 로그아웃 시 닉네임 쿠키도 제거
+    Cookies.remove('userName');
+    Cookies.remove('userId');  // 로그아웃 시 닉네임 쿠키도 제거
     window.location.reload();
   };
 
@@ -145,7 +146,6 @@ const Top = () => {
       });
 
       $('#flexSwitchAllAlert').on('click', function() {
-        let isChecked = $(this).is(':checked');
         let userNo = sessionStorage.getItem('userNo');
         let alarmSettingType = 0;
         $.ajax({
@@ -159,7 +159,6 @@ const Top = () => {
       });
 
       $('#flexSwitchCertificationPostAlert').on('click', function() {
-        let isChecked = $(this).is(':checked');
         let userNo = sessionStorage.getItem('userNo');
         let alarmSettingType = 1;
         $.ajax({
@@ -173,11 +172,10 @@ const Top = () => {
       });
 
       $('#flexSwitchMeetingPostAlert').on('click', function() {
-        let isChecked = $(this).is(':checked');
         let userNo = sessionStorage.getItem('userNo');
         let alarmSettingType = 2;
         $.ajax({
-          url: `/userEtc/rest.updateAlarmSetting?userNo=${userNo}&alarmSettingType=${alarmSettingType}`,
+          url: `/userEtc/rest/updateAlarmSetting?userNo=${userNo}&alarmSettingType=${alarmSettingType}`,
           method: 'GET',
           success: function(response) {
             console.log('updateAlarmSetting response:', response);
@@ -187,7 +185,6 @@ const Top = () => {
       });
 
       $('#flexSwitchHikingGuideAlert').on('click', function() {
-        let isChecked = $(this).is(':checked');
         let userNo = sessionStorage.getItem('userNo');
         let alarmSettingType = 3;
         $.ajax({
@@ -301,8 +298,9 @@ const Top = () => {
                       <div className="dropdown-header dropdown-header-custom d-flex align-items-center">
                         <img src={profileImageUrl} alt="User Image"/>
                         <div className="info ml-2">
+                          <div className='email'>{userId}</div>
                           <div className="name">{userName}</div>  
-                          <div className="email">{sessionStorage.getItem('userId')}</div>
+
                         </div>
                         <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
                       </div>
