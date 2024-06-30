@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
+
 const Top = () => {
   const javaServerIp = 'https://www.dearmysanta.site';
   const reactServerIp = 'https://www.dearmysanta.site/hikingguide'; 
@@ -295,6 +296,7 @@ const Top = () => {
                   <div className="dropdown">
                     <a className="dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <img src={profileImageUrl} alt="User Image" className="user-image"/>
+                      <span className="ml-2">{userName}</span>
                     </a>
                     <div className="dropdown-menu dropdown-menu-left profile dropdown-menu-custom" aria-labelledby="navbarDropdown">
                       <div className="dropdown-header dropdown-header-custom d-flex align-items-center">

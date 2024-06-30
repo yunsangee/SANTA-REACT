@@ -860,3 +860,47 @@ body {
 .dropdown-item-custom .text {
   font-size: 0.7em;
 }
+.dropdown-header-custom {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.dropdown-header-custom img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.dropdown-header-custom .info {
+  margin-left: 10px;
+}
+
+.dropdown-header-custom .info .name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.dropdown-header-custom .info .email {
+  font-size: 12px;
+  color: #666;
+}
+
+.dropdown-menu-custom {
+  width: 250px;
+}
+
+.dropdown-item-custom {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.dropdown-item-custom i {
+  margin-right: 10px;
+}
+
+.setting-icon {
+  margin-left: auto;
+  cursor: pointer;
+}
