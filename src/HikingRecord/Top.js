@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
@@ -14,6 +14,7 @@ const Top = () => {
   const userNo = Cookies.get('userNo');
   const userName = Cookies.get('nickName');  // 쿠키에서 닉네임을 가져옴
   const userId = Cookies.get('userId');
+  const [showFullNavbar, setShowFullNavbar] = useState(true);
 
   const handleNavigation = (url) => {
     window.location.href = url;
@@ -197,6 +198,18 @@ const Top = () => {
         });
       });
     });
+
+    // Add scroll event listener
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setShowFullNavbar(scrollTop < 100); // Adjust this value as needed
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [userNo]);
 
   const profileImage = Cookies.get('profile');
@@ -204,7 +217,7 @@ const Top = () => {
 
   return (
     <div className="container-fluid fixed-top px-0">
-      <nav className="navbar navbar-expand-xl navbar-light bg-white shadow-sm w-100 navbar-custom">
+      <nav className={`navbar navbar-expand-xl navbar-light bg-white shadow-sm w-100 navbar-custom ${showFullNavbar ? '' : 'navbar-shrink'}`}>
         <div className="container">
           <h1
             id="logoName"

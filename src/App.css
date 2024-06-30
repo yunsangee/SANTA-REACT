@@ -885,3 +885,7 @@ input[type="time"] {
   margin-left: auto;
   cursor: pointer;
 }
+.navbar-shrink {
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+}
