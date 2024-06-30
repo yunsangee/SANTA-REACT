@@ -64,13 +64,20 @@ const Top = () => {
   useEffect(() => {
     fetchPostCounts();
 
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setShowFullNavbar(false);
+      } else {
+        setShowFullNavbar(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
     $(function() {
       const currentUrl = window.location.pathname;
-      console.log("현재 URL:", currentUrl);
-
       const pathParts = currentUrl.split('/');
       let startPathPart = pathParts[1];
-      console.log("첫번째 URL 요소:", startPathPart);
 
       if (startPathPart === "") {
         startPathPart = "home";
@@ -193,19 +200,10 @@ const Top = () => {
           method: 'GET',
           success: function(response) {
             console.log('updateAlarmSetting response:', response);
-            window.location.reload();
           }
         });
       });
     });
-
-    // Add scroll event listener
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      setShowFullNavbar(scrollTop < 100); // Adjust this value as needed
-    };
-
-    window.addEventListener('scroll', handleScroll);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -313,7 +311,6 @@ const Top = () => {
                         <div className="info ml-2">
                           <div className='email'>{userId}</div>
                           <div className="name">{userName}</div>  
-
                         </div>
                         <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
                       </div>
