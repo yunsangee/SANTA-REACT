@@ -92,9 +92,9 @@ const Top = () => {
       $('#myMeetingPost').on('click', () => handleNavigation(`${javaServerIp}/meeting/getMeetingPostList`));
       $('#myCertificationPost').on('click', () => handleNavigation(`${javaServerIp}/certificationPost/getCertificationPostList`));
       $('#myMountainLike').on('click', () => handleNavigation(`${javaServerIp}/mountain/getMountainLikeList?userNo=${userNo}`));
-      $('#mySchedule').on('click', () => handleNavigation(`${javaServerIp}/user/getSchedule`));
+      $('#mySchedule').on('click', () => handleNavigation(`${javaServerIp}/user/getScheduleList`));
       $('#myHikingRecord').on('click', () => handleNavigation(`${javaServerIp}/hikingguide/HikingRecord`));
-      $('#qna').on('click', () => handleNavigation(`${javaServerIp}/user/getQnaList`));
+      $('#qna').on('click', () => handleNavigation(`${javaServerIp}/user/getQnAList`));
       $('#logout').on('click', handleLogout);
 
       $('.dropdown-toggle').on('click', function(event) {
