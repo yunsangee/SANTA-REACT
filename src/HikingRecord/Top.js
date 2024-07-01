@@ -47,7 +47,6 @@ const Top = () => {
         withCredentials: true 
       });
       console.log('updateAlarmSetting response:', response.data);
-      alert('Alarm settings updated');
     } catch (error) {
       console.error('Error updating alarm settings:', error);
     }
@@ -309,8 +308,8 @@ const Top = () => {
                       <div className="dropdown-header dropdown-header-custom d-flex align-items-center">
                         <img src={profileImageUrl} alt="User Image"/>
                         <div className="info ml-2">
+                        <div className="name">{userName}</div>  
                           <div className='email'>{userId}</div>
-                          <div className="name">{userName}</div>  
                         </div>
                         <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
                       </div>
