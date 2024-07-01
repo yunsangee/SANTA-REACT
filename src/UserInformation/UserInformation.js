@@ -81,25 +81,25 @@ const UserInformation = ({
       top: '120px', 
       left: '10px', 
       zIndex: 1000, 
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',  // Increased transparency
-      padding: '10px', 
-      fontSize: '15px', 
-      width: '200px', 
+      backgroundColor: 'rgba(255, 255, 255, 0.2)', 
+      padding: '8px', 
+      fontSize: '12px', 
+      width: '180px', 
       backdropFilter: 'blur(10px)', 
-      WebkitBackdropFilter: 'blur(10px)', // For Safari support
-      borderRadius: '10px',
+      WebkitBackdropFilter: 'blur(10px)', 
+      borderRadius: '8px',
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
     }}>
-      <h3 style={{ fontSize: '25px', marginBottom: '10px', borderBottom: '1px solid #000' }}>〈〈등산 정보〉〉</h3>
-      <p style={{ margin: '5px 0', textAlign: 'left', fontWeight: 'bold' }}>총 소요시간: {Math.floor(totalTime / 60)}:{('0' + (totalTime % 60)).slice(-2)}</p>
-      <p style={{ margin: '5px 0', textAlign: 'left', fontWeight: 'bold' }}>이동 거리: {distance.toFixed(2)} m</p>
-      {ascentTime > 0 && <p style={{ margin: '5px 0', textAlign: 'left', fontWeight: 'bold' }}>등산 시간: {Math.floor(ascentTime / 60)}:{('0' + (ascentTime % 60)).slice(-2)}</p>}
-      {descentTime > 0 && <p style={{ margin: '5px 0', textAlign: 'left', fontWeight: 'bold' }}>하산 시간: {Math.floor(descentTime / 60)}:{('0' + (descentTime % 60)).slice(-2)}</p>}
-      <p style={{ margin: '5px 0', textAlign: 'left', fontWeight: 'bold' }}>산 이름: {mountainName}</p>
-      <p style={{ margin: '5px 0', textAlign: 'left', fontWeight: 'bold' }}>등산로 난이도: {trailDifficulty}</p>
-      <p style={{ margin: '5px 0', textAlign: 'left', fontWeight: 'bold' }}>등산로 길이: {trailLength} m</p>
-      <p style={{ margin: '5px 0', textAlign: 'left', fontWeight: 'bold' }}>등산 예상시간: {trailAscent} 분</p>
-      <p style={{ margin: '5px 0', textAlign: 'left', fontWeight: 'bold' }}>하산 예상시간: {trailDescent} 분</p>
+      <h3 style={{ fontSize: '18px', marginBottom: '8px', borderBottom: '1px solid #000' }}>〈〈등산 정보〉〉</h3>
+      <p style={{ margin: '3px 0', textAlign: 'left', fontWeight: 'bold' }}>총 소요시간: {Math.floor(totalTime / 60)}:{('0' + (totalTime % 60)).slice(-2)}</p>
+      <p style={{ margin: '3px 0', textAlign: 'left', fontWeight: 'bold' }}>이동 거리: {distance.toFixed(2)} m</p>
+      {ascentTime > 0 && <p style={{ margin: '3px 0', textAlign: 'left', fontWeight: 'bold' }}>등산 시간: {Math.floor(ascentTime / 60)}:{('0' + (ascentTime % 60)).slice(-2)}</p>}
+      {descentTime > 0 && <p style={{ margin: '3px 0', textAlign: 'left', fontWeight: 'bold' }}>하산 시간: {Math.floor(descentTime / 60)}:{('0' + (descentTime % 60)).slice(-2)}</p>}
+      <p style={{ margin: '3px 0', textAlign: 'left', fontWeight: 'bold' }}>산 이름: {mountainName}</p>
+      <p style={{ margin: '3px 0', textAlign: 'left', fontWeight: 'bold' }}>등산로 난이도: {trailDifficulty}</p>
+      <p style={{ margin: '3px 0', textAlign: 'left', fontWeight: 'bold' }}>등산로 길이: {trailLength} m</p>
+      <p style={{ margin: '3px 0', textAlign: 'left', fontWeight: 'bold' }}>등산 예상시간: {trailAscent} 분</p>
+      <p style={{ margin: '3px 0', textAlign: 'left', fontWeight: 'bold' }}>하산 예상시간: {trailDescent} 분</p>
     </div>
   );
 };
