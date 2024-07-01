@@ -29,11 +29,11 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
     });
 
     let trailDifficultyText = '';
-    if (trail.mountainTrailDifficulty === '2') {
+    if (trail.mountainTrailDifficulty === '0') {
       trailDifficultyText = '쉬움';
     } else if (trail.mountainTrailDifficulty === '1') {
       trailDifficultyText = '보통';
-    } else if (trail.mountainTrailDifficulty === '0') {
+    } else if (trail.mountainTrailDifficulty === '2') {
       trailDifficultyText = '어려움';
     }
 
