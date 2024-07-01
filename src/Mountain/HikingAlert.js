@@ -49,7 +49,7 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
   const playTTS = async (message) => {
     try {
       const encodedMessage = encodeURIComponent(message);
-      const response = await axios.get('https://www.dearmysanta.site/hikingAssist/tts', {
+      const response = await axios.get('https://www.dearmysanta.site/hikingAssist/tts/', {
         params: { text: encodedMessage },
         responseType: 'blob',
       });
