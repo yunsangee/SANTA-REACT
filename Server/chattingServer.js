@@ -119,14 +119,24 @@ io.on('connection', (socket) => {
     });
 
     socket.on('getLastMessage', async (roomNo) => {
-
-        const chattingRoom = await Chat.findOne({ roomNo });
-        if (chattingRoom) {
-            const lastMessage = chattingRoom.messages[chattingRoom.messages.length - 1];
-            if (lastMessage.isDeleted) {
-                lastMessage.contents = '삭제된 메시지입니다.';
+        try {
+            const chattingRoom = await Chat.findOne({ roomNo });
+            if (chattingRoom) {
+                const lastMessage = chattingRoom.messages[chattingRoom.messages.length - 1];
+                if (lastMessage) {  // lastMessage가 존재하는지 확인
+                    if (lastMessage.isDeleted) {
+                        lastMessage.contents = '삭제된 메시지입니다.';
+                    }
+                    socket.emit('lastMessage', { roomNo, lastMessage });
+                } else {
+                    socket.emit('lastMessage', { roomNo, lastMessage: null });  // 메시지가 없을 경우 처리
+                }
+            } else {
+                socket.emit('lastMessage', { roomNo, lastMessage: null });  // 채팅방이 존재하지 않을 경우 처리
             }
-            socket.emit('lastMessage', { roomNo, lastMessage });
+        } catch (error) {
+            console.error('Error fetching last message:', error);
+            socket.emit('error', { message: 'Error fetching last message' });
         }
     });
 
