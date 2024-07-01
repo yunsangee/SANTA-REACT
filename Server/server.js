@@ -1,5 +1,6 @@
 const express = require('express');
 const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const socketIo = require('socket.io');
 const cors = require('cors');
@@ -13,8 +14,8 @@ app.use(cors({
 }));
 
 const server = https.createServer({
-  key: fs.readFileSync('/etc/ssl/private/privkey.pem'),
-  cert: fs.readFileSync('/etc/ssl/certs/fullchain.pem')
+  key: fs.readFileSync('/path/to/privkey.pem'),
+  cert: fs.readFileSync('/path/to/fullchain.pem')
 }, app);
 
 const io = socketIo(server, {
