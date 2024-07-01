@@ -1,22 +1,16 @@
 const express = require('express');
-const https = require('https');
 const http = require('http');
-const fs = require('fs');
 const socketIo = require('socket.io');
 const cors = require('cors');
 const axios = require('axios');
 
 const app = express();
+const server = http.createServer(app);
 
 app.use(cors({
   origin: "*",
   methods: ["GET", "POST"]
 }));
-
-const server = https.createServer({
-  key: fs.readFileSync('/path/to/privkey.pem'),
-  cert: fs.readFileSync('/path/to/fullchain.pem')
-}, app);
 
 const io = socketIo(server, {
   cors: {
