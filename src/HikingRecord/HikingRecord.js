@@ -83,17 +83,13 @@ const HikingAlert = () => {
     const userNo = Cookies.get('userNo');
     const nickNameFromCookie = Cookies.get('nickName');
     setNickName(nickNameFromCookie);
-    console.log('userNo, nickName' + userNo + nickName);
 
     axios.post(`https://www.dearmysanta.site/hiking/react/getHikingListRecord/${userNo}`)
       .then(response => {
-        console.log(response.data); // 서버로부터 받은 데이터를 콘솔에 출력
         setHikingList(response.data);
       })
       .catch(error => console.error('Error fetching data:', error));
   }, []);
-
-  console.log(nickName);
 
   const getSkyCondition = (code) => {
     const skyConditionCode = parseInt(code, 10);
@@ -197,57 +193,58 @@ const HikingAlert = () => {
           {hikingList.length === 0 ? (
             <p>등산 기록이 없습니다</p>
           ) : (
-            <>
-              <div className="d-flex justify-content-end mb-3">
-                <button
-                  className="btn btn-danger"
-                  onClick={handleDeleteSelected}
-                  disabled={selectedItems.length === 0}
-                  style={styles.deleteButton}
-                >
-                  삭제하기
-                </button>
-              </div>
-              <div className="row">
-                {hikingList.map(record => (
-                  <div
-                    className={`col-md-6 col-lg-4 mb-4`}
-                    key={record.hrNo}
-                    onClick={() => handleSelect(record.hrNo)}
+              <>
+                <div className="d-flex justify-content-end mb-3">
+                  <button
+                    className="btn btn-danger"
+                    onClick={handleDeleteSelected}
+                    disabled={selectedItems.length === 0}
+                    style={styles.deleteButton}
                   >
-                    <div className={`card h-100 fruite-item`} style={styles.card}>
-                      <div className="card-body light-green-border position-relative">
-                        <div className="hiking-date" style={styles.hikingDate}>{record.hikingDate}</div>
-                        <h3 className="mountain-name" style={styles.mountainName}>{record.mountain?.mountainName}</h3>
-                        <hr className="mountain-name-divider" style={styles.mountainNameDivider} />
-                        <p className="card-text"><strong>날씨:</strong> {getSkyCondition(record.weather?.skyCondition)}</p>
-                        <hr />
-                        <p className="card-text"><strong>총 소요시간:</strong> {formatTime(record.totalTime)}</p>
-                        <hr />
-                        <p className="card-text"><strong>등산 이동 거리:</strong> {record.userDistance}m</p>
-                        <hr />
-                        <p className="card-text"><strong>등산 시간:</strong> {formatTime(record.ascentTime)}</p>
-                        <hr />
-                        <p className="card-text"><strong>하산 시간:</strong> {formatTime(record.descentTime)}</p>
-                        <hr />
-                        <p className="card-text"><strong>선택한 등산 난이도:</strong> {getTrailDifficulty(record.hikingDifficulty)}</p>
+                    삭제하기
+                </button>
+                </div>
+                <div className="row">
+                  {hikingList.map(record => (
+                    <div
+                      className={`col-md-6 col-lg-4 mb-4`}
+                      key={record.hrNo}
+                      onClick={() => handleSelect(record.hrNo)}
+                    >
+                      <div className={`card h-100 fruite-item`} style={styles.card}>
+                        <div className="card-body light-green-border position-relative">
+                          <div className="hiking-date" style={styles.hikingDate}>{record.hikingDate}</div>
+                          <h3 className="mountain-name" style={styles.mountainName}>{record.mountain?.mountainName}</h3>
+                          <hr className="mountain-name-divider" style={styles.mountainNameDivider} />
+                          <p className="card-text"><strong>날씨:</strong> {getSkyCondition(record.weather?.skyCondition)}</p>
+                          <hr />
+                          <p className="card-text"><strong>총 소요시간:</strong> {formatTime(record.totalTime)}</p>
+                          <hr />
+                          <p className="card-text"><strong>등산 이동 거리:</strong> {record.userDistance}m</p>
+                          <hr />
+                          <p className="card-text"><strong>등산 시간:</strong> {formatTime(record.ascentTime)}</p>
+                          <hr />
+                          <p className="card-text"><strong>하산 시간:</strong> {formatTime(record.descentTime)}</p>
+                          <hr />
+                          <p className="card-text"><strong>선택한 등산 난이도:</strong> {getTrailDifficulty(record.hikingDifficulty)}</p>
 
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          checked={selectedItems.includes(record.hrNo)}
-                          onChange={(e) => { e.stopPropagation(); handleSelect(record.hrNo); }}
-                        />
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            checked={selectedItems.includes(record.hrNo)}
+                            onChange={(e) => { e.stopPropagation(); handleSelect(record.hrNo); }}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
+                  ))}
+                </div>
+              </>
+            )}
         </div>
       </div>
-      <button id="back-to-top" className="btn btn-primary border-3 border-primary rounded-circle" style={styles.backToTop} onClick={scrollToTop}>
+      {/* 수정된 버튼 */}
+      <button id="back-to-top" className="btn btn-cp border-3 border-primary rounded-circle" style={styles.backToTop} onClick={scrollToTop}>
         <i className="fa fa-arrow-up"></i>
       </button>
     </div>

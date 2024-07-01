@@ -902,3 +902,35 @@ input[type="time"] {
   left: 0;
   right: auto;
 }
+.btn-cp {
+  border: 2px solid orange;
+  background-color: white;
+  color: limegreen;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+}
+
+.btn-cp:hover {
+  transform: scale(1.1);
+}
+
+.btn-cp .fa {
+  font-size: 24px;
+}
+
+.fixed-buttons {
+  position: fixed;
+  bottom: 20px;
+  right: 20px; /* 수정: 기본 위치를 오른쪽 하단으로 조정 */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: right 0.3s ease;
+}
