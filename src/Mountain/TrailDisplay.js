@@ -122,7 +122,7 @@ window.zoomToTrail = (lat, lon) => {
   const latLng = new window.naver.maps.LatLng(lat, lon);
   if (window.map) {
     window.map.setCenter(latLng);
-    window.map.setZoom(18);
+    window.map.setZoom(15);
   }
 };
 

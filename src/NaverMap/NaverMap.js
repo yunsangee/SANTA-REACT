@@ -103,7 +103,7 @@ const NaverMap = () => {
         const initializeMap = (lat, lon) => {
           const mapOptions = {
             center: new naver.maps.LatLng(lat, lon),
-            zoom: 14,
+            zoom: 13,
             mapTypeControl: true
           };
           const mapInstance = new naver.maps.Map('map', mapOptions);
@@ -266,7 +266,7 @@ const NaverMap = () => {
           setSelectedMountainName(mountain.mountainName);
 
           map.setCenter(marker.getPosition());
-          map.setZoom(16);
+          map.setZoom(14);
 
           if (visibleTrails && visibleTrails.mountainNo === mountain.mountainNo) {
             clearTrailInfo(visibleTrails.trails);
