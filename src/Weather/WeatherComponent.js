@@ -81,28 +81,29 @@ const WeatherComponent = ({ latitude, longitude, setSkyCondition, setSunsetTime 
       right: '8px', 
       zIndex: 1000, 
       backgroundColor: 'rgba(255, 255, 255, 0.2)', 
-      padding: '8px', 
-      fontSize: '12px', 
-      width: '180px', 
-      backdropFilter: 'blur(10px)', 
-      WebkitBackdropFilter: 'blur(10px)', // For Safari support
-      borderRadius: '8px',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+      padding: '6px', 
+      fontSize: '10px', 
+      width: '160px', 
+      backdropFilter: 'blur(8px)', 
+      WebkitBackdropFilter: 'blur(8px)', 
+      borderRadius: '6px',
+      boxShadow: '0 3px 6px rgba(0, 0, 0, 0.1)'
     }}>
-      <h2 style={{ fontSize: '20px', marginBottom: '8px', borderBottom: '1px solid #000' }}>〈〈날씨〉〉</h2>
+      <h2 style={{ fontSize: '16px', marginBottom: '6px', borderBottom: '1px solid #000' }}>〈〈날씨〉〉</h2>
       {weather ? (
         <>
-          <p style={{ margin: '3px 0',fontWeight: 'bold'}}>현재 날씨: {getSkyCondition(weather.skyCondition)}</p>
-          <p style={{ margin: '3px 0',fontWeight: 'bold' }}>기온: {weather.temperature}°C</p>
-          <p style={{ margin: '3px 0',fontWeight: 'bold' }}>일출시간: {formatTime(weather.sunriseTime)}</p>
-          <p style={{ margin: '3px 0',fontWeight: 'bold' }}>일몰시간: {formatTime(weather.sunsetTime)}</p>
-          <p style={{ margin: '3px 0',fontWeight: 'bold' }}>강수형태: {getPrecipitationType(weather.precipitationType)}</p>
-          <p style={{ margin: '3px 0',fontWeight: 'bold' }}>강수확률: {weather.precipitationProbability}%</p>
+          <p style={{ margin: '2px 0', fontWeight: 'bold' }}>현재 날씨: {getSkyCondition(weather.skyCondition)}</p>
+          <p style={{ margin: '2px 0', fontWeight: 'bold' }}>기온: {weather.temperature}°C</p>
+          <p style={{ margin: '2px 0', fontWeight: 'bold' }}>일출시간: {formatTime(weather.sunriseTime)}</p>
+          <p style={{ margin: '2px 0', fontWeight: 'bold' }}>일몰시간: {formatTime(weather.sunsetTime)}</p>
+          <p style={{ margin: '2px 0', fontWeight: 'bold' }}>강수형태: {getPrecipitationType(weather.precipitationType)}</p>
+          <p style={{ margin: '2px 0', fontWeight: 'bold' }}>강수확률: {weather.precipitationProbability}%</p>
         </>
       ) : (
-        <p style={{ margin: '3px 0' }}>Loading weather information...</p>
+        <p style={{ margin: '2px 0' }}>Loading weather information...</p>
       )}
     </div>
+    
   );
 };
 
