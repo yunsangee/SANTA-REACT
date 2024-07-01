@@ -312,7 +312,7 @@ const Top = () => {
                           <div className='email'>{userId}</div>
                           <div className="name">{userName}</div>  
                         </div>
-                        {/* <i className="fas fa-cog setting-icon" id="settingsIcon"></i> */}
+                        <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
                       </div>
                       <a className="dropdown-item dropdown-item-custom" href="#"><i className="fas fa-certificate"></i> 인증 {sessionStorage.getItem('certificationCount')}회, 모임 {sessionStorage.getItem('meetingCount')}회 </a>
                       <a className="dropdown-item dropdown-item-custom" id="myInfo" href="#"><i className="fas fa-user"></i> 내 정보보기</a>
@@ -325,7 +325,7 @@ const Top = () => {
                       <a className="dropdown-item dropdown-item-custom" id="logout" href="#" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> 로그아웃</a>
                     </div>
                   </div>
-                  <i className="fas fa-bell user-profile-icon" onClick={handleBellClick} style={{ marginLeft: '15px', fontSize: '20px', color: 'rgb(60, 170, 60)' }} />
+                  {/* <i className="fas fa-bell user-profile-icon" onClick={handleBellClick} style={{ marginLeft: '15px', fontSize: '20px', color: 'rgb(60, 170, 60)' }} /> */}
                 </>
               ) : (
                 <a href="#" className="my-auto">

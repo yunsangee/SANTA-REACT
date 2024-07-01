@@ -82,7 +82,7 @@ io.on('connection', (socket) => {
 const client_id = 'ch1xa6ojlq';
 const client_secret = 'TWRQUkyUMJXG82q1vjJgE9IpxkYVSQCnwOfKSjbP';
 
-app.get('/hikingAssist/tts', async (req, res) => {
+app.get('hikingAssist/tts', async (req, res) => {
   const text = decodeURIComponent(req.query.text || '좋은 하루 되세요');
   const api_url = 'https://naveropenapi.apigw.ntruss.com/tts-premium/v1/tts';
 
