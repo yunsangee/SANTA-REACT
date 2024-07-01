@@ -312,7 +312,7 @@ const Top = () => {
                           <div className='email'>{userId}</div>
                           <div className="name">{userName}</div>  
                         </div>
-                        <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
+                        {/* <i className="fas fa-cog setting-icon" id="settingsIcon"></i> */}
                       </div>
                       <a className="dropdown-item dropdown-item-custom" href="#"><i className="fas fa-certificate"></i> 인증 {sessionStorage.getItem('certificationCount')}회, 모임 {sessionStorage.getItem('meetingCount')}회 </a>
                       <a className="dropdown-item dropdown-item-custom" id="myInfo" href="#"><i className="fas fa-user"></i> 내 정보보기</a>
