@@ -430,7 +430,7 @@ const NaverMap = () => {
           map: map,
           title: 'Your Location',
           icon: {
-            url: 'https://maps.google.com/mapfiles/kml/paddle/blu-blank.png',
+            url: 'https://kr.object.ncloudstorage.com/santabucket2/free-icon-location-7987463.png',
             scaledSize: new window.naver.maps.Size(23, 23)
           }
         });

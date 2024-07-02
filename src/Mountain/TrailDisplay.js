@@ -52,16 +52,16 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 
     // Create InfoWindow for the marker
     const infoWindowContent = `
-      <div style="padding:10px;" onclick="window.handleInfoWindowClick(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]},
-        '${trail.mountainTrailDifficulty}', ${lastCoordinate[0]}, ${lastCoordinate[1]}, 
-        ${JSON.stringify(trail.mountainTrailCoordinates)}, ${trail.mountainTrailLength},
-        ${trail.expectedAscentTime}, ${trail.descentTime}, ${trail.mountainTrailNo});">
-        <h6>등산난이도: ${trailDifficultyText}</h6>
-        <p><strong>길이:</strong> ${trail.mountainTrailLength}m</p>
-        <p><strong>등산시간:</strong> ${trail.expectedAscentTime}min</p>
-        <p><strong>하산시간:</strong> ${trail.descentTime}min</p>
-      </div>
-    `;
+    <div style="padding: 15px; border-radius: 50px; background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: pointer; width: 180px;" onclick="window.handleInfoWindowClick(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]}, '${trail.mountainTrailDifficulty}', ${lastCoordinate[0]}, ${lastCoordinate[1]}, ${JSON.stringify(trail.mountainTrailCoordinates)}, ${trail.mountainTrailLength}, ${trail.expectedAscentTime}, ${trail.descentTime}, ${trail.mountainTrailNo});">
+      <h6 style="margin: 0; font-size: 16px; color: #4CAF50;">등산난이도: ${trailDifficultyText}</h6>
+      <p style="margin: 5px 0 0 0; font-size: 14px;"><strong>길이:</strong> ${trail.mountainTrailLength}m</p>
+      <p style="margin: 5px 0 0 0; font-size: 14px;"><strong>등산시간:</strong> ${trail.expectedAscentTime}분</p>
+      <p style="margin: 5px 0 0 0; font-size: 14px;"><strong>하산시간:</strong> ${trail.descentTime}분</p>
+    </div>
+  `;
+  
+  
+  
     const infoWindow = new naver.maps.InfoWindow({
       content: infoWindowContent,
       backgroundColor: "#fff",
