@@ -39,6 +39,7 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 
     const lastCoordinate = trail.mountainTrailCoordinates.slice(-1)[0];
 
+    /*
     const customOverlayContent = `
       <div class="card text-dark bg-light" style="${getCardStyle(index)}" 
       onclick="window.zoomToTrail(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]});
@@ -68,6 +69,7 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
     });
 
     customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay });
+    */
 
     // Add a small marker at the first coordinate of the trail with an offset
     const firstCoordinate = trail.mountainTrailCoordinates[0];
@@ -82,7 +84,7 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
     });
 
     firstMarker.setVisible(currentZoom > 16); // Add visibility condition based on zoom level
-    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay, firstMarker });
+    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, firstMarker });
   });
 
   window.blinkPolyline = (trailNo) => {
@@ -110,9 +112,8 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 };
 
 export const clearTrailInfo = (overlays) => {
-  overlays.forEach(({ polyline, customOverlay, firstMarker }) => {
+  overlays.forEach(({ polyline, firstMarker }) => {
     polyline.setMap(null);
-    customOverlay.setMap(null);
     if (firstMarker) firstMarker.setMap(null); // Remove the first marker if it exists
   });
 };
