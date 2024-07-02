@@ -431,7 +431,7 @@ const NaverMap = () => {
           title: 'Your Location',
           icon: {
             url: 'https://kr.object.ncloudstorage.com/santabucket2/free-icon-location-7987463.png',
-            scaledSize: new window.naver.maps.Size(23, 23)
+            scaledSize: new window.naver.maps.Size(30, 30)
           }
         });
         setCurrentMarker(marker);
