@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 const styles = {
     container: {
         fontFamily: 'Arial, sans-serif',
-        fontSize: '30px',
+        fontSize: '25px',
         lineHeight: '1.8',
         margin: '20px'
     },
@@ -18,7 +18,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        fontSize: '30px',
+        fontSize: '25px',
         marginBottom: '10px'
     },
     labelSpan: {
@@ -31,12 +31,12 @@ const styles = {
         borderTop: '5px solid #4CAF50'
     },
     timeInput: {
-        fontSize: '30px',
+        fontSize: '25px',
         padding: '10px',
         marginLeft: '10px'
     },
     saveButton: {
-        fontSize: '22px',
+        fontSize: '20px',
         padding: '15px 30px',
         backgroundColor: '#4CAF50',
         color: 'white',

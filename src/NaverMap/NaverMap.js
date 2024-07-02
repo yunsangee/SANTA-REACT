@@ -80,8 +80,8 @@ const styles = {
   },
   menuContainer: {
     position: 'absolute',
-    bottom: '400px',
-    right: '10px',
+    bottom: '410px',
+    right: '2px',
     zIndex: '1000',
     backgroundColor: 'white',
     borderRadius: '10px',
