@@ -1,8 +1,7 @@
 import { createCustomOverlay } from './CustomOverlay';
 
 export const displayTrailInfo = (map, trails, naver, currentZoom) => {
-  const CustomOverlay = createCustomOverlay(naver);
-  const customOverlays = [];
+  const infoWindows = [];
   const markerSize = 10; // Small size marker
   const offsetStep = 30; // Offset step to separate overlapping markers and overlays
   let blinkingPolyline = null;
@@ -39,9 +38,9 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 
     const lastCoordinate = trail.mountainTrailCoordinates.slice(-1)[0];
 
-    const customOverlayContent = `
+    const infoWindowContent = `
       <div class="card text-dark bg-light" style="${getCardStyle(index)}" 
-      onclick="window.zoomToTrail(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]});
+      onclick="window.zoomToTrail(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]});  
       window.setTrailDifficulty('${trail.mountainTrailDifficulty}');
       window.setSelectedTrailEnd({latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});
       window.setTrailCoordinates(${JSON.stringify(trail.mountainTrailCoordinates)});
@@ -59,15 +58,21 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
       </div>
     `;
 
-    const customOverlay = new CustomOverlay({
-      content: customOverlayContent,
+    const infoWindow = new naver.maps.InfoWindow({
+      content: infoWindowContent,
       position: path[0],
       map: map,
-      offset: { x: 0, y: -markerSize - offsetStep * index },
-      visible: currentZoom > 18 // Add visibility condition based on zoom level
+      maxWidth: 200, // Set maximum width if needed
+      backgroundColor: "#fff", // Set background color if needed
+      borderColor: "#333", // Set border color if needed
+      borderWidth: 2, // Set border width if needed
+      anchorSize: new naver.maps.Size(10, 10), // Set anchor size if needed
+      anchorSkew: true, // Set anchor skew if needed
+      anchorColor: "#fff", // Set anchor color if needed
+      zIndex: 1000 + index // Set zIndex to ensure InfoWindows stack correctly
     });
 
-    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay });
+    infoWindows.push({ trailNo: trail.mountainTrailNo, polyline, infoWindow });
 
     // Add a small marker at the first coordinate of the trail with an offset
     const firstCoordinate = trail.mountainTrailCoordinates[0];
@@ -82,7 +87,7 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
     });
 
     firstMarker.setVisible(currentZoom > 16); // Add visibility condition based on zoom level
-    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay, firstMarker });
+    infoWindows.push({ trailNo: trail.mountainTrailNo, polyline, infoWindow, firstMarker });
   });
 
   window.blinkPolyline = (trailNo) => {
@@ -90,7 +95,7 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
       clearInterval(blinkInterval);
       blinkingPolyline.setVisible(true); // Ensure the last blinking polyline is visible
     }
-    const overlay = customOverlays.find(overlay => overlay.trailNo === trailNo);
+    const overlay = infoWindows.find(overlay => overlay.trailNo === trailNo);
     if (overlay) {
       blinkingPolyline = overlay.polyline;
       blinkInterval = setInterval(() => {
@@ -106,13 +111,13 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
     }
   };
 
-  return customOverlays;
+  return infoWindows;
 };
 
 export const clearTrailInfo = (overlays) => {
-  overlays.forEach(({ polyline, customOverlay, firstMarker }) => {
+  overlays.forEach(({ polyline, infoWindow, firstMarker }) => {
     polyline.setMap(null);
-    customOverlay.setMap(null);
+    infoWindow.setMap(null);
     if (firstMarker) firstMarker.setMap(null); // Remove the first marker if it exists
   });
 };
