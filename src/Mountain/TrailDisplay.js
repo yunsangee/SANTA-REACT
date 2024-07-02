@@ -1,6 +1,6 @@
 export const displayTrailInfo = (map, trails, naver, currentZoom) => {
   const customOverlays = [];
-  const markerSize = 10; // Small size marker
+  const markerSize = 18; // Small size marker
   let blinkingPolyline = null;
   let blinkInterval = null;
   let openInfoWindow = null; // Currently open InfoWindow
