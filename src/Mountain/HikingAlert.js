@@ -47,11 +47,26 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   const playTTS = async (message) => {
+    const client_id = 'ch1xa6ojlq';
+    const client_secret = 'TWRQUkyUMJXG82q1vjJgE9IpxkYVSQCnwOfKSjbP';
+    const api_url = 'https://naveropenapi.apigw.ntruss.com/tts-premium/v1/tts';
+    
     try {
-      const encodedMessage = encodeURIComponent(message);
-      const response = await axios.get('https://www.dearmysanta.site/hikingAssist/tts', {
-        params: { text: encodedMessage },
-        responseType: 'blob',
+      const response = await axios.post(api_url, null, {
+        params: {
+          speaker: 'nara',
+          volume: '0',
+          speed: '0',
+          pitch: '0',
+          text: message,
+          format: 'mp3'
+        },
+        headers: {
+          'X-NCP-APIGW-API-KEY-ID': client_id,
+          'X-NCP-APIGW-API-KEY': client_secret,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        responseType: 'arraybuffer'
       });
 
       const url = URL.createObjectURL(new Blob([response.data], { type: 'audio/mp3' }));
