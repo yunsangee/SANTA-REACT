@@ -46,27 +46,35 @@ const styles = {
   },
   locateButtonStyle: {
     position: 'absolute',
-    bottom: '140px',
+    bottom: '300px',
     right: '10px',
     zIndex: '1000',
-    padding: '10px',
+    width: '50px',  // Fixed width
+    height: '50px', // Fixed height
     backgroundColor: 'white',
-    border: 'none',
+    border: '2px solid black', // Add border here
     borderRadius: '50%',
     fontSize: '24px',
     cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   hamburgerMenuStyle: {
     position: 'absolute',
-    bottom: '170px',
+    bottom: '360px',
     right: '10px',
     zIndex: '1000',
-    padding: '13px',
+    width: '50px',  // Fixed width
+    height: '50px', // Fixed height
     backgroundColor: 'white',
-    border: 'none',
+    border: '2px solid black', // Add border here
     borderRadius: '50%',
-    fontSize: '28px',
+    fontSize: '24px',  // Match the font size with locateButtonStyle
     cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   toggleButtonStyle: {
     padding: '4px',
@@ -80,7 +88,7 @@ const styles = {
   },
   menuContainer: {
     position: 'absolute',
-    bottom: '410px',
+    bottom: '415px',
     right: '2px',
     zIndex: '1000',
     backgroundColor: 'white',
@@ -533,7 +541,7 @@ const NaverMap = () => {
       <div className="map-container" style={styles.mapContainer}>
         <div className="top-border-line" style={styles.topBorderLine}></div>
         <div id="map" style={{ width: '100%', height: '900px', position: 'relative' }}>
-          <div style={styles.locateButtonStyle}>
+          <div>
             <button
               onClick={handleLocateMe}
               style={styles.locateButtonStyle}
@@ -541,7 +549,7 @@ const NaverMap = () => {
               📍
             </button>
           </div>
-          <div style={styles.hamburgerMenuStyle}>
+          <div>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               style={styles.hamburgerMenuStyle}

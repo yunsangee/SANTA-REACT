@@ -562,6 +562,8 @@ input[type="time"] {
   top: 0;
 }
 
+
+
 .bottom-border-line {
   bottom: 0;
 }
@@ -657,10 +659,14 @@ input[type="time"] {
 #logoName {
   font-size: 2.5rem; /* Increased font size */
   transition: color 0.3s ease;
+  color: rgb(60, 170, 60);
+  position: relative; /* or 'absolute' depending on your layout */
+  left: 20px; /* Move the element 20px from the left */
 }
 
+
 #logoName:hover {
-  color: rgb(60, 170, 60);
+  color: 
 }
 
 .nav-link {
