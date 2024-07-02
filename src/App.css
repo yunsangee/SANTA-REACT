@@ -438,19 +438,21 @@ input[type="time"] {
 
 /* Custom styles for react-toggle to increase size */
 .react-toggle {
-  width: 60px;
-  height: 34px;
+  width: 100px;
+  height: 50px;
   display: inline-block;
   position: relative;
-  cursor: pointer;
-  background-color: transparent;
-  border: 2px solid transparent;
-  border-radius: 34px;
-  transition: all 0.3s ease;
 }
 
-.react-toggle:hover:not(.react-toggle--disabled) {
-  border-color: #4CAF50;
+.react-toggle-screenreader-only {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }
 
 .react-toggle--disabled .react-toggle-track {
@@ -459,12 +461,12 @@ input[type="time"] {
 }
 
 .react-toggle-track {
-  width: 60px;
-  height: 34px;
+  width: 100px;
+  height: 50px;
   padding: 0;
-  border-radius: 34px;
-  background-color: #ccc;
-  transition: all 0.3s ease;
+  border-radius: 30px;
+  background-color: #4CAF50;
+  transition: all 0.2s ease;
 }
 
 .react-toggle--checked .react-toggle-track {
@@ -473,54 +475,50 @@ input[type="time"] {
 
 .react-toggle-track-check {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 7px;
-  left: 8px;
+  width: 34px;
+  height: 34px;
+  top: 8px;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
   line-height: 0;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  color: white;
 }
 
 .react-toggle-track-x {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 7px;
-  right: 8px;
+  width: 34px;
+  height: 34px;
+  top: 8px;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
   line-height: 0;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-  color: white;
-}
-
-.react-toggle--checked .react-toggle-track-check {
-  opacity: 1;
+  right: 10px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .react-toggle--checked .react-toggle-track-x {
-  opacity: 0;
+  opacity: 1;
+  transition: opacity 0.25s ease;
 }
 
 .react-toggle-thumb {
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 30px;
-  height: 30px;
-  border: 2px solid #ccc;
+  top: 3px;
+  left: 3px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #4CAF50;
   border-radius: 50%;
-  background-color: white;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  background-color: #FAFAFA;
 }
 
 .react-toggle--checked .react-toggle-thumb {
-  left: 28px;
+  left: 53px;
   border-color: #4CAF50;
 }
-
 
 /* Additional Styles */
 .weather-component-wrapper {
@@ -903,36 +901,4 @@ input[type="time"] {
 .dropdown-menu {
   left: 0;
   right: auto;
-}
-.btn-cp {
-  border: 2px solid orange;
-  background-color: white;
-  color: limegreen;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s;
-}
-
-.btn-cp:hover {
-  transform: scale(1.1);
-}
-
-.btn-cp .fa {
-  font-size: 24px;
-}
-
-.fixed-buttons {
-  position: fixed;
-  bottom: 20px;
-  right: 20px; /* 수정: 기본 위치를 오른쪽 하단으로 조정 */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: right 0.3s ease;
 }
