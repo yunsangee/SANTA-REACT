@@ -474,7 +474,7 @@ const NaverMap = () => {
         <img 
           src="https://kr.object.ncloudstorage.com/santabucket2/%EB%8B%AC%EB%A6%AC%EA%B8%B0.png" 
           alt={altText} 
-          style={{ width: '50px', height: '50px' }}
+          style={{ width: '45px', height: '45px' }}
         />
         <span style={{ fontSize: '10px', marginTop: '0px', color: 'black' }}>{text}</span>
       </div>

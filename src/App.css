@@ -588,8 +588,8 @@ input[type="time"] {
 }
 
 .hiking-button img {
-  width: 250%;  /* 이미지 크기 조정 */
-  height: 250%; /* 이미지 크기 조정 */
+  width: 170%;  /* 이미지 크기 조정 */
+  height: 170%; /* 이미지 크기 조정 */
 }
 
 .hiking-button:hover {
