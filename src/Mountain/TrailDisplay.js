@@ -1,5 +1,3 @@
-import { createCustomOverlay } from './CustomOverlay';
-
 export const displayTrailInfo = (map, trails, naver, currentZoom) => {
   const infoWindows = [];
   const markerSize = 10; // Small size marker
@@ -39,8 +37,8 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
     const lastCoordinate = trail.mountainTrailCoordinates.slice(-1)[0];
 
     const infoWindowContent = `
-      <div class="card text-dark bg-light" style="${getCardStyle(index)}" 
-      onclick="window.zoomToTrail(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]});  
+      <div class="card text-dark bg-light" 
+      onclick="window.zoomToTrail(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]});
       window.setTrailDifficulty('${trail.mountainTrailDifficulty}');
       window.setSelectedTrailEnd({latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});
       window.setTrailCoordinates(${JSON.stringify(trail.mountainTrailCoordinates)});
@@ -60,8 +58,6 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 
     const infoWindow = new naver.maps.InfoWindow({
       content: infoWindowContent,
-      position: path[0],
-      map: map,
       maxWidth: 200, // Set maximum width if needed
       backgroundColor: "#fff", // Set background color if needed
       borderColor: "#333", // Set border color if needed
@@ -71,8 +67,6 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
       anchorColor: "#fff", // Set anchor color if needed
       zIndex: 1000 + index // Set zIndex to ensure InfoWindows stack correctly
     });
-
-    infoWindows.push({ trailNo: trail.mountainTrailNo, polyline, infoWindow });
 
     // Add a small marker at the first coordinate of the trail with an offset
     const firstCoordinate = trail.mountainTrailCoordinates[0];
@@ -87,6 +81,12 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
     });
 
     firstMarker.setVisible(currentZoom > 16); // Add visibility condition based on zoom level
+
+    // Open info window on marker click
+    naver.maps.Event.addListener(firstMarker, 'click', function() {
+      infoWindow.open(map, firstMarker);
+    });
+
     infoWindows.push({ trailNo: trail.mountainTrailNo, polyline, infoWindow, firstMarker });
   });
 
@@ -117,7 +117,7 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 export const clearTrailInfo = (overlays) => {
   overlays.forEach(({ polyline, infoWindow, firstMarker }) => {
     polyline.setMap(null);
-    infoWindow.setMap(null);
+    infoWindow.close();
     if (firstMarker) firstMarker.setMap(null); // Remove the first marker if it exists
   });
 };
@@ -127,7 +127,7 @@ window.zoomToTrail = (lat, lon) => {
   const latLng = new window.naver.maps.LatLng(lat, lon);
   if (window.map) {
     window.map.setCenter(latLng);
-    window.map.setZoom(15);
+    window.map.setZoom(18);
   }
 };
 
@@ -167,14 +167,3 @@ window.setSelectedTrailDescent = (descent) => {
     window.setSelectedTrailDescent(descent);
   }
 };
-
-// Helper function to generate card style
-const getCardStyle = (index) => `
-  width: 10rem; /* Reduce card width */
-  padding: 4px; /* Reduce padding */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
-  cursor: pointer; 
-  z-index: ${1000 + index};
-  border: 3px solid black; /* 검은색 선 추가 */
-  font-size: 10px; /* Reduce font size */
-`;
