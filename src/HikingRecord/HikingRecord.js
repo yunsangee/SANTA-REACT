@@ -108,11 +108,11 @@ const HikingAlert = () => {
   const getTrailDifficulty = (difficulty) => {
     switch (parseInt(difficulty, 10)) {
       case 2:
-        return '어려움 😊'; // Easy with smiling face emoticon
+        return '어려움 😓'; // Easy with smiling face emoticon
       case 1:
         return '보통 😐'; // Medium with neutral face emoticon
       case 0:
-        return '쉬움 😓'; // Hard with sweating face emoticon
+        return '쉬움 😊'; // Hard with sweating face emoticon
       default:
         return '알 수 없음 ❓'; // Unknown with question mark emoticon
     }
@@ -178,7 +178,7 @@ const HikingAlert = () => {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, color:"#81C408", behavior: "smooth" });
   };
 
   return (
@@ -191,7 +191,7 @@ const HikingAlert = () => {
       <div className="container-fluid py-5">
         <div className="container py-5">
           {hikingList.length === 0 ? (
-            <p>등산 기록이 없습니다</p>
+          <p style={{ fontSize: '20px', color: 'yellow' }}>등산 기록이 없습니다</p>
           ) : (
               <>
                 <div className="d-flex justify-content-end mb-3">

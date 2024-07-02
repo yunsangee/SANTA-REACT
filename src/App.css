@@ -47,6 +47,12 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
   transition: 0.3s;
 }
+.card-checkbox {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transform: scale(1.5); /* Adjust the size of the checkbox if necessary */
+}
 
 @keyframes App-logo-spin {
   from {
