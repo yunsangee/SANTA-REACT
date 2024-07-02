@@ -103,7 +103,7 @@ const NaverMap = () => {
         const initializeMap = (lat, lon) => {
           const mapOptions = {
             center: new naver.maps.LatLng(lat, lon),
-            zoom: 13,
+            zoom: 15,
             mapTypeControl: true
           };
           const mapInstance = new naver.maps.Map('map', mapOptions);
@@ -189,8 +189,8 @@ const NaverMap = () => {
                   map: map,
                   title: 'Your Location',
                   icon: {
-                    url: 'https://maps.google.com/mapfiles/kml/paddle/blu-blank.png',
-                    scaledSize: new naver.maps.Size(23, 23)
+                    url: 'https://kr.object.ncloudstorage.com/santabucket2/free-icon-location-7987463.png',
+                    scaledSize: new naver.maps.Size(30, 30)
                   }
                 });
                 setCurrentMarker(marker);
@@ -234,8 +234,8 @@ const NaverMap = () => {
         map: map,
         title: 'Your Location',
         icon: {
-          url: 'https://maps.google.com/mapfiles/kml/paddle/blu-blank.png',
-          scaledSize: new window.naver.maps.Size(20, 20)
+          url: 'https://kr.object.ncloudstorage.com/santabucket2/free-icon-location-7987463.png',
+          scaledSize: new window.naver.maps.Size(30, 30)
         }
       });
       setCurrentMarker(marker);
@@ -246,28 +246,32 @@ const NaverMap = () => {
 
   useEffect(() => {
     if (mountains.length > 0 && map) {
+      // 기존 마커 제거
       mountainMarkers.forEach(marker => marker.setMap(null));
-
+  
+      // 새 마커 생성
       const newMarkers = mountains.map(mountain => {
         const marker = new window.naver.maps.Marker({
           position: new window.naver.maps.LatLng(mountain.mountainLatitude, mountain.mountainLongitude),
           map: map,
           title: mountain.mountainName,
           icon: {
-            url: 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png',
-            scaledSize: new window.naver.maps.Size(30, 30)
+            url: 'https://kr.object.ncloudstorage.com/santabucket2/Flag_6.png',
+            scaledSize: new window.naver.maps.Size(50, 50)
           }
         });
-
+  
+        // 마커 클릭 이벤트 리스너 추가
         window.naver.maps.Event.addListener(marker, 'click', () => {
           console.log('Marker clicked:', mountain.mountainName);
           console.log('Mountain trails:', mountain.mountainTrail);
-
+  
           setSelectedMountainName(mountain.mountainName);
-
+  
+          // 마커 위치로 지도를 이동하고 줌 레벨 설정
           map.setCenter(marker.getPosition());
-          map.setZoom(14);
-
+          map.setZoom(15);  // 줌 레벨을 15로 설정
+  
           if (visibleTrails && visibleTrails.mountainNo === mountain.mountainNo) {
             clearTrailInfo(visibleTrails.trails);
             setVisibleTrails(null);
@@ -275,17 +279,17 @@ const NaverMap = () => {
             if (visibleTrails) {
               clearTrailInfo(visibleTrails.trails);
             }
-
+  
             if (map.getZoom() >= zoomLevelThreshold) {
               const newTrails = displayTrailInfo(map, mountain.mountainTrail, window.naver, map.getZoom());
               setVisibleTrails({ mountainNo: mountain.mountainNo, trails: newTrails });
             }
           }
         });
-
+  
         return marker;
       });
-
+  
       setMountainMarkers(newMarkers);
     }
   }, [mountains, map, visibleTrails]);
