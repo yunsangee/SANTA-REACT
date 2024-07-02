@@ -39,7 +39,6 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 
     const lastCoordinate = trail.mountainTrailCoordinates.slice(-1)[0];
 
-    /*
     const customOverlayContent = `
       <div class="card text-dark bg-light" style="${getCardStyle(index)}" 
       onclick="window.zoomToTrail(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]});
@@ -69,10 +68,10 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
     });
 
     customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay });
-    */
 
     // Add a small marker at the first coordinate of the trail with an offset
     const firstCoordinate = trail.mountainTrailCoordinates[0];
+    console.log('First coordinate:', firstCoordinate); // Debug log
     const firstMarker = new naver.maps.Marker({
       position: new naver.maps.LatLng(firstCoordinate[0], firstCoordinate[1]),
       map: map,
@@ -80,11 +79,35 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
         url: 'https://maps.google.com/mapfiles/kml/paddle/blu-blank.png',
         scaledSize: new naver.maps.Size(markerSize, markerSize)
       },
-      zIndex: 100 + index // Ensure markers are drawn above the polyline,
+      zIndex: 100 + index // Ensure markers are drawn above the polyline
     });
 
+    // Create InfoWindow for the marker
+    const infoWindowContent = `
+      <div style="padding:10px;">
+        <h6>등산난이도: ${trailDifficultyText}</h6>
+        <p><strong>길이:</strong> ${trail.mountainTrailLength}m</p>
+        <p><strong>등산시간:</strong> ${trail.expectedAscentTime}min</p>
+        <p><strong>하산시간:</strong> ${trail.descentTime}min</p>
+      </div>
+    `;
+    const infoWindow = new naver.maps.InfoWindow({
+      content: infoWindowContent,
+      backgroundColor: "#fff",
+      borderColor: "#333",
+      borderWidth: 2,
+      anchorSize: new naver.maps.Size(10, 10),
+      anchorSkew: true,
+      anchorColor: "#fff"
+    });
+
+    naver.maps.Event.addListener(firstMarker, 'click', () => {
+      infoWindow.open(map, firstMarker);
+    });
+
+    console.log('First marker created:', firstMarker); // Debug log
     firstMarker.setVisible(currentZoom > 16); // Add visibility condition based on zoom level
-    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, firstMarker });
+    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay, firstMarker });
   });
 
   window.blinkPolyline = (trailNo) => {
@@ -112,8 +135,9 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 };
 
 export const clearTrailInfo = (overlays) => {
-  overlays.forEach(({ polyline, firstMarker }) => {
+  overlays.forEach(({ polyline, customOverlay, firstMarker }) => {
     polyline.setMap(null);
+    customOverlay.setMap(null);
     if (firstMarker) firstMarker.setMap(null); // Remove the first marker if it exists
   });
 };
