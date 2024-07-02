@@ -59,6 +59,7 @@ const styles = {
     position: 'fixed',
     right: '30px',
     bottom: '30px',
+    color:'#81C408',
     display: 'flex',
     width: '45px',
     height: '45px',

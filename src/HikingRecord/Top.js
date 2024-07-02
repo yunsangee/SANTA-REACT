@@ -296,6 +296,16 @@ const Top = () => {
                   등산안내
                 </a>
               </li>
+              <li className="nav-item">
+                <a
+                  href="#"
+                  id="qna"
+                  className="nav-link nav-link-custom qna"
+                  onClick={() => handleNavigation(`${javaServerIp}/user/getQnAList`)}
+                >
+                  Q&A
+                </a>
+              </li>
             </ul>
             <div className="d-flex align-items-center">
               {userNo ? (
@@ -308,7 +318,7 @@ const Top = () => {
                       <div className="dropdown-header dropdown-header-custom d-flex align-items-center">
                         <img src={profileImageUrl} alt="User Image"/>
                         <div className="info ml-2">
-                        <div className="name">{userName}</div>  
+                          <div className="name">{userName}</div>  
                           <div className='email'>{userId}</div>
                         </div>
                         <i className="fas fa-cog setting-icon" id="settingsIcon"></i>
@@ -320,7 +330,6 @@ const Top = () => {
                       <a className="dropdown-item dropdown-item-custom" id="myMountainLike" href="#"><i className="fas fa-heart"></i> 내가 좋아요 한 산 보기</a>
                       <a className="dropdown-item dropdown-item-custom" id="mySchedule" href="#"><i className="fas fa-calendar-alt"></i> 내 일정 보기</a>
                       <a className="dropdown-item dropdown-item-custom" id="myHikingRecord" href="#"><i className="fas fa-hiking"></i> 등산 기록 보기</a>
-                      <a className="dropdown-item dropdown-item-custom" id="qna" href="#"><i className="fas fa-question-circle"></i> Q&A</a>
                       <a className="dropdown-item dropdown-item-custom" id="logout" href="#" onClick={handleLogout}><i className="fas fa-sign-out-alt"></i> 로그아웃</a>
                     </div>
                   </div>
