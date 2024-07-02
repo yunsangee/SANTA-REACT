@@ -17,7 +17,7 @@ const styles = {
   },
   buttonStyle: {
     position: 'absolute',
-    bottom: '0px',
+    bottom: '10px',
     left: '10px',
     zIndex: '1000',
     padding: '10px 20px',
@@ -55,6 +55,28 @@ const styles = {
     fontSize: '24px',
     cursor: 'pointer',
   },
+  menuButtonStyle: {
+    position: 'absolute',
+    top: '10px',
+    left: '10px',
+    zIndex: '1000',
+    padding: '10px',
+    backgroundColor: 'white',
+    border: 'none',
+    borderRadius: '50%',
+    fontSize: '24px',
+    cursor: 'pointer',
+  },
+  menuContainer: {
+    position: 'absolute',
+    top: '50px',
+    left: '10px',
+    zIndex: '1000',
+    padding: '10px',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: '10px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  },
 };
 
 const NaverMap = () => {
@@ -85,6 +107,10 @@ const NaverMap = () => {
   const [userNo, setUserNo] = useState(null);
   const [locationUpdate, setLocationUpdate] = useState(null);
   const [zoomLevel, setZoomLevel] = useState(14);
+  const [showMenu, setShowMenu] = useState(false); // 추가된 상태
+  const [showWeatherInfo, setShowWeatherInfo] = useState(false); // 추가된 상태
+  const [showHikingInfo, setShowHikingInfo] = useState(false); // 추가된 상태
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true); // 추가된 상태
 
   const navigate = useNavigate();
   const zoomLevelThreshold = 13;
@@ -324,97 +350,6 @@ const NaverMap = () => {
     }
   }, [zoomLevel, visibleTrails]);
 
-  const handleHikingStatusChange = () => {
-    if (typeof window.stopBlinkingPolyline === 'function') {
-      window.stopBlinkingPolyline();
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: '산과 등산코스를 먼저 선택해주세요',
-        showConfirmButton: false,
-        timer: 1500
-      });
-      return;
-    }
-    
-    if (hikingStatus === 'notStarted') {
-      setHikingStatus('hiking');
-      startTimer();
-    } else if (hikingStatus === 'hiking') {
-      setAscentTime(time);
-      setHikingStatus('hikingCompleted');
-    } else if (hikingStatus === 'hikingCompleted') {
-      setDescentStartTime(time);
-      setHikingStatus('descending');
-    } else if (hikingStatus === 'descending') {
-      const calculatedDescentTime = time - descentStartTime;
-      setDescentTime(calculatedDescentTime);
-      setHikingStatus('notStarted');
-      stopTimer();
-      saveHikingData(calculatedDescentTime);
-    }
-  };
-
-  const startTimer = () => {
-    const id = setInterval(() => {
-      setTime(prevTime => prevTime + 1);
-    }, 1000);
-    setIntervalId(id);
-  };
-
-  const stopTimer = () => {
-    if (intervalId) {
-      clearInterval(intervalId);
-      setIntervalId(null);
-    }
-  };
-
-  const saveHikingData = async (calculatedDescentTime) => {
-    const hikingData = {
-      userNo: userNo,
-      totalTime: time.toString(),
-      userDistance: distance,
-      ascentTime: ascentTime.toString(),
-      descentTime: calculatedDescentTime.toString(),
-      hikingDifficulty: parseInt(selectedTrailDifficulty, 10),
-      mountain: {
-        mountainName: selectedMountainName
-      },
-      weather: {
-        skyCondition: parseInt(skyCondition, 10)
-      }
-    };
-
-    console.log(hikingData);
-    try {
-      await axios.post('https://www.dearmysanta.site/hiking/react/addHikingRecord', hikingData, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      Swal.fire({
-        icon: 'success',
-        title: '등산 정보가 기록되었습니다.',
-        showConfirmButton: false,
-        timer: 1500
-      });
-      console.log('Hiking data saved successfully.');
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: '기록에 실패하였습니다.',
-      });
-      console.error('Error saving hiking data:', error.message);
-    }
-  };
-
-  const getButtonText = () => {
-    if (hikingStatus === 'notStarted') return '등산시작';
-    if (hikingStatus === 'hiking') return '등산완료';
-    if (hikingStatus === 'hikingCompleted') return '하산시작';
-    if (hikingStatus === 'descending') return '하산완료';
-  };
-
   const handleLocateMe = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -442,6 +377,14 @@ const NaverMap = () => {
         console.error('Geolocation failed!', error);
       });
     }
+  };
+
+  const toggleShowWeatherInfo = () => {
+    setShowWeatherInfo(prevShowWeatherInfo => !prevShowWeatherInfo);
+  };
+
+  const toggleShowHikingInfo = () => {
+    setShowHikingInfo(prevShowHikingInfo => !prevShowHikingInfo);
   };
 
   let trailDifficultyText = '';
@@ -474,34 +417,57 @@ const NaverMap = () => {
               📍
             </button>
           </div>
+          <div style={styles.menuButtonStyle}>
+            <button 
+              onClick={() => setShowMenu(!showMenu)}
+              style={styles.menuButtonStyle}
+            >
+              ☰
+            </button>
+          </div>
+          {showMenu && (
+            <div style={styles.menuContainer}>
+              <button onClick={toggleShowWeatherInfo} style={styles.buttonStyle}>
+                {showWeatherInfo ? '날씨 정보 숨기기' : '날씨 정보 보기'}
+              </button>
+              <button onClick={toggleShowHikingInfo} style={styles.buttonStyle}>
+                {showHikingInfo ? '등산 정보 숨기기' : '등산 정보 보기'}
+              </button>
+              <button 
+                onClick={() => setNotificationsEnabled(prev => !prev)}
+                style={styles.buttonStyle}
+              >
+                {notificationsEnabled ? '🔔 알림 끄기' : '🔕 알림 켜기'}
+              </button>
+            </div>
+          )}
         </div>
         <div className="bottom-border-line" style={styles.bottomBorderLine}></div>
       </div>
-      <div style={styles.buttonStyle}>
-        <button className='hiking-button' onClick={handleHikingStatusChange}>
-          {getButtonText()}
-        </button>
-      </div>
-      <div className="weather">
-        <WeatherComponent latitude={latitude} longitude={longitude} setSkyCondition={setSkyCondition} setSunsetTime={setSunsetTime} />
-      </div>
+      {showWeatherInfo && (
+        <div className="weather">
+          <WeatherComponent latitude={latitude} longitude={longitude} setSkyCondition={setSkyCondition} setSunsetTime={setSunsetTime} />
+        </div>
+      )}
+      {showHikingInfo && (
+        <UserInformation 
+          isHiking={hikingStatus === 'hiking' || hikingStatus === 'descending'} 
+          ascentTime={ascentTime} 
+          totalTime={time} 
+          descentTime={descentTime}
+          resetHiking={hikingStatus === 'notStarted'}
+          mountainName={selectedMountainName}
+          trailDifficulty={trailDifficultyText} 
+          distance={distance} 
+          setDistance={setDistance} 
+          trailLength={trailLength} 
+          trailAscent={trailAscent} 
+          trailDescent={trailDescent} 
+        />
+      )}
       <div className="mountain">
         <Mountain setMountains={setMountains} />
       </div>
-      <UserInformation 
-        isHiking={hikingStatus === 'hiking' || hikingStatus === 'descending'} 
-        ascentTime={ascentTime} 
-        totalTime={time} 
-        descentTime={descentTime}
-        resetHiking={hikingStatus === 'notStarted'}
-        mountainName={selectedMountainName}
-        trailDifficulty={trailDifficultyText} 
-        distance={distance} 
-        setDistance={setDistance} 
-        trailLength={trailLength} 
-        trailAscent={trailAscent} 
-        trailDescent={trailDescent} 
-      />
       <HikingAlert 
         userNo={userNo}  // userNo를 전달합니다
         currentLocation={{ latitude, longitude }} 
