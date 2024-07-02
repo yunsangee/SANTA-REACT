@@ -108,11 +108,11 @@ const HikingAlert = () => {
   const getTrailDifficulty = (difficulty) => {
     switch (parseInt(difficulty, 10)) {
       case 2:
-        return '쉬움 😊'; // Easy with smiling face emoticon
+        return '어려움 😊'; // Easy with smiling face emoticon
       case 1:
         return '보통 😐'; // Medium with neutral face emoticon
       case 0:
-        return '어려움 😓'; // Hard with sweating face emoticon
+        return '쉬움 😓'; // Hard with sweating face emoticon
       default:
         return '알 수 없음 ❓'; // Unknown with question mark emoticon
     }

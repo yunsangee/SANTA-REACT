@@ -255,7 +255,7 @@ const NaverMap = () => {
           title: mountain.mountainName,
           icon: {
             url: 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png',
-            scaledSize: new window.naver.maps.Size(20, 20)
+            scaledSize: new window.naver.maps.Size(30, 30)
           }
         });
 
@@ -441,11 +441,11 @@ const NaverMap = () => {
   };
 
   let trailDifficultyText = '';
-  if (selectedTrailDifficulty === '2') {
+  if (selectedTrailDifficulty === '0') {
     trailDifficultyText = '쉬움';
   } else if (selectedTrailDifficulty === '1') {
     trailDifficultyText = '보통';
-  } else if (selectedTrailDifficulty === '0') {
+  } else if (selectedTrailDifficulty === '2') {
     trailDifficultyText = '어려움';
   }
 

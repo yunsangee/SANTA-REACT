@@ -1,12 +1,9 @@
-import { createCustomOverlay } from './CustomOverlay';
-
 export const displayTrailInfo = (map, trails, naver, currentZoom) => {
-  const CustomOverlay = createCustomOverlay(naver);
   const customOverlays = [];
   const markerSize = 10; // Small size marker
-  const offsetStep = 30; // Offset step to separate overlapping markers and overlays
   let blinkingPolyline = null;
   let blinkInterval = null;
+  let openInfoWindow = null; // Currently open InfoWindow
 
   trails.forEach((trail, index) => {
     const path = trail.mountainTrailCoordinates.map(coord => new naver.maps.LatLng(coord[0], coord[1]));
@@ -39,39 +36,10 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 
     const lastCoordinate = trail.mountainTrailCoordinates.slice(-1)[0];
 
-    const customOverlayContent = `
-      <div class="card text-dark bg-light" style="${getCardStyle(index)}" 
-      onclick="window.zoomToTrail(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]});
-      window.setTrailDifficulty('${trail.mountainTrailDifficulty}');
-      window.setSelectedTrailEnd({latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});
-      window.setTrailCoordinates(${JSON.stringify(trail.mountainTrailCoordinates)});
-      window.setSelectedTrailLength(${trail.mountainTrailLength});
-      window.setSelectedTrailAscent(${trail.expectedAscentTime});
-      window.setSelectedTrailDescent(${trail.descentTime});
-      window.blinkPolyline(${trail.mountainTrailNo});
-      console.log('Last coordinate of the trail:', {latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});">
-        <div class="card-body p-2">
-          <h6 class="card-title mb-1" style="font-size: 12px;">등산난이도: ${trailDifficultyText}</h6>
-          <p class="card-text mb-1" style="font-size: 10px;"><strong>길이:</strong> ${trail.mountainTrailLength}m</p>
-          <p class="card-text mb-1" style="font-size: 10px;"><strong>등산시간:</strong> ${trail.expectedAscentTime}min</p>
-          <p class="card-text mb-1" style="font-size: 10px;"><strong>하산시간:</strong> ${trail.descentTime}min</p>
-        </div>
-      </div>
-    `;
-
-    const customOverlay = new CustomOverlay({
-      content: customOverlayContent,
-      position: path[0],
-      map: map,
-      offset: { x: 0, y: -markerSize - offsetStep * index },
-      visible: currentZoom > 16 // Add visibility condition based on zoom level
-    });
-
-    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay });
-
     // Add a small marker at the first coordinate of the trail with an offset
     const firstCoordinate = trail.mountainTrailCoordinates[0];
     console.log('First coordinate:', firstCoordinate); // Debug log
+
     const firstMarker = new naver.maps.Marker({
       position: new naver.maps.LatLng(firstCoordinate[0], firstCoordinate[1]),
       map: map,
@@ -84,7 +52,10 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 
     // Create InfoWindow for the marker
     const infoWindowContent = `
-      <div style="padding:10px;">
+      <div style="padding:10px;" onclick="window.handleInfoWindowClick(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]},
+        '${trail.mountainTrailDifficulty}', ${lastCoordinate[0]}, ${lastCoordinate[1]}, 
+        ${JSON.stringify(trail.mountainTrailCoordinates)}, ${trail.mountainTrailLength},
+        ${trail.expectedAscentTime}, ${trail.descentTime}, ${trail.mountainTrailNo});">
         <h6>등산난이도: ${trailDifficultyText}</h6>
         <p><strong>길이:</strong> ${trail.mountainTrailLength}m</p>
         <p><strong>등산시간:</strong> ${trail.expectedAscentTime}min</p>
@@ -101,14 +72,31 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
       anchorColor: "#fff"
     });
 
+    console.log('InfoWindow created:', infoWindow); // Debug log
+
     naver.maps.Event.addListener(firstMarker, 'click', () => {
+      if (openInfoWindow) {
+        openInfoWindow.close();
+      }
       infoWindow.open(map, firstMarker);
+      openInfoWindow = infoWindow;
     });
 
-    console.log('First marker created:', firstMarker); // Debug log
-    firstMarker.setVisible(currentZoom > 16); // Add visibility condition based on zoom level
-    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay, firstMarker });
+    // Always visible (no zoom level condition)
+    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, infoWindow, firstMarker });
   });
+
+  window.handleInfoWindowClick = (lat, lon, difficulty, lastLat, lastLon, coordinates, length, ascent, descent, trailNo) => {
+    console.log('InfoWindow clicked'); // Debug log
+    window.zoomToTrail(lat, lon);
+    window.setTrailDifficulty(difficulty);
+    window.setSelectedTrailEnd({latitude: lastLat, longitude: lastLon});
+    window.setTrailCoordinates(coordinates);
+    window.setSelectedTrailLength(length);
+    window.setSelectedTrailAscent(ascent);
+    window.setSelectedTrailDescent(descent);
+    window.blinkPolyline(trailNo);
+  };
 
   window.blinkPolyline = (trailNo) => {
     if (blinkingPolyline) {
@@ -135,9 +123,9 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 };
 
 export const clearTrailInfo = (overlays) => {
-  overlays.forEach(({ polyline, customOverlay, firstMarker }) => {
+  overlays.forEach(({ polyline, infoWindow, firstMarker }) => {
     polyline.setMap(null);
-    customOverlay.setMap(null);
+    if (infoWindow) infoWindow.close(); // Close the InfoWindow if it exists
     if (firstMarker) firstMarker.setMap(null); // Remove the first marker if it exists
   });
 };
@@ -187,14 +175,3 @@ window.setSelectedTrailDescent = (descent) => {
     window.setSelectedTrailDescent(descent);
   }
 };
-
-// Helper function to generate card style
-const getCardStyle = (index) => `
-  width: 10rem; /* Reduce card width */
-  padding: 4px; /* Reduce padding */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
-  cursor: pointer; 
-  z-index: ${1000 + index};
-  border: 3px solid black; /* 검은색 선 추가 */
-  font-size: 10px; /* Reduce font size */
-`;
