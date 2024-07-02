@@ -1,5 +1,8 @@
+import { createCustomOverlay } from './CustomOverlay';
+
 export const displayTrailInfo = (map, trails, naver, currentZoom) => {
-  const infoWindows = [];
+  const CustomOverlay = createCustomOverlay(naver);
+  const customOverlays = [];
   const markerSize = 10; // Small size marker
   const offsetStep = 30; // Offset step to separate overlapping markers and overlays
   let blinkingPolyline = null;
@@ -36,8 +39,8 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
 
     const lastCoordinate = trail.mountainTrailCoordinates.slice(-1)[0];
 
-    const infoWindowContent = `
-      <div class="card text-dark bg-light" 
+    const customOverlayContent = `
+      <div class="card text-dark bg-light" style="${getCardStyle(index)}" 
       onclick="window.zoomToTrail(${trail.mountainTrailCoordinates[0][0]}, ${trail.mountainTrailCoordinates[0][1]});
       window.setTrailDifficulty('${trail.mountainTrailDifficulty}');
       window.setSelectedTrailEnd({latitude: ${lastCoordinate[0]}, longitude: ${lastCoordinate[1]}});
@@ -56,17 +59,15 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
       </div>
     `;
 
-    const infoWindow = new naver.maps.InfoWindow({
-      content: infoWindowContent,
-      maxWidth: 200, // Set maximum width if needed
-      backgroundColor: "#fff", // Set background color if needed
-      borderColor: "#333", // Set border color if needed
-      borderWidth: 2, // Set border width if needed
-      anchorSize: new naver.maps.Size(10, 10), // Set anchor size if needed
-      anchorSkew: true, // Set anchor skew if needed
-      anchorColor: "#fff", // Set anchor color if needed
-      zIndex: 1000 + index // Set zIndex to ensure InfoWindows stack correctly
+    const customOverlay = new CustomOverlay({
+      content: customOverlayContent,
+      position: path[0],
+      map: map,
+      offset: { x: 0, y: -markerSize - offsetStep * index },
+      visible: currentZoom > 16 // Add visibility condition based on zoom level
     });
+
+    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay });
 
     // Add a small marker at the first coordinate of the trail with an offset
     const firstCoordinate = trail.mountainTrailCoordinates[0];
@@ -81,13 +82,7 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
     });
 
     firstMarker.setVisible(currentZoom > 16); // Add visibility condition based on zoom level
-
-    // Open info window on marker click
-    naver.maps.Event.addListener(firstMarker, 'click', function() {
-      infoWindow.open(map, firstMarker);
-    });
-
-    infoWindows.push({ trailNo: trail.mountainTrailNo, polyline, infoWindow, firstMarker });
+    customOverlays.push({ trailNo: trail.mountainTrailNo, polyline, customOverlay, firstMarker });
   });
 
   window.blinkPolyline = (trailNo) => {
@@ -95,7 +90,7 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
       clearInterval(blinkInterval);
       blinkingPolyline.setVisible(true); // Ensure the last blinking polyline is visible
     }
-    const overlay = infoWindows.find(overlay => overlay.trailNo === trailNo);
+    const overlay = customOverlays.find(overlay => overlay.trailNo === trailNo);
     if (overlay) {
       blinkingPolyline = overlay.polyline;
       blinkInterval = setInterval(() => {
@@ -111,13 +106,13 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
     }
   };
 
-  return infoWindows;
+  return customOverlays;
 };
 
 export const clearTrailInfo = (overlays) => {
-  overlays.forEach(({ polyline, infoWindow, firstMarker }) => {
+  overlays.forEach(({ polyline, customOverlay, firstMarker }) => {
     polyline.setMap(null);
-    infoWindow.close();
+    customOverlay.setMap(null);
     if (firstMarker) firstMarker.setMap(null); // Remove the first marker if it exists
   });
 };
@@ -167,3 +162,14 @@ window.setSelectedTrailDescent = (descent) => {
     window.setSelectedTrailDescent(descent);
   }
 };
+
+// Helper function to generate card style
+const getCardStyle = (index) => `
+  width: 10rem; /* Reduce card width */
+  padding: 4px; /* Reduce padding */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+  cursor: pointer; 
+  z-index: ${1000 + index};
+  border: 3px solid black; /* 검은색 선 추가 */
+  font-size: 10px; /* Reduce font size */
+`;
