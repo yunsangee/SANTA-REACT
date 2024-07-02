@@ -33,7 +33,7 @@ const expandPolygon = (latlngs, distance) => {
   return expandedLatLngs;
 };
 
-const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoordinates, hikingStatus }) => {
+const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoordinates, hikingStatus, notificationsEnabled }) => {
   const [userNo, setUserNo] = useState(null);
   const [meetingTime, setMeetingTime] = useState('');
   const [alertSettings, setAlertSettings] = useState(null);
@@ -43,8 +43,6 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
   const geoFenceAlertInterval = useRef(null);
   const meetingTimeAlertShown = useRef(false);
   const audioRef = useRef(new Audio());
-
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   const playTTS = async (message) => {
     try {
@@ -212,23 +210,6 @@ const HikingAlert = ({ currentLocation, selectedTrailEnd, sunsetTime, trailCoord
 
   return (
     <>
-      <button 
-        onClick={() => setNotificationsEnabled(prev => !prev)}
-        style={{ 
-          padding: '10px', 
-          backgroundColor: 'white', 
-          border: 'none', 
-          borderRadius: '50%', 
-          cursor: 'pointer',
-          position: 'absolute',
-          top: '870px',
-          right: '15px',
-          fontSize: 25,
-          zIndex: 1000
-        }}
-      >
-        {notificationsEnabled ? '🔔' : '🔕'}
-      </button>
       <ToastContainer position="top-center" />
     </>
   );
