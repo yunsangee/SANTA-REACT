@@ -634,7 +634,7 @@ input[type="time"] {
       display: block;
       visibility: hidden;
       top: 100%;
-      left: 50; /* Align dropdown menu to the right */
+      left: 50px; /* Align dropdown menu to the right */
       left: auto; /* Ensure left is not set */
       transform: rotateX(-75deg);
       transform-origin: 0% 0%;
