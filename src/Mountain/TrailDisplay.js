@@ -87,7 +87,7 @@ export const displayTrailInfo = (map, trails, naver, currentZoom) => {
   });
 
   window.handleInfoWindowClick = (lat, lon, difficulty, lastLat, lastLon, coordinates, length, ascent, descent, trailNo) => {
-    console.log('InfoWindow clicked'); // Debug log
+    console.log('InfoWindow clicked. First coordinate:', lat, lon); 
     window.zoomToTrail(lat, lon);
     window.setTrailDifficulty(difficulty);
     window.setSelectedTrailEnd({latitude: lastLat, longitude: lastLon});
